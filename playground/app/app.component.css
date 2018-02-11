@@ -1,0 +1,12 @@
+.nav-top,
+.nav-bottom {
+    background: #efefef;
+    height: 30px;
+    line-height: 30px;
+    padding: 10px;
+}
+
+.nav-top a,
+.nav-bottom a {
+    color: #777;
+}
