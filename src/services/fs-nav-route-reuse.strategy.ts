@@ -42,7 +42,7 @@ export class FsNavRouteReuseStrategy implements RouteReuseStrategy {
 
   public retrieve(route: ActivatedRouteSnapshot) {
     const path = this.stack.getFullRoutePath(route);
-    if (!this.isResetTarget(path)) {
+    if (!this.isResetTarget(route, path)) {
       return this.stack.getHandler(path);
     } else {
       return null;
@@ -52,14 +52,14 @@ export class FsNavRouteReuseStrategy implements RouteReuseStrategy {
   public shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot) {
     const path = this.stack.getFullRoutePath(curr);
 
-    if (this.isResetTarget(path)) {
+    if (this.isResetTarget(curr, path)) {
       this.resetStack = true;
     }
     return future.routeConfig === curr.routeConfig;
   }
 
-  private isResetTarget(path) {
-    return ['/', '/messages'].indexOf(path) > -1;
+  private isResetTarget(route, path) {
+    return route.data && route.data.fsNavRoot;
   }
 
 }
