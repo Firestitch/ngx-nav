@@ -6,6 +6,8 @@ import { FsNavRouteHandleService } from '../../services';
   selector: '[fsNavAction]'
 })
 export class FsNavActionDirective {
+  constructor(private _stack: FsNavRouteHandleService) {}
+
   @HostListener('click', ['$event'])
   public click() {
     const info = this._stack.getActiveRouteInfo();
@@ -13,6 +15,4 @@ export class FsNavActionDirective {
       info.action();
     }
   }
-
-  constructor(private _stack: FsNavRouteHandleService) {}
 }

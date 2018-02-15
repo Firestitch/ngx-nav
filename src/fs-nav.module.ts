@@ -1,8 +1,8 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FsScrollSaverComponent, FsNavTitleComponent } from './components';
-import { FsNavActionDirective } from './directives';
+import { FsNavActionDirective, FsNavBackDirective } from './directives';
 import { FsNavRouteHandleService } from './services';
 import { FsNavRouteReuseStrategy } from './services/fs-nav-route-reuse.strategy';
 import { RouteReuseStrategy } from '@angular/router';
@@ -16,6 +16,7 @@ import { RouteReuseStrategy } from '@angular/router';
     FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionDirective,
+    FsNavBackDirective,
   ],
   entryComponents: [
   ],
@@ -23,6 +24,7 @@ import { RouteReuseStrategy } from '@angular/router';
     FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionDirective,
+    FsNavBackDirective,
   ],
   providers: [
     FsNavRouteHandleService,

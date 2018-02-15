@@ -8,11 +8,15 @@ export class FsNavRouteHandleService {
   public urlsInfo = [];
 
   private _activeRoutePath = '';
-
+  private _isBackNavigated = false;
   private _handlers: {[key: string]: DetachedRouteHandle} = {};
   private _router: Router;
 
   constructor() {
+  }
+
+  get activeRoutePath() {
+    return this._activeRoutePath;
   }
 
   /**
@@ -36,6 +40,7 @@ export class FsNavRouteHandleService {
     this._handlers = {};
     this.urlsStack.length = 0;
     this.urlsInfo.length = 0;
+    this._isBackNavigated = false;
     this.onStackReset.next(true);
   }
 
@@ -55,6 +60,7 @@ export class FsNavRouteHandleService {
    */
   public addHandler(path: string, handler: DetachedRouteHandle) {
     if (this.urlsStack[this.urlsStack.length - 1] === path) { return }
+    if (this._isBackNavigated) { this._isBackNavigated = false; return }
     this._handlers[path] = handler;
     this.urlsStack.push(path);
   }
@@ -71,7 +77,7 @@ export class FsNavRouteHandleService {
    * Create empty router info if not exists
    */
   public createActiveRouteInfo() {
-    if (!this.urlsInfo[this._activeRoutePath]) { this.urlsInfo[this._activeRoutePath] = {} }
+    if (!this.urlsInfo[this.activeRoutePath]) { this.urlsInfo[this.activeRoutePath] = {} }
   }
 
   /**
@@ -79,9 +85,8 @@ export class FsNavRouteHandleService {
    * @param title
    */
   public setTitle(title) {
-    debugger;
     this.createActiveRouteInfo();
-    this.urlsInfo[this._activeRoutePath].title = title
+    this.urlsInfo[this.activeRoutePath].title = title
   }
 
   /**
@@ -90,7 +95,7 @@ export class FsNavRouteHandleService {
    */
   public setAction(action) {
     this.createActiveRouteInfo();
-    this.urlsInfo[this._activeRoutePath].action = action;
+    this.urlsInfo[this.activeRoutePath].action = action;
   }
 
   /**
@@ -99,7 +104,7 @@ export class FsNavRouteHandleService {
    */
   public getActiveRouteInfo() {
     this.createActiveRouteInfo();
-    return this.urlsInfo[this._activeRoutePath];
+    return this.urlsInfo[this.activeRoutePath];
   }
 
   /**
@@ -116,6 +121,14 @@ export class FsNavRouteHandleService {
     }
   }
 
+  public goBack() {
+    if (this.urlsStack[this.urlsStack.length - 1] === this.activeRoutePath) {
+      this.urlsStack.pop();
+    }
+
+    this._isBackNavigated = true;
+    return this.urlsStack[this.urlsStack.length - 1] || '/';
+  }
   /**
    * Destroy component
    * @param {DetachedRouteHandle} handle
