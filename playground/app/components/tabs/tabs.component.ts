@@ -7,9 +7,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 export class TabsComponent implements OnInit, OnDestroy{
 
   public tabs = [
-    { path: '/tabs/list', label: 'Long list' },
-    { path: '/tabs/big-picture', label: 'Big Picture' },
-    { path: '/tabs/data-inputs', label: 'Data & inputs' }
+    { path: '/tabs/data-inputs', label: 'Inputs Page' },
+    { path: '/tabs/list', label: 'List Page' },
+    { path: '/tabs/static-page', label: 'Static Page' }
   ];
 
   public ngOnInit() {

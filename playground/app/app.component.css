@@ -1,12 +1,22 @@
-.nav-top,
 .nav-bottom {
-    background: #efefef;
+    background: #d7d7d7;
     height: 30px;
     line-height: 30px;
     padding: 10px;
 }
 
-.nav-top a,
 .nav-bottom a {
     color: #777;
+}
+
+.nav-bottom #home {
+  float: left;
+}
+
+.nav-bottom #messages {
+  float: right;
+}
+
+.page-stack {
+  margin-top: 20px;
 }
