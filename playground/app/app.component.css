@@ -1,12 +1,13 @@
 .nav-bottom {
-    background: #d7d7d7;
-    height: 30px;
-    line-height: 30px;
-    padding: 10px;
+  background: #d7d7d7;
+  height: 30px;
+  line-height: 30px;
+  padding: 10px;
+  width: 100%;
 }
 
 .nav-bottom a {
-    color: #777;
+  color: #777;
 }
 
 .nav-bottom #home {
