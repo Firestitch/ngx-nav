@@ -18,6 +18,7 @@ import { StaticPageComponent } from './app/components/tabs/static-page/static-pa
 import { HeaderComponent } from './app/components/header/header.component';
 
 import { FsNavModule } from '../src';
+import { FsExamplesComponent } from '../tools/components/examples/examples.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent, data: { fsNavRoot: true } },
@@ -52,6 +53,8 @@ const appRoutes: Routes = [
     InputsDataComponent,
     StaticPageComponent,
     HeaderComponent,
+
+    FsExamplesComponent,
   ],
   providers: [
   ],

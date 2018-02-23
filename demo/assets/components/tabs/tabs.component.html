@@ -1,0 +1,11 @@
+<h2>Go to:</h2>
+<nav mat-tab-nav-bar>
+  <a mat-tab-link
+     *ngFor="let tab of tabs"
+     [routerLink]="tab.path"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">
+    {{tab.label}}
+  </a>
+</nav>
+<router-outlet></router-outlet>
