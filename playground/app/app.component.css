@@ -3,7 +3,6 @@
   height: 30px;
   line-height: 30px;
   padding: 10px;
-  width: 100%;
 }
 
 .nav-bottom a {
@@ -19,5 +18,13 @@
 }
 
 .page-stack {
-  margin-top: 20px;
+  width: 300px;
+}
+
+.container {
+  margin: 20px;
+}
+
+::ng-deep .full-width {
+  display: block !important;
 }

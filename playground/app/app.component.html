@@ -1,21 +1,30 @@
 <fs-examples title="Navigation Stack" name="nav">
-  <header></header>
+  
+  <div fxLayout fxLayout="row">
+    <div fxFlex>
+      <header></header>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
 
-  <router-outlet></router-outlet>
-
-  <div class="nav-bottom">
-    <a routerLink="/" id="home">Home</a>
-    <a routerLink="/messages" id="messages">Messages</a>
+      <div class="nav-bottom">
+        <a routerLink="/" id="home">Home</a>
+        <a routerLink="/messages" id="messages">Messages</a>
+      </div>
+    </div>
+    <div>
+      <mat-list class="page-stack">
+        <h3 mat-subheader>Current Page Stack</h3>
+        <ng-container *ngFor="let url of stack.urlsStack">
+          <mat-list-item>
+            <mat-icon mat-list-icon>link</mat-icon>
+            <a [routerLink]="url">{{url}}</a>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
+      </mat-list> 
+    </div> 
   </div>
 
-  <mat-list class="page-stack">
-    <h3 mat-subheader>Current Page Stack</h3>
-    <ng-container *ngFor="let url of stack.urlsStack">
-      <mat-list-item>
-        <mat-icon mat-list-icon>link</mat-icon>
-        <a [routerLink]="url">{{url}}</a>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-    </ng-container>
-  </mat-list>
+ 
 </fs-examples>

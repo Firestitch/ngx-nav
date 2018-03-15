@@ -1,37 +1,24 @@
 .nav-top {
   background: #efefef;
-  height: 30px;
-  line-height: 30px;
-  padding: 10px;
+  height: 50px;
+  padding: 0 10px;
 }
 
 .nav-top a {
   color: #777;
 }
 
-.nav-top {
-  display: table;
-  width: 100%;
-  background: #d7d7d7;
-  height: 50px;
-}
-
-.nav-top .back {
-  display: table-cell;
-  text-align: left;
+.nav-top .back mat-icon {
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .nav-top .title {
-  display: table-cell;
   font-weight: 500;
   font-size: 18px;
-  text-align: center;
-  vertical-align: middle;
+  padding-left: 20px;
 }
 
 .nav-top .save {
-  display: table-cell;
-  text-align: right;
-  vertical-align: middle;
+
 }
