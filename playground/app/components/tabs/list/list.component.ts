@@ -22,9 +22,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.stack.setTitle('List Page');
-    this.stack.setAction(() => {
-      console.log('Action "List Page" was clicked');
-    });
+    // this.stack.setAction(() => {
+    //   console.log('Action "List Page" was clicked');
+    // });
 
     console.log('init list page');
   }

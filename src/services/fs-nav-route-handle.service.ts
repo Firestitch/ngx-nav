@@ -1,11 +1,15 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Router } from '@angular/router';
+import { NavAction } from '../models/nav-action.model';
+
+import {UrlInfo, UrlInfoAction} from '../interfaces';
+
 
 @Injectable()
 export class FsNavRouteHandleService {
   public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
-  public urlsInfo = [];
+  public urlsInfo: UrlInfo[] = [];
 
   private _activeRoutePath = '';
   private _isBackNavigated = false;
@@ -77,7 +81,9 @@ export class FsNavRouteHandleService {
    * Create empty router info if not exists
    */
   public createActiveRouteInfo() {
-    if (!this.urlsInfo[this.activeRoutePath]) { this.urlsInfo[this.activeRoutePath] = {} }
+    if (!this.urlsInfo[this.activeRoutePath]) {
+      this.urlsInfo[this.activeRoutePath] = { actions: [], menuActions: [] }
+    }
   }
 
   /**
@@ -93,9 +99,30 @@ export class FsNavRouteHandleService {
    * Set action (function) for current active page
    * @param action
    */
-  public setAction(action) {
+  public setAction(action: UrlInfoAction) {
     this.createActiveRouteInfo();
-    this.urlsInfo[this.activeRoutePath].action = action;
+    if (!this.actionExists(action)) {
+      const actionModel = new NavAction(action);
+      const target = action.menu ? 'menuActions' : 'actions';
+      this.urlsInfo[this.activeRoutePath][target].push(actionModel);
+    }
+  }
+
+  /**
+   * Set action (function) for current active page
+   * @param actions
+   */
+  public setActions(actions: UrlInfoAction[]) {
+    this.createActiveRouteInfo();
+    if (actions) {
+      actions.forEach((action) => {
+        if (!this.actionExists(action)) {
+          const actionModel = new NavAction(action);
+          const target = action.menu ? 'menuActions' : 'actions';
+          this.urlsInfo[this.activeRoutePath][target].push(actionModel);
+        }
+      })
+    }
   }
 
   /**
@@ -139,5 +166,10 @@ export class FsNavRouteHandleService {
     if (componentRef) {
       componentRef.destroy()
     }
+  }
+
+  private actionExists(targetAction: UrlInfoAction) {
+    return this.urlsInfo[this.activeRoutePath]
+      && this.urlsInfo[this.activeRoutePath].actions.some(action => action.label === targetAction.label);
   }
 }

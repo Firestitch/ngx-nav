@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { FsScrollSaverComponent, FsNavTitleComponent } from './components';
-import { FsNavActionDirective, FsNavBackDirective } from './directives';
-import { FsNavRouteHandleService } from './services';
-import { FsNavRouteReuseStrategy } from './services/fs-nav-route-reuse.strategy';
 import { RouteReuseStrategy } from '@angular/router';
+import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
+
+import { FsScrollSaverComponent, FsNavTitleComponent, FsNavActionsComponent } from './components';
+import { FsNavBackDirective } from './directives';
+import { FsNavRouteHandleService, FsNavRouteReuseStrategy } from './services';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule
   ],
   exports: [
     FsScrollSaverComponent,
     FsNavTitleComponent,
-    FsNavActionDirective,
+    FsNavActionsComponent,
     FsNavBackDirective,
   ],
   entryComponents: [
@@ -23,7 +26,7 @@ import { RouteReuseStrategy } from '@angular/router';
   declarations: [
     FsScrollSaverComponent,
     FsNavTitleComponent,
-    FsNavActionDirective,
+    FsNavActionsComponent,
     FsNavBackDirective,
   ],
   providers: [

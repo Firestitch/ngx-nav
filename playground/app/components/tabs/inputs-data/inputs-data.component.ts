@@ -23,56 +23,57 @@ export class InputsDataComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.stack.setTitle('Data inputs');
-    
-    this.stack.setAction(() => {
-      console.log('Action "Data inputs" was clicked');
-    });
+
+    // this.stack.setAction(() => {
+    //   console.log('Action "Data inputs" was clicked');
+    // });
 
     // this.stack.setAction({
     //   menu: false,
     //   label: 'Save',
     //   class: 'md-primary',
+    //   type: ActionType.raised,
     //   click: function () {
     //     console.log('Clicked Saved');
     //   }
-    // });    
+    // });
 
-    // this.stack.setActions([
-    //   //Save text button placed outside of menu
-    //   {
-    //     menu: false,
-    //     label: 'Save',
-    //     class: 'md-primary',
-    //     click: function () {
-    //       console.log('Clicked Saved');
-    //     }
-    //   },
-    //   //Settings icon button placed outside of menu
-    //   {
-    //     icon: 'settings',        
-    //     label: 'Settings',
-    //     click: function () {
-    //       console.log('Clicked Settings');
-    //     }
-    //   },
-    //   //Edit text menu item placed inside menu
-    //   {
-    //     label: 'Edit',
-    //     menu: true,
-    //     click: function () {
-    //       console.log('Clicked Edit');
-    //     }
-    //   },
-    //   //Delete icon/text menu item placed inside menu
-    //   {
-    //     label: 'Delete',
-    //     icon: 'delete',
-    //     menu: true,
-    //     click: function () {
-    //       console.log('Clicked Delete');
-    //     }
-    //   }
-    // ]);
+    this.stack.setActions([
+      // Save text button placed outside of menu
+      {
+        menu: false,
+        label: 'Save',
+        className: 'mat-primary',
+        click: function () {
+          console.log('Clicked Saved');
+        }
+      },
+      // Settings icon button placed outside of menu
+      {
+        icon: 'settings',
+        label: 'Settings',
+        click: function () {
+          console.log('Clicked Settings');
+        }
+      },
+      // Edit text menu item placed inside menu
+      {
+        label: 'Edit',
+        menu: true,
+        click: function () {
+          console.log('Clicked Edit');
+        }
+      },
+      // Delete icon/text menu item placed inside menu
+      {
+        label: 'Delete',
+        icon: 'delete',
+        menu: true,
+        click: function () {
+          console.log('Clicked Delete');
+        }
+      }
+    ]);
 
     console.log('init inputs page');
   }
