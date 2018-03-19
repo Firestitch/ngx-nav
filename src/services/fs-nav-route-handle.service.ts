@@ -116,6 +116,7 @@ export class FsNavRouteHandleService {
     this.createActiveRouteInfo();
     if (actions) {
       actions.forEach((action) => {
+        debugger;
         if (!this.actionExists(action)) {
           const actionModel = new NavAction(action);
           const target = action.menu ? 'menuActions' : 'actions';
@@ -170,6 +171,9 @@ export class FsNavRouteHandleService {
 
   private actionExists(targetAction: UrlInfoAction) {
     return this.urlsInfo[this.activeRoutePath]
-      && this.urlsInfo[this.activeRoutePath].actions.some(action => action.label === targetAction.label);
+      && (
+        this.urlsInfo[this.activeRoutePath].actions.some(action => action.label === targetAction.label)
+        || this.urlsInfo[this.activeRoutePath].menuActions.some(action => action.label === targetAction.label)
+      );
   }
 }
