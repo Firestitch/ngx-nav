@@ -9,7 +9,7 @@ import { FsNavRouteHandleService } from '../../../../../src/services';
       display: inline-flex;
       flex-direction: column;
     }
-    
+
     .example-radio-button {
       margin: 5px;
     }
@@ -48,6 +48,15 @@ export class InputsDataComponent implements OnInit, OnDestroy {
           console.log('Clicked Saved');
         }
       },
+      // Download icon button placed outside of menu
+      {
+        icon: 'file_download',
+        menu: false,
+        //type: ActionType.icon,
+        click: function () {
+          console.log('Clicked Download');
+        }
+      },
       // Settings icon button placed outside of menu
       {
         icon: 'settings',
@@ -72,7 +81,15 @@ export class InputsDataComponent implements OnInit, OnDestroy {
         click: function () {
           console.log('Clicked Delete');
         }
-      }
+      },
+       // Menu icon placed on the left side
+      {
+        icon: 'menu',
+        left: true,
+        click: function () {
+          console.log('Clicked Menu');
+        }
+      },
     ]);
 
     console.log('init inputs page');

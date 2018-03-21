@@ -116,7 +116,6 @@ export class FsNavRouteHandleService {
     this.createActiveRouteInfo();
     if (actions) {
       actions.forEach((action) => {
-        debugger;
         if (!this.actionExists(action)) {
           const actionModel = new NavAction(action);
           const target = action.menu ? 'menuActions' : 'actions';

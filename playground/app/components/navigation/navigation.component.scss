@@ -1,0 +1,20 @@
+.nav-bottom {
+  background: #d7d7d7;
+  padding: 10px;
+}
+
+.nav-bottom a {
+  color: #777;
+}
+
+.page-stack {
+  width: 300px;
+}
+
+.container {
+  margin: 20px;
+}
+
+::ng-deep .full-width {
+  display: block !important;
+}

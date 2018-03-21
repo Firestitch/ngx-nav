@@ -16,6 +16,9 @@ import { InputsDataComponent } from './app/components/tabs/inputs-data/inputs-da
 import { MessagesComponent } from './app/components/messages/messages.component';
 import { StaticPageComponent } from './app/components/tabs/static-page/static-page.component';
 import { HeaderComponent } from './app/components/header/header.component';
+import { NavigationComponent } from './app/components/navigation/navigation.component';
+import { UsersComponent } from './app/components/users/users.component';
+import { AccountsComponent } from './app/components/accounts/accounts.component';
 
 import { FsNavModule } from '../src';
 import { FsExamplesComponent } from '../tools/components/examples/examples.component';
@@ -23,6 +26,8 @@ import { FsExamplesComponent } from '../tools/components/examples/examples.compo
 const appRoutes: Routes = [
   { path: '', component: MainComponent, data: { fsNavRoot: true } },
   { path: 'messages', component: MessagesComponent, data: { fsNavRoot: true } },
+  { path: 'accounts', component: AccountsComponent },
+  { path: 'users', component: UsersComponent },
   { path: 'tabs', component: TabsComponent, children: [
     { path: '', redirectTo: '/tabs/list', pathMatch: 'full'},
     { path: 'list', component: ListComponent },
@@ -53,8 +58,10 @@ const appRoutes: Routes = [
     InputsDataComponent,
     StaticPageComponent,
     HeaderComponent,
-
+    NavigationComponent,
     FsExamplesComponent,
+    AccountsComponent,
+    UsersComponent
   ],
   providers: [
   ],
