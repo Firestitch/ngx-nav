@@ -1,5 +1,7 @@
 <div class="nav-top" fxLayout fxLayout="row" fxLayoutAlign="left center">
-  <a class="back" fsNavBack><mat-icon>arrow_back</mat-icon></a>
+  <div class="left-actions" fsNavBack>
+    <a class="back" #backButton><mat-icon>arrow_back</mat-icon></a>
+  </div>
   <span class="title" fxFlex fsNavTitle></span>
   <div class="actions" fsNavActions></div>
 </div>

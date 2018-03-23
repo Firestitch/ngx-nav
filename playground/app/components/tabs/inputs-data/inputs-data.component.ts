@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FsNavRouteHandleService } from '../../../../../src/services';
+import {ActionType} from "../../../../../src/models";
 
 @Component({
   selector: 'inputs-data',
@@ -52,7 +53,7 @@ export class InputsDataComponent implements OnInit, OnDestroy {
       {
         icon: 'file_download',
         menu: false,
-        //type: ActionType.icon,
+        type: ActionType.icon,
         click: function () {
           console.log('Clicked Download');
         }
@@ -84,8 +85,10 @@ export class InputsDataComponent implements OnInit, OnDestroy {
       },
        // Menu icon placed on the left side
       {
+        label: 'Menu',
         icon: 'menu',
         left: true,
+        type: ActionType.icon,
         click: function () {
           console.log('Clicked Menu');
         }

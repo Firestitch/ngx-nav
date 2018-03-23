@@ -89,7 +89,7 @@ export class FsNavRouteHandleService {
    */
   public createActiveRouteInfo() {
     if (!this.urlsInfo[this.activeRoutePath]) {
-      this.urlsInfo[this.activeRoutePath] = { actions: [], menuActions: [] }
+      this.urlsInfo[this.activeRoutePath] = { actions: [], menuActions: [], leftActions: [] }
     }
   }
 
@@ -109,9 +109,7 @@ export class FsNavRouteHandleService {
   public setAction(action: UrlInfoAction) {
     this.createActiveRouteInfo();
     if (!this.actionExists(action)) {
-      const actionModel = new NavAction(action);
-      const target = action.menu ? 'menuActions' : 'actions';
-      this.urlsInfo[this.activeRoutePath][target].push(actionModel);
+      this.addActionToRouteInfo(action)
     }
   }
 
@@ -124,9 +122,7 @@ export class FsNavRouteHandleService {
     if (actions) {
       actions.forEach((action) => {
         if (!this.actionExists(action)) {
-          const actionModel = new NavAction(action);
-          const target = action.menu ? 'menuActions' : 'actions';
-          this.urlsInfo[this.activeRoutePath][target].push(actionModel);
+          this.addActionToRouteInfo(action);
         }
       })
     }
@@ -207,5 +203,15 @@ export class FsNavRouteHandleService {
         this.urlsInfo[this.activeRoutePath].actions.some(action => action.label === targetAction.label)
         || this.urlsInfo[this.activeRoutePath].menuActions.some(action => action.label === targetAction.label)
       );
+  }
+
+  private addActionToRouteInfo(action: UrlInfoAction) {
+    const actionModel = new NavAction(action);
+    if (action.left) {
+      this.urlsInfo[this.activeRoutePath].leftActions.push(actionModel);
+    } else {
+      const target = action.menu ? 'menuActions' : 'actions';
+      this.urlsInfo[this.activeRoutePath][target].push(actionModel);
+    }
   }
 }

@@ -1,37 +1,40 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
+
+import { pairwise } from 'rxjs/operators';
 
 import { FsNavRouteHandleService } from '../../services';
 import { UrlInfo } from '../../interfaces';
 import { NavAction } from '../../models';
 
 
+
 @Component({
   selector: '[fsNavActions]',
   templateUrl: 'nav-actions.component.html'
 })
-export class FsNavActionsComponent implements OnInit {
+export class FsNavActionsComponent implements OnInit, OnDestroy {
 
   public routeInfo: UrlInfo = {};
   public actions: NavAction[];
   public menuActions: NavAction[];
 
+  private _routerSubscription;
+
   constructor(private _router: Router,
               private _stack: FsNavRouteHandleService) {}
 
   public ngOnInit() {
-    this._router.events.pairwise().subscribe(([prevRouteEvent, currRouteEvent]) => {
-      if (currRouteEvent instanceof NavigationEnd) {
-        this.routeInfo = this._stack.getActiveRouteInfo();
-      }
+    this._routerSubscription = this._router.events
+      .pipe(pairwise())
+      .subscribe(([prevRouteEvent, currRouteEvent]) => {
+        if (currRouteEvent instanceof NavigationEnd) {
+          this.routeInfo = this._stack.getActiveRouteInfo();
+        }
     });
   }
 
-  @HostListener('click', ['$event'])
-  public click() {
-    const info = this._stack.getActiveRouteInfo();
-    if (info && info.action) {
-      info.action();
-    }
+  public ngOnDestroy() {
+    this._routerSubscription.unsubscribe();
   }
 }

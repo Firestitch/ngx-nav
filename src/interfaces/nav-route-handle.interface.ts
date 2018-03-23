@@ -4,6 +4,7 @@ export interface UrlInfo {
   title?: string;
   actions?: NavAction[];
   menuActions?: NavAction[];
+  leftActions?: NavAction[];
 }
 
 export interface UrlInfoAction {
@@ -11,5 +12,6 @@ export interface UrlInfoAction {
   label?: string;
   className?: string;
   click?: Function;
+  left?: boolean;
   menu?: boolean;
 }

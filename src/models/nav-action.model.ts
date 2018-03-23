@@ -13,6 +13,7 @@ export class NavAction extends Model {
 
   @Alias() public icon: string;
   @Alias() public label: string;
+  @Alias() public left: boolean;
   @Alias() public menu: boolean;
   @Alias() public click: Function;
   @Alias() public className: string;

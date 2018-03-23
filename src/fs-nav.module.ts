@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouteReuseStrategy } from '@angular/router';
 import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
 
-import { FsScrollSaverComponent, FsNavTitleComponent, FsNavActionsComponent } from './components';
-import { FsNavBackDirective } from './directives';
+import { FsScrollSaverComponent, FsNavTitleComponent, FsNavActionsComponent, FsNavBackComponent } from './components';
 import { FsNavRouteHandleService, FsNavRouteReuseStrategy } from './services';
 
 
@@ -19,7 +18,7 @@ import { FsNavRouteHandleService, FsNavRouteReuseStrategy } from './services';
     FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionsComponent,
-    FsNavBackDirective,
+    FsNavBackComponent,
   ],
   entryComponents: [
   ],
@@ -27,7 +26,7 @@ import { FsNavRouteHandleService, FsNavRouteReuseStrategy } from './services';
     FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionsComponent,
-    FsNavBackDirective,
+    FsNavBackComponent,
   ],
   providers: [
     FsNavRouteHandleService,
