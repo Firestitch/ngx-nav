@@ -31,6 +31,10 @@ export class FsNavRouteHandleService {
     this._router = value;
   }
 
+  get router() {
+    return this._router;
+  }
+
   /**
    * Remove all information about stacked pages and handlers
    */
@@ -65,8 +69,11 @@ export class FsNavRouteHandleService {
   public addHandler(path: string, handler: DetachedRouteHandle) {
     if (this.urlsStack[this.urlsStack.length - 1] === path) { return }
     if (this._isBackNavigated) { this._isBackNavigated = false; return }
-    this._handlers[path] = handler;
-    this.urlsStack.push(path);
+    if (handler !== null) {
+      this._handlers[path] = handler;
+      this.urlsStack.push(path);
+    }
+
   }
 
   /**
@@ -141,10 +148,31 @@ export class FsNavRouteHandleService {
    * @returns {string}
    */
   public getFullRoutePath(route: ActivatedRouteSnapshot, path = '') {
-    if (route.parent !== null) {
-      return this.getFullRoutePath(route.parent, path) + '/' + route.url.join('/');
+    // if (route.parent !== null) {
+    //   return this.getFullRoutePath(route.parent, path) + '/' + route.url.join('/');
+    // } else {
+    //   return route.url.join('/')
+    // }
+    if (route.firstChild) {
+      return this.getTailPath(route);
     } else {
-      return route.url.join('/')
+      return this.getHeadPath(route);
+    }
+  }
+
+  private getHeadPath(route: ActivatedRouteSnapshot, path = '') {
+    if (route.parent !== null) {
+      return this.getHeadPath(route.parent, path) + '/' + route.url.join('/');
+    } else {
+      return route.url.join('/');
+    }
+  }
+
+  private getTailPath(route: ActivatedRouteSnapshot, path = '') {
+    if (route.firstChild) {
+      return `/${route.url.join('/')}/${this.getTailPath(route.firstChild, path)}`;
+    } else {
+      return `${route.url.join('/')}`;
     }
   }
 

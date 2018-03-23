@@ -1,10 +1,11 @@
 import { Inject } from '@angular/core';
 import {
-ActivatedRouteSnapshot,
-DetachedRouteHandle,
-RouteReuseStrategy,
+  ActivatedRouteSnapshot,
+  RouteReuseStrategy,
 } from '@angular/router';
+
 import { FsNavRouteHandleService } from './fs-nav-route-handle.service';
+
 
 export class FsNavRouteReuseStrategy implements RouteReuseStrategy {
 
@@ -19,7 +20,7 @@ export class FsNavRouteReuseStrategy implements RouteReuseStrategy {
     return !this.resetStack;
   }
 
-  public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle) {
+  public store(route: ActivatedRouteSnapshot, handle: any) {
     const path = this.stack.getFullRoutePath(route);
     if (!this.resetStack) {
       this.stack.addHandler(path, handle)
@@ -42,23 +43,22 @@ export class FsNavRouteReuseStrategy implements RouteReuseStrategy {
 
   public retrieve(route: ActivatedRouteSnapshot) {
     const path = this.stack.getFullRoutePath(route);
-    if (!this.isResetTarget(route, path)) {
+    if (!this.isResetTarget(route)) {
       return this.stack.getHandler(path);
     } else {
       return null;
     }
   }
 
-  public shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot) {
-    const path = this.stack.getFullRoutePath(curr);
-
-    if (this.isResetTarget(curr, path)) {
+  public shouldReuseRoute(prev: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot) {
+    if (this.isResetTarget(curr)) {
       this.resetStack = true;
     }
-    return future.routeConfig === curr.routeConfig;
+
+    return prev.routeConfig === curr.routeConfig
   }
 
-  private isResetTarget(route, path) {
+  private isResetTarget(route) {
     return route.data && route.data.fsNavRoot;
   }
 
