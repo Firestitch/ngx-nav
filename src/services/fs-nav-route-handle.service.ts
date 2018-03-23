@@ -178,7 +178,12 @@ export class FsNavRouteHandleService {
 
   public goBack() {
     if (this.urlsStack[this.urlsStack.length - 1] === this.activeRoutePath) {
-      this.urlsStack.pop();
+      const url = this.urlsStack.pop();
+      if (this.urlsStack.indexOf(url) === -1) {
+        this.deactivateOutlet(this._handlers[url]);
+        delete this._handlers[url];
+        delete this.urlsInfo[url];
+      }
     }
 
     this._isBackNavigated = true;
