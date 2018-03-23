@@ -1,7 +1,7 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 
-import { pairwise } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { FsNavRouteHandleService } from '../../services';
 import { UrlInfo } from '../../interfaces';
@@ -26,11 +26,11 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this._routerSubscription = this._router.events
-      .pipe(pairwise())
-      .subscribe(([prevRouteEvent, currRouteEvent]) => {
-        if (currRouteEvent instanceof NavigationEnd) {
-          this.routeInfo = this._stack.getActiveRouteInfo();
-        }
+      .pipe(
+        filter(e => e instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+        this.routeInfo = this._stack.getActiveRouteInfo();
     });
   }
 

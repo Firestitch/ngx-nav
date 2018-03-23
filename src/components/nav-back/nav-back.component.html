@@ -1,4 +1,4 @@
-<ng-content></ng-content>
+<ng-content *ngIf="!routeInfo.isRoot"></ng-content>
 
 <ng-container *ngIf="routeInfo.leftActions && routeInfo.leftActions.length > 0">
   <ng-container *ngFor="let action of routeInfo.leftActions"

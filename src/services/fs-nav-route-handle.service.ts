@@ -82,6 +82,8 @@ export class FsNavRouteHandleService {
    */
   public setActivePath(route: ActivatedRouteSnapshot) {
     this._activeRoutePath = this.getFullRoutePath(route);
+    const isRoot = route && route.data && route.data.fsNavRoot;
+    this.setIsRoot(this._activeRoutePath, isRoot);
   }
 
   /**
@@ -89,7 +91,12 @@ export class FsNavRouteHandleService {
    */
   public createActiveRouteInfo() {
     if (!this.urlsInfo[this.activeRoutePath]) {
-      this.urlsInfo[this.activeRoutePath] = { actions: [], menuActions: [], leftActions: [] }
+      this.urlsInfo[this.activeRoutePath] = {
+        actions: [],
+        menuActions: [],
+        leftActions: [],
+        isRoot: false,
+      }
     }
   }
 
@@ -100,6 +107,16 @@ export class FsNavRouteHandleService {
   public setTitle(title) {
     this.createActiveRouteInfo();
     this.urlsInfo[this.activeRoutePath].title = title
+  }
+
+  /**
+   * Set root param from route data
+   * @param path
+   * @param isRoot
+   */
+  public setIsRoot(path, isRoot) {
+    this.createActiveRouteInfo();
+    this.urlsInfo[path].isRoot = isRoot;
   }
 
   /**

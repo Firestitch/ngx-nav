@@ -5,6 +5,7 @@ export interface UrlInfo {
   actions?: NavAction[];
   menuActions?: NavAction[];
   leftActions?: NavAction[];
+  isRoot?: boolean;
 }
 
 export interface UrlInfoAction {
