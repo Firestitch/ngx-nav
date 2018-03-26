@@ -61,7 +61,8 @@ export class FsNavBackComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public createBackClickListener() {
     this._backClickListener = this._renderer.listen(this.backButton.nativeElement, 'click', (evt) => {
-      this._router.navigateByUrl(this._stack.goBack());
+      // this._router.navigateByUrl(this._stack.goBack());
+      this._stack.goBack()
     });
   }
 }

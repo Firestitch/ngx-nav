@@ -30,9 +30,9 @@ import { FsNavRouteHandleService, FsNavRouteReuseStrategy } from './services';
   ],
   providers: [
     FsNavRouteHandleService,
-    {
-      provide: RouteReuseStrategy, useClass: FsNavRouteReuseStrategy
-    }
+    // {
+    //   provide: RouteReuseStrategy, useClass: FsNavRouteReuseStrategy
+    // }
   ],
 })
 export class FsNavModule {}

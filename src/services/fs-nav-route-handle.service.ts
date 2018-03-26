@@ -190,17 +190,18 @@ export class FsNavRouteHandleService {
   }
 
   public goBack() {
-    if (this.urlsStack[this.urlsStack.length - 1] === this.activeRoutePath) {
-      const url = this.urlsStack.pop();
-      if (this.urlsStack.indexOf(url) === -1) {
-        this.deactivateOutlet(this._handlers[url]);
-        delete this._handlers[url];
-        delete this.urlsInfo[url];
-      }
-    }
-
-    this._isBackNavigated = true;
-    return this.urlsStack[this.urlsStack.length - 1] || '/';
+    window.history.back();
+    // if (this.urlsStack[this.urlsStack.length - 1] === this.activeRoutePath) {
+    //   const url = this.urlsStack.pop();
+    //   if (this.urlsStack.indexOf(url) === -1) {
+    //     this.deactivateOutlet(this._handlers[url]);
+    //     delete this._handlers[url];
+    //     delete this.urlsInfo[url];
+    //   }
+    // }
+    //
+    // this._isBackNavigated = true;
+    // return this.urlsStack[this.urlsStack.length - 1] || '/';
   }
   /**
    * Destroy component
@@ -219,6 +220,7 @@ export class FsNavRouteHandleService {
       && (
         this.urlsInfo[this.activeRoutePath].actions.some(action => action.label === targetAction.label)
         || this.urlsInfo[this.activeRoutePath].menuActions.some(action => action.label === targetAction.label)
+        || this.urlsInfo[this.activeRoutePath].leftActions.some(action => action.label === targetAction.label)
       );
   }
 
