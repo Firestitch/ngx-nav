@@ -1,4 +1,4 @@
-import { NavAction } from '../models/nav-action.model';
+import { NavAction, ActionType } from '../models';
 
 export interface UrlInfo {
   title?: string;
@@ -11,6 +11,7 @@ export interface UrlInfo {
 export interface UrlInfoAction {
   icon?: string;
   label?: string;
+  type?: ActionType;
   className?: string;
   click?: Function;
   left?: boolean;
