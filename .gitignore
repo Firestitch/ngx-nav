@@ -40,5 +40,5 @@ dist/*
 /.playground
 /dll
 /package-lock.json
-demo/
+/demo
 /package
