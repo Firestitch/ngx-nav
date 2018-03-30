@@ -48,6 +48,7 @@
     </button>
 
     <a class="align-icon"
+       [routerLink]="[action.url]"
        *ngSwitchCase="'url'"
        (click)="action.click(row, $event)"
        [ngClass]="action.classArray">

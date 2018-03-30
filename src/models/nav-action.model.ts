@@ -25,6 +25,7 @@ export class NavAction extends Model {
   @Alias() public className: string;
   @Alias() public type: ActionType;
   @Alias() public image: string;
+  @Alias() public url: string;
 
   public classArray: string[] = [];
 
@@ -47,6 +48,10 @@ export class NavAction extends Model {
 
     if (value.type === undefined) {
       this.type = ActionType.basic;
+    }
+
+    if (value.url === undefined) {
+      this.url = '';
     }
 
     if (value.click === undefined) {

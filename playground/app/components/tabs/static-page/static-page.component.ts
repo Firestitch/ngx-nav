@@ -24,9 +24,7 @@ export class StaticPageComponent implements OnInit, OnDestroy {
         type: ActionType.url,
         label: 'My Link',
         icon: 'menu',
-        click: () => {
-          console.log('go to url!');
-        }
+        url: '/tabs/data-inputs'
       },
       {
         type: ActionType.basic,
