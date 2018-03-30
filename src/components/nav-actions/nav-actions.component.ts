@@ -4,8 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { FsNavRouteHandleService } from '../../services';
-import { UrlInfo } from '../../interfaces';
-import { NavAction } from '../../models';
+import { NavAction, RouteInfo } from '../../models';
 
 
 
@@ -19,7 +18,7 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
 
   @HostBinding('hidden') public isHidden = true;
 
-  public routeInfo: UrlInfo = {};
+  public routeInfo: RouteInfo;
   public actions: NavAction[];
   public menuActions: NavAction[];
 
@@ -59,6 +58,7 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
     // React when actions was added/deleted and show/hide self component
     this._actionsSubscription = this._stack.onActionsUpdated
       .subscribe(() => {
+
         if (this.placement === 'menu') {
           this.isHidden = !(this.menuActions.length > 0);
         } else {

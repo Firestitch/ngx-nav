@@ -1,8 +1,8 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Router } from '@angular/router';
-import { NavAction, ActionType } from '../models';
+import { NavAction, ActionType, Placement, RouteInfo } from '../models';
 
-import { UrlInfo, UrlInfoAction } from '../interfaces';
+import { UrlInfoAction } from '../interfaces';
 
 
 @Injectable()
@@ -10,7 +10,7 @@ export class FsNavRouteHandleService {
   public onActionsUpdated = new EventEmitter();
   public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
-  public urlsInfo: UrlInfo[] = [];
+  public routeInfo: RouteInfo[] = [];
 
   private _activeRoutePath = '';
   private _isBackNavigated = false;
@@ -48,7 +48,7 @@ export class FsNavRouteHandleService {
     }
     this._handlers = {};
     this.urlsStack.length = 0;
-    this.urlsInfo.length = 0;
+    this.routeInfo.length = 0;
     this._isBackNavigated = false;
     this.onStackReset.next(true);
   }
@@ -91,13 +91,10 @@ export class FsNavRouteHandleService {
    * Create empty router info if not exists
    */
   public createActiveRouteInfo() {
-    if (!this.urlsInfo[this.activeRoutePath]) {
-      this.urlsInfo[this.activeRoutePath] = {
-        actions: [],
-        menuActions: [],
-        leftActions: [],
-        isRoot: false,
-      }
+    if (this.routeInfo[this.activeRoutePath]) {
+      this.routeInfo[this.activeRoutePath].reset();
+    } else {
+      this.routeInfo[this.activeRoutePath] = new RouteInfo();
     }
   }
 
@@ -107,7 +104,7 @@ export class FsNavRouteHandleService {
    */
   public setTitle(title) {
     this.createActiveRouteInfo();
-    this.urlsInfo[this.activeRoutePath].title = title
+    this.routeInfo[this.activeRoutePath].title = title
   }
 
   /**
@@ -117,15 +114,19 @@ export class FsNavRouteHandleService {
    */
   public setIsRoot(path, isRoot) {
     this.createActiveRouteInfo();
-    this.urlsInfo[path].isRoot = isRoot;
+    this.routeInfo[path].isRoot = isRoot;
   }
 
   /**
    * Set action (function) for current active page
    * @param action
+   * @param rewriteInfo { boolean } - set false for add actions to existing actions array
    */
-  public setAction(action: UrlInfoAction) {
-    this.createActiveRouteInfo();
+  public setAction(action: UrlInfoAction, rewriteInfo = true) {
+    if (rewriteInfo) {
+      this.createActiveRouteInfo();
+    }
+
     if (!this.actionExists(action)) {
       this.addActionToRouteInfo(action)
     }
@@ -135,10 +136,14 @@ export class FsNavRouteHandleService {
 
   /**
    * Set action (function) for current active page
-   * @param actions
+   * @param actions { UrlInfoAction[] }
+   * @param clear { boolean } - set false for add actions to existing actions array
    */
-  public setActions(actions: UrlInfoAction[]) {
-    this.createActiveRouteInfo();
+  public setActions(actions: UrlInfoAction[], clear = true) {
+    if (clear) {
+      this.createActiveRouteInfo();
+    }
+
     if (actions) {
       actions.forEach((action) => {
         if (!this.actionExists(action)) {
@@ -156,7 +161,7 @@ export class FsNavRouteHandleService {
    */
   public getActiveRouteInfo() {
     this.createActiveRouteInfo();
-    return this.urlsInfo[this.activeRoutePath];
+    return this.routeInfo[this.activeRoutePath];
   }
 
   /**
@@ -201,7 +206,7 @@ export class FsNavRouteHandleService {
     //   if (this.urlsStack.indexOf(url) === -1) {
     //     this.deactivateOutlet(this._handlers[url]);
     //     delete this._handlers[url];
-    //     delete this.urlsInfo[url];
+    //     delete this.routeInfo[url];
     //   }
     // }
     //
@@ -221,11 +226,11 @@ export class FsNavRouteHandleService {
   }
 
   private actionExists(targetAction: UrlInfoAction) {
-    return this.urlsInfo[this.activeRoutePath]
+    return this.routeInfo[this.activeRoutePath]
       && (
-        this.urlsInfo[this.activeRoutePath].actions.some(action => this.compareActions(action , targetAction))
-        || this.urlsInfo[this.activeRoutePath].menuActions.some(action => this.compareActions(action , targetAction))
-        || this.urlsInfo[this.activeRoutePath].leftActions.some(action => this.compareActions(action , targetAction))
+        this.routeInfo[this.activeRoutePath].actions.some(action => this.compareActions(action , targetAction))
+        || this.routeInfo[this.activeRoutePath].menuActions.some(action => this.compareActions(action , targetAction))
+        || this.routeInfo[this.activeRoutePath].leftActions.some(action => this.compareActions(action , targetAction))
       );
   }
 
@@ -237,11 +242,11 @@ export class FsNavRouteHandleService {
 
   private addActionToRouteInfo(action: UrlInfoAction) {
     const actionModel = new NavAction(action);
-    if (action.left) {
-      this.urlsInfo[this.activeRoutePath].leftActions.push(actionModel);
+    if (action.placement == Placement.left) {
+      this.routeInfo[this.activeRoutePath].leftActions.push(actionModel);
     } else {
       const target = action.menu ? 'menuActions' : 'actions';
-      this.urlsInfo[this.activeRoutePath][target].push(actionModel);
+      this.routeInfo[this.activeRoutePath][target].push(actionModel);
     }
   }
 }

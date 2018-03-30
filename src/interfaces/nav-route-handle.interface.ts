@@ -1,12 +1,4 @@
-import { NavAction, ActionType } from '../models';
-
-export interface UrlInfo {
-  title?: string;
-  actions?: NavAction[];
-  menuActions?: NavAction[];
-  leftActions?: NavAction[];
-  isRoot?: boolean;
-}
+import { ActionType, Placement } from '../models';
 
 export interface UrlInfoAction {
   icon?: string;
@@ -14,6 +6,6 @@ export interface UrlInfoAction {
   type?: ActionType;
   className?: string;
   click?: Function;
-  left?: boolean;
+  placement?: Placement;
   menu?: boolean;
 }

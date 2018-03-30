@@ -1,5 +1,5 @@
 import { Alias, Model } from 'tsmodels';
-import {UrlInfoAction} from "../interfaces/nav-route-handle.interface";
+import { UrlInfoAction } from '../interfaces';
 
 export enum ActionType {
   basic = 'basic',
@@ -9,11 +9,16 @@ export enum ActionType {
   miniFab = 'mini-fab'
 }
 
+export enum Placement {
+  left = 'left',
+  right = 'right'
+}
+
 export class NavAction extends Model {
 
   @Alias() public icon: string;
   @Alias() public label: string;
-  @Alias() public left: boolean;
+  @Alias() public placement: Placement;
   @Alias() public menu: boolean;
   @Alias() public click: Function;
   @Alias() public className: string;

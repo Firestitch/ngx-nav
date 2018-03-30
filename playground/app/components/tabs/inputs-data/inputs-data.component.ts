@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FsNavRouteHandleService } from '../../../../../src/services';
-import {ActionType} from "../../../../../src/models";
+import { ActionType, Placement } from '../../../../../src/models';
 
 @Component({
   selector: 'inputs-data',
@@ -86,7 +86,7 @@ export class InputsDataComponent implements OnInit, OnDestroy {
        // Menu icon placed on the left side
       {
         icon: 'menu',
-        left: true,
+        placement: Placement.left,
         type: ActionType.icon,
         click: function () {
           console.log('Clicked Menu');
