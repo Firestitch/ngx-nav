@@ -10,7 +10,8 @@ import { NavAction, RouteInfo } from '../../models';
 
 @Component({
   selector: '[fsNavActions]',
-  templateUrl: 'nav-actions.component.html'
+  templateUrl: 'nav-actions.component.html',
+  styleUrls: [ 'nav-actions.component.scss' ]
 })
 export class FsNavActionsComponent implements OnInit, OnDestroy {
 

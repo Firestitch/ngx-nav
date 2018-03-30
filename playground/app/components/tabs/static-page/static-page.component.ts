@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FsNavRouteHandleService } from '../../../../../src/services';
+import { ActionType } from '../../../../../src/models';
 
 @Component({
   selector: 'static-page',
@@ -16,6 +17,12 @@ export class StaticPageComponent implements OnInit, OnDestroy {
     // this.stack.setAction(() => {
     //   console.log('Action "Static Page" was clicked');
     // });
+
+    this.stack.setAction({
+      type: ActionType.url,
+      label: 'My Link',
+      icon: 'menu'
+    });
 
     console.log('init static page');
   }

@@ -1,0 +1,9 @@
+::ng-deep {
+  .align-icon {
+    cursor: pointer;
+    
+    .mat-icon {
+      vertical-align: middle;
+    }
+  }
+}
