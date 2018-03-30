@@ -55,7 +55,10 @@
     </a>
 
     <ng-template #buttonContent let-value="value">
-      <mat-icon *ngIf="action.icon">{{action.icon}}</mat-icon> {{action.label}}
+      <mat-icon *ngIf="action.icon && !action.image">{{action.icon}}</mat-icon>
+      <img *ngIf="action.image" [src]="action.image">
+
+      {{action.label}}
     </ng-template>
   </ng-container>
 </ng-container>

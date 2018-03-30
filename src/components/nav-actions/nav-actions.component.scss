@@ -1,8 +1,17 @@
 ::ng-deep {
   .align-icon {
     cursor: pointer;
-    
+    padding: 0 16px;
+
     .mat-icon {
+      vertical-align: middle;
+    }
+  }
+
+  .custom-icon-action {
+    padding: 0 16px;
+
+    img {
       vertical-align: middle;
     }
   }

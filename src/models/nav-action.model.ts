@@ -24,6 +24,7 @@ export class NavAction extends Model {
   @Alias() public click: Function;
   @Alias() public className: string;
   @Alias() public type: ActionType;
+  @Alias() public image: string;
 
   public classArray: string[] = [];
 
@@ -55,9 +56,12 @@ export class NavAction extends Model {
     if (this.className) {
       this.classArray = this.className.split(' ').reduce((acc, elem) => {
         acc.push(elem);
-
         return acc;
-      }, [])
+      }, []);
+    }
+
+    if (this.image) {
+      this.classArray.push('custom-icon-action');
     }
   }
 }

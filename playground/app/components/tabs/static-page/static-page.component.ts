@@ -4,7 +4,8 @@ import { ActionType } from '../../../../../src/models';
 
 @Component({
   selector: 'static-page',
-  templateUrl: 'static-page.component.html'
+  templateUrl: 'static-page.component.html',
+  styleUrls: [ 'static-page.component.scss' ]
 })
 export class StaticPageComponent implements OnInit, OnDestroy {
 
@@ -18,11 +19,25 @@ export class StaticPageComponent implements OnInit, OnDestroy {
     //   console.log('Action "Static Page" was clicked');
     // });
 
-    this.stack.setAction({
-      type: ActionType.url,
-      label: 'My Link',
-      icon: 'menu'
-    });
+    this.stack.setActions([
+      {
+        type: ActionType.url,
+        label: 'My Link',
+        icon: 'menu',
+        click: () => {
+          console.log('go to url!');
+        }
+      },
+      {
+        type: ActionType.basic,
+        label: 'SVG label',
+        className: 'my-svg-icon',
+        image: '/assets/test.svg',
+        click: () => {
+          console.log('go to url from SVG!');
+        }
+      }
+    ]);
 
     console.log('init static page');
   }
