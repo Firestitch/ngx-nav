@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router, ActivatedRoute } from '@angular/router';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/pairwise';
 import 'rxjs/add/operator/filter';
@@ -13,29 +13,29 @@ import { FsNavRouteHandleService } from '../../services';
 })
 export class FsScrollSaverComponent implements OnInit, OnDestroy {
 
-  protected _routeScrollPositions: {[url: string]: number}[] = [];
+  // protected _routeScrollPositions: {[url: string]: number}[] = [];
   protected _subscriptions: Subscription[] = [];
 
   constructor(
     public stack: FsNavRouteHandleService,
     protected router: Router,
     protected activatedRoute: ActivatedRoute) {
-    this.stack.router = router;
-  }
+      this.stack.router = router;
+    }
 
   public ngOnInit() {
-    this._subscriptions.push(
-      this.router.events.pairwise().subscribe(([prevRouteEvent, currRouteEvent]) => {
-        if (prevRouteEvent instanceof NavigationEnd && currRouteEvent instanceof NavigationStart) {
-          this._routeScrollPositions[prevRouteEvent.url] = window.pageYOffset;
-        }
-        if (currRouteEvent instanceof NavigationEnd) {
-          window.scrollTo(0, this._routeScrollPositions[currRouteEvent.url] || 0);
-        }
-      })
-    );
+    // this._subscriptions.push(
+    //   this.router.events.pairwise().subscribe(([prevRouteEvent, currRouteEvent]) => {
+    //     if (prevRouteEvent instanceof NavigationEnd && currRouteEvent instanceof NavigationStart) {
+    //       this._routeScrollPositions[prevRouteEvent.url] = window.pageYOffset;
+    //     }
+    //     if (currRouteEvent instanceof NavigationEnd) {
+    //       window.scrollTo(0, this._routeScrollPositions[currRouteEvent.url] || 0);
+    //     }
+    //   })
+    // );
 
-    this.router.events
+    const changeRouteListener = this.router.events
       .filter((event) => event instanceof NavigationEnd)
       .map(() => this.activatedRoute)
       .map((route) => {
@@ -43,18 +43,25 @@ export class FsScrollSaverComponent implements OnInit, OnDestroy {
         return route;
       })
       .filter((route) => route.outlet === 'primary')
-      .subscribe((event) => {
-        this.stack.setActivePath(event.snapshot);
-      });
+      .subscribe(this.setupActivatedRoute.bind(this));
 
-    this._subscriptions.push(
-      this.stack.onStackReset.subscribe(() => {
-        this._routeScrollPositions = [];
-      })
-    );
+    this._subscriptions.push(changeRouteListener);
+
+    // this._subscriptions.push(
+    //   this.stack.onStackReset.subscribe(() => {
+    //     this._routeScrollPositions = [];
+    //   })
+    // );
   }
 
   public ngOnDestroy() {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  private setupActivatedRoute(event) {
+    this.stack.setActivePath(event.snapshot);
+    this.stack.createActiveRouteInfo();
+    const isRoot = event && event.data && (event.data as any).fsNavRoot;
+    this.stack.setIsRoot(isRoot);
   }
 }

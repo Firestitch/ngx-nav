@@ -83,19 +83,14 @@ export class FsNavRouteHandleService {
    */
   public setActivePath(route: ActivatedRouteSnapshot) {
     this._activeRoutePath = this.getFullRoutePath(route);
-    const isRoot = route && route.data && route.data.fsNavRoot;
-    this.setIsRoot(this._activeRoutePath, isRoot);
   }
 
   /**
    * Create empty router info if not exists
    */
   public createActiveRouteInfo() {
-    if (this.routeInfo[this.activeRoutePath]) {
-      this.routeInfo[this.activeRoutePath].reset();
-    } else {
-      this.routeInfo[this.activeRoutePath] = new RouteInfo();
-    }
+    debugger;
+    this.routeInfo[this.activeRoutePath] = new RouteInfo();
   }
 
   /**
@@ -103,7 +98,7 @@ export class FsNavRouteHandleService {
    * @param title
    */
   public setTitle(title) {
-    this.createActiveRouteInfo();
+    debugger;
     this.routeInfo[this.activeRoutePath].title = title
   }
 
@@ -112,21 +107,15 @@ export class FsNavRouteHandleService {
    * @param path
    * @param isRoot
    */
-  public setIsRoot(path, isRoot) {
-    this.createActiveRouteInfo();
-    this.routeInfo[path].isRoot = isRoot;
+  public setIsRoot(isRoot) {
+    this.routeInfo[this._activeRoutePath].isRoot = isRoot;
   }
 
   /**
    * Set action (function) for current active page
    * @param action
-   * @param rewriteInfo { boolean } - set false for add actions to existing actions array
    */
-  public setAction(action: UrlInfoAction, rewriteInfo = true) {
-    if (rewriteInfo) {
-      this.createActiveRouteInfo();
-    }
-
+  public setAction(action: UrlInfoAction) {
     if (!this.actionExists(action)) {
       this.addActionToRouteInfo(action)
     }
@@ -137,13 +126,8 @@ export class FsNavRouteHandleService {
   /**
    * Set action (function) for current active page
    * @param actions { UrlInfoAction[] }
-   * @param clear { boolean } - set false for add actions to existing actions array
    */
-  public setActions(actions: UrlInfoAction[], clear = true) {
-    if (clear) {
-      this.createActiveRouteInfo();
-    }
-
+  public setActions(actions: UrlInfoAction[]) {
     if (actions) {
       actions.forEach((action) => {
         if (!this.actionExists(action)) {
@@ -160,7 +144,6 @@ export class FsNavRouteHandleService {
    * @returns {any}
    */
   public getActiveRouteInfo() {
-    this.createActiveRouteInfo();
     return this.routeInfo[this.activeRoutePath];
   }
 
