@@ -1,12 +1,13 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Router } from '@angular/router';
-import { NavAction } from '../models/nav-action.model';
+import { NavAction, ActionType } from '../models';
 
-import {UrlInfo, UrlInfoAction} from '../interfaces';
+import { UrlInfo, UrlInfoAction } from '../interfaces';
 
 
 @Injectable()
 export class FsNavRouteHandleService {
+  public onActionsUpdated = new EventEmitter();
   public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
   public urlsInfo: UrlInfo[] = [];
@@ -128,6 +129,8 @@ export class FsNavRouteHandleService {
     if (!this.actionExists(action)) {
       this.addActionToRouteInfo(action)
     }
+
+    this.onActionsUpdated.emit(true);
   }
 
   /**
@@ -143,6 +146,8 @@ export class FsNavRouteHandleService {
         }
       })
     }
+
+    this.onActionsUpdated.emit(true);
   }
 
   /**
@@ -218,10 +223,16 @@ export class FsNavRouteHandleService {
   private actionExists(targetAction: UrlInfoAction) {
     return this.urlsInfo[this.activeRoutePath]
       && (
-        this.urlsInfo[this.activeRoutePath].actions.some(action => action.label === targetAction.label)
-        || this.urlsInfo[this.activeRoutePath].menuActions.some(action => action.label === targetAction.label)
-        || this.urlsInfo[this.activeRoutePath].leftActions.some(action => action.label === targetAction.label)
+        this.urlsInfo[this.activeRoutePath].actions.some(action => this.compareActions(action , targetAction))
+        || this.urlsInfo[this.activeRoutePath].menuActions.some(action => this.compareActions(action , targetAction))
+        || this.urlsInfo[this.activeRoutePath].leftActions.some(action => this.compareActions(action , targetAction))
       );
+  }
+
+  private compareActions(action, targetAction) {
+    return action.label === targetAction.label &&
+      (action.type === targetAction.type || (action.type === ActionType.basic && !targetAction.type)) &&
+      action.icon === targetAction.icon;
   }
 
   private addActionToRouteInfo(action: UrlInfoAction) {

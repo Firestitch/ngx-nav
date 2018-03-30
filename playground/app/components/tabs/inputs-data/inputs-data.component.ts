@@ -85,7 +85,6 @@ export class InputsDataComponent implements OnInit, OnDestroy {
       },
        // Menu icon placed on the left side
       {
-        label: 'Menu',
         icon: 'menu',
         left: true,
         type: ActionType.icon,
