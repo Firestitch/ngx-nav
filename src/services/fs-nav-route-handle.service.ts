@@ -89,7 +89,6 @@ export class FsNavRouteHandleService {
    * Create empty router info if not exists
    */
   public createActiveRouteInfo() {
-    debugger;
     this.routeInfo[this.activeRoutePath] = new RouteInfo();
   }
 
@@ -98,7 +97,6 @@ export class FsNavRouteHandleService {
    * @param title
    */
   public setTitle(title) {
-    debugger;
     this.routeInfo[this.activeRoutePath].title = title
   }
 
