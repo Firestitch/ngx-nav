@@ -21,7 +21,6 @@ export class StaticPageComponent implements OnInit, OnDestroy {
 
     this.stack.setActions([
       {
-        type: ActionType.url,
         label: 'My Link',
         icon: 'menu',
         url: '/tabs/data-inputs'

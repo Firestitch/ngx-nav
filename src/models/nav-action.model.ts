@@ -6,8 +6,7 @@ export enum ActionType {
   raised = 'raised',
   icon = 'icon',
   fab = 'fab',
-  miniFab = 'mini-fab',
-  url = 'url'
+  miniFab = 'mini-fab'
 }
 
 export enum Placement {
@@ -38,24 +37,20 @@ export class NavAction extends Model {
   public _fromJSON(value: any) {
     super._fromJSON(value);
 
-    if (value.placement === undefined) {
+    if (value.placement === void 0) {
       this.placement = Placement.right;
     }
 
-    if (value.menu === undefined) {
+    if (value.menu === void 0) {
       this.menu = true;
     }
 
-    if (value.type === undefined) {
+    if (value.type === void 0) {
       this.type = ActionType.basic;
     }
 
-    if (value.url === undefined) {
-      this.url = '';
-    }
-
-    if (value.click === undefined) {
-      this.click = () => {};
+    if (value.click === void 0) {
+      this.click = (event) => { };
     }
 
     if (this.className) {

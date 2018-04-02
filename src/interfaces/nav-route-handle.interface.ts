@@ -8,4 +8,6 @@ export interface UrlInfoAction {
   click?: Function;
   placement?: Placement;
   menu?: boolean;
+  url?: string;
+  image?: string;
 }
