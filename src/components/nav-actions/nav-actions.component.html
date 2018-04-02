@@ -132,8 +132,23 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menuActionsRef>
-    <button mat-menu-item *ngFor="let action of menuActions" (click)="action.click(row, $event)">
-      <mat-icon *ngIf="action.icon">{{action.icon}}</mat-icon> {{action.label}}
-    </button>
+    <ng-container *ngFor="let action of menuActions">
+      <button mat-menu-item *ngIf="!action.url" (click)="action.click(row, $event)">
+        <mat-icon *ngIf="action.icon && !action.image">{{action.icon}}</mat-icon>
+        <img *ngIf="action.image" [src]="action.image">
+        {{action.label}}
+      </button>
+
+      <a mat-menu-item
+         *ngIf="action.url"
+         [routerLink]="[action.url]"
+         (click)="action.click($event)"
+         [ngClass]="action.classArray"
+      >
+        <mat-icon *ngIf="action.icon && !action.image">{{action.icon}}</mat-icon>
+        <img *ngIf="action.image" [src]="action.image">
+        {{action.label}}
+      </a>
+    </ng-container>
   </mat-menu>
 </ng-container>

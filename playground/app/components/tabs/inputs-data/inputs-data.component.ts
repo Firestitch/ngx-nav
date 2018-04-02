@@ -70,9 +70,7 @@ export class InputsDataComponent implements OnInit, OnDestroy {
       {
         label: 'Edit',
         menu: true,
-        click: function () {
-          console.log('Clicked Edit');
-        }
+        url: 'tabs/list'
       },
       // Delete icon/text menu item placed inside menu
       {
