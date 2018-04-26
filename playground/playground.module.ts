@@ -21,7 +21,6 @@ import { UsersComponent } from './app/components/users/users.component';
 import { AccountsComponent } from './app/components/accounts/accounts.component';
 
 import { FsNavModule } from '../src';
-import { FsExamplesComponent } from '../tools/components/examples/examples.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent, data: { fsNavRoot: true } },
@@ -59,7 +58,6 @@ const appRoutes: Routes = [
     StaticPageComponent,
     HeaderComponent,
     NavigationComponent,
-    FsExamplesComponent,
     AccountsComponent,
     UsersComponent
   ],
