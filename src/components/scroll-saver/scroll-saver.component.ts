@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
+import { NavigationEnd, Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/pairwise';
 import 'rxjs/add/operator/filter';
@@ -13,7 +13,7 @@ import { FsNavRouteHandleService } from '../../services';
 })
 export class FsScrollSaverComponent implements OnInit, OnDestroy {
 
-  // protected _routeScrollPositions: {[url: string]: number}[] = [];
+  protected _routeScrollPositions: {[url: string]: number}[] = [];
   protected _subscriptions: Subscription[] = [];
 
   constructor(
@@ -24,16 +24,31 @@ export class FsScrollSaverComponent implements OnInit, OnDestroy {
     }
 
   public ngOnInit() {
-    // this._subscriptions.push(
-    //   this.router.events.pairwise().subscribe(([prevRouteEvent, currRouteEvent]) => {
-    //     if (prevRouteEvent instanceof NavigationEnd && currRouteEvent instanceof NavigationStart) {
-    //       this._routeScrollPositions[prevRouteEvent.url] = window.pageYOffset;
-    //     }
-    //     if (currRouteEvent instanceof NavigationEnd) {
-    //       window.scrollTo(0, this._routeScrollPositions[currRouteEvent.url] || 0);
-    //     }
-    //   })
-    // );
+    this._subscriptions.push(
+      this.router.events.pairwise().subscribe(([prevRouteEvent, currRouteEvent]) => {
+        if (prevRouteEvent instanceof NavigationEnd && currRouteEvent instanceof NavigationStart) {
+          this._routeScrollPositions[prevRouteEvent.url] = window.pageYOffset;
+        }
+        if (currRouteEvent instanceof NavigationEnd && this._routeScrollPositions[currRouteEvent.url]) {
+          // TODO This code provide ability to wait for changing of window height
+          // In most cases it enough max 2 iterations.
+          // But there is a counter to avoid infinity call of function
+          // This hack won't help if loading of page is longer then 5 seconds
+          let counter = 0;
+          const interval = setInterval( () => {
+            if (counter > 10) {
+              clearInterval(interval);
+            } else {
+              window.scrollTo(0, this._routeScrollPositions[currRouteEvent.url] || 0);
+              if (window.scrollY === this._routeScrollPositions[currRouteEvent.url]) {
+                clearInterval(interval);
+              }
+            }
+            counter++;
+          }, 500);
+        }
+      })
+    );
 
     const changeRouteListener = this.router.events
       .filter((event) => event instanceof NavigationEnd)
