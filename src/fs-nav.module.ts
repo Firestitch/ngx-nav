@@ -31,7 +31,7 @@ import { RouterModule } from '@angular/router';
     FsNavBackDirective,
   ],
   providers: [
-    FsNavRouteHandleService,
+    // FsNavRouteHandleService,
     // {
     //   provide: RouteReuseStrategy, useClass: FsNavRouteReuseStrategy
     // }
