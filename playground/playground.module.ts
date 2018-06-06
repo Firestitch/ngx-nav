@@ -20,7 +20,10 @@ import { NavigationComponent } from './app/components/navigation/navigation.comp
 import { UsersComponent } from './app/components/users/users.component';
 import { AccountsComponent } from './app/components/accounts/accounts.component';
 
-import { FsNavModule } from '../src';
+import {
+  FsNavModule,
+  FsNavRouteHandleService
+} from '../src';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent, data: { fsNavRoot: true } },
@@ -62,6 +65,7 @@ const appRoutes: Routes = [
     UsersComponent
   ],
   providers: [
+    FsNavRouteHandleService
   ],
 })
 export class PlaygroundModule {
