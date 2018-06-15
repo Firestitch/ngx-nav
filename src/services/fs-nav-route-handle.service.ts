@@ -1,6 +1,7 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Router } from '@angular/router';
 import { NavAction, ActionType, Placement, RouteInfo } from '../models';
+import { Location } from '@angular/common';
 
 import { UrlInfoAction } from '../interfaces';
 
@@ -17,8 +18,7 @@ export class FsNavRouteHandleService {
   private _handlers: {[key: string]: DetachedRouteHandle} = {};
   private _router: Router;
 
-  constructor() {
-  }
+  constructor(private location: Location) { }
 
   get activeRoutePath() {
     return this._activeRoutePath;
@@ -181,7 +181,8 @@ export class FsNavRouteHandleService {
   }
 
   public goBack() {
-    window.history.back();
+    // window.history.back();
+    this.location.back();
     // if (this.urlsStack[this.urlsStack.length - 1] === this.activeRoutePath) {
     //   const url = this.urlsStack.pop();
     //   if (this.urlsStack.indexOf(url) === -1) {
