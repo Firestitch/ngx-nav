@@ -11,9 +11,11 @@ export class FsNavRouteHandleService {
   public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
   public routeInfo: RouteInfo[] = [];
+  public stopBackToUrls: any[] = [];
 
   private _activeRoutePath = '';
   private _isBackNavigated = false;
+  private _lastOperationIsBack = false;
   private _handlers: {[key: string]: DetachedRouteHandle} = {};
   private _router: Router;
 
@@ -22,6 +24,10 @@ export class FsNavRouteHandleService {
 
   get activeRoutePath() {
     return this._activeRoutePath;
+  }
+
+  get lastOperationIsBack() {
+    return this._lastOperationIsBack;
   }
 
   /**
@@ -34,6 +40,20 @@ export class FsNavRouteHandleService {
 
   get router() {
     return this._router;
+  }
+
+  public setActiveUrlAsStop() {
+    if (this.stopBackToUrls.indexOf(this.activeRoutePath) === -1) {
+      this.stopBackToUrls.push(this.activeRoutePath);
+    }
+    console.log(this.stopBackToUrls);
+  }
+
+  public addUrlToStack(url: string) {
+    if (this.urlsStack[this.urlsStack.length - 1] !== url) {
+      this.urlsStack.push(url);
+    }
+    this._lastOperationIsBack = false;
   }
 
   /**
@@ -180,8 +200,23 @@ export class FsNavRouteHandleService {
     }
   }
 
-  public goBack() {
-    window.history.back();
+  public goBack(steps = null) {
+    if (steps) {
+      window.history.go(-steps);
+    } else {
+      const prevUrl = this.urlsStack[this.urlsStack.length - 1];
+      const delta = this.backDelta(prevUrl, -1);
+
+      this.urlsStack.splice(delta, Math.abs(delta));
+      window.history.go(delta);
+    }
+
+    this._lastOperationIsBack = true;
+
+
+    // console.log(window.history.state);
+    // window.history.back();
+    // console.log(this.urlsStack);
     // if (this.urlsStack[this.urlsStack.length - 1] === this.activeRoutePath) {
     //   const url = this.urlsStack.pop();
     //   if (this.urlsStack.indexOf(url) === -1) {
@@ -194,6 +229,21 @@ export class FsNavRouteHandleService {
     // this._isBackNavigated = true;
     // return this.urlsStack[this.urlsStack.length - 1] || '/';
   }
+
+  public backDelta(prevUrl, delta) {
+    if (prevUrl && this.stopBackToUrls.length > 0) {
+      if (this.stopBackToUrls[this.stopBackToUrls.length - 1] === prevUrl) {
+        delta -= 1;
+
+        return this.backDelta(this.urlsStack[this.urlsStack.length + delta], delta);
+      }
+    }
+
+    return delta;
+
+  }
+
+
   /**
    * Destroy component
    * @param {DetachedRouteHandle} handle

@@ -59,6 +59,9 @@ export class FsScrollSaverComponent implements OnInit, OnDestroy {
   }
 
   private setupActivatedRoute(event) {
+    if (!this.stack.lastOperationIsBack) {
+      this.stack.addUrlToStack(this.stack.activeRoutePath);
+    }
     this.stack.setActivePath(event.snapshot);
     this.stack.createActiveRouteInfo();
     const isRoot = event && event.data && (event.data as any).fsNavRoot;
