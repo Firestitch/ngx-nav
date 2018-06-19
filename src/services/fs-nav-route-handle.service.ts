@@ -19,8 +19,7 @@ export class FsNavRouteHandleService {
   private _handlers: {[key: string]: DetachedRouteHandle} = {};
   private _router: Router;
 
-  constructor() {
-  }
+  constructor() { }
 
   get activeRoutePath() {
     return this._activeRoutePath;
@@ -46,7 +45,6 @@ export class FsNavRouteHandleService {
     if (this.stopBackToUrls.indexOf(this.activeRoutePath) === -1) {
       this.stopBackToUrls.push(this.activeRoutePath);
     }
-    console.log(this.stopBackToUrls);
   }
 
   public addUrlToStack(url: string) {
@@ -184,22 +182,6 @@ export class FsNavRouteHandleService {
     }
   }
 
-  private getHeadPath(route: ActivatedRouteSnapshot, path = '') {
-    if (route.parent !== null) {
-      return this.getHeadPath(route.parent, path) + '/' + route.url.join('/');
-    } else {
-      return route.url.join('/');
-    }
-  }
-
-  private getTailPath(route: ActivatedRouteSnapshot, path = '') {
-    if (route.firstChild) {
-      return `/${route.url.join('/')}/${this.getTailPath(route.firstChild, path)}`;
-    } else {
-      return `${route.url.join('/')}`;
-    }
-  }
-
   public goBack(steps = null) {
     if (steps) {
       window.history.go(-steps);
@@ -243,6 +225,21 @@ export class FsNavRouteHandleService {
 
   }
 
+  private getHeadPath(route: ActivatedRouteSnapshot, path = '') {
+    if (route.parent !== null) {
+      return this.getHeadPath(route.parent, path) + '/' + route.url.join('/');
+    } else {
+      return route.url.join('/');
+    }
+  }
+
+  private getTailPath(route: ActivatedRouteSnapshot, path = '') {
+    if (route.firstChild) {
+      return `/${route.url.join('/')}/${this.getTailPath(route.firstChild, path)}`;
+    } else {
+      return `${route.url.join('/')}`;
+    }
+  }
 
   /**
    * Destroy component
