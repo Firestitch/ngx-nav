@@ -10,4 +10,5 @@ export interface UrlInfoAction {
   menu?: boolean;
   url?: string;
   image?: string;
+  group?: string;
 }

@@ -20,11 +20,12 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
   @HostBinding('hidden') public isHidden = true;
 
   public routeInfo: RouteInfo;
-  public actions: NavAction[];
-  public menuActions: NavAction[];
+  public actions: Map<string, NavAction[]>;
+  public menuActions: Map<string, NavAction[]>;
 
   public showActions = false;
   public showMenu = false;
+  public groups = [];
 
   private _routerSubscription;
   private _actionsSubscription;
@@ -59,31 +60,28 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
     // React when actions was added/deleted and show/hide self component
     this._actionsSubscription = this._stack.onActionsUpdated
       .subscribe(() => {
-
-        if (this.placement === 'menu') {
-          this.isHidden = !(this.menuActions.length > 0);
-        } else {
-          this.isHidden = !(this.actions.length > 0);
-        }
+        this.updateActions();
       });
   }
 
   private updateActions() {
     switch (this.placement) {
       case 'left': {
+        this.groups = Array.from(this.routeInfo.leftActions.keys());
         this.actions = this.routeInfo.leftActions;
-        this.isHidden = !(this.actions.length > 0)
       } break;
 
       case 'menu': {
+        this.groups = Array.from(this.routeInfo.menuActions.keys());
         this.menuActions = this.routeInfo.menuActions;
-        this.isHidden = !(this.menuActions.length > 0)
       } break;
 
       default: {
+        this.groups = Array.from(this.routeInfo.actions.keys());
         this.actions = this.routeInfo.actions;
-        this.isHidden = !(this.actions.length > 0)
       }
     }
+
+    this.isHidden = !(this.groups.length > 0);
   }
 }

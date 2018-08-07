@@ -81,6 +81,24 @@ export class InputsDataComponent implements OnInit, OnDestroy {
           console.log('Clicked Delete');
         }
       },
+      {
+        label: 'Facebook',
+        menu: true,
+        url: 'tabs/list',
+        group: 'Share' // Group name
+      },
+      {
+        label: 'Twitter',
+        menu: true,
+        url: 'tabs/list',
+        group: 'Share' // Group name
+      },
+      {
+        label: 'More options...',
+        menu: true,
+        url: 'tabs/list',
+        group: 'Share' // Group name
+      },
        // Menu icon placed on the left side
       {
         icon: 'menu',
@@ -90,7 +108,7 @@ export class InputsDataComponent implements OnInit, OnDestroy {
           console.log('Clicked Menu');
         }
       },
-    ]);
+    ], 'Actions'); // Actions it's default group for elements without group specified
 
     console.log('init inputs page');
   }

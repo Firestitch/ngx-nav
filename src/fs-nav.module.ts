@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
+import { MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule } from '@angular/material';
 
 import { FsScrollSaverComponent, FsNavTitleComponent, FsNavActionsComponent } from './components';
 import { FsNavBackDirective } from './directives';
-import { FsNavRouteHandleService } from './services';
-import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -14,7 +13,8 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDividerModule,
   ],
   exports: [
     FsScrollSaverComponent,
