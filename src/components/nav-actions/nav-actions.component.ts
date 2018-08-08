@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 
 import { FsNavRouteHandleService } from '../../services';
 import { NavAction, RouteInfo } from '../../models';
-
+import { DropDownNavMenu } from '../../models/drop-down-nav-action.model';
 
 
 @Component({
@@ -21,10 +21,10 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
 
   public routeInfo: RouteInfo;
   public actions: Map<string, NavAction[]>;
-  public menuActions: Map<string, NavAction[]>;
+  public dropDownMenu: DropDownNavMenu = null;
+  // public menuActions: Map<string, NavAction[]>;
 
-  public showActions = false;
-  public showMenu = false;
+  public simpleActions = false;
   public groups = [];
 
   private _routerSubscription;
@@ -37,8 +37,7 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
     this.subscriptions();
 
     // Predefine bool constants for show/hide target blocks in template
-    this.showActions = this.placement === 'left' || this.placement === 'right';
-    this.showMenu = this.placement === 'menu';
+    this.simpleActions = this.placement === 'left' || this.placement === 'right';
   }
 
   public ngOnDestroy() {
@@ -65,23 +64,31 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
   }
 
   private updateActions() {
+    this.groups = null;
+    this.actions = null;
+    this.dropDownMenu = null;
+
     switch (this.placement) {
       case 'left': {
         this.groups = Array.from(this.routeInfo.leftActions.keys());
         this.actions = this.routeInfo.leftActions;
       } break;
 
-      case 'menu': {
-        this.groups = Array.from(this.routeInfo.menuActions.keys());
-        this.menuActions = this.routeInfo.menuActions;
+      case 'right': {
+        this.groups = Array.from(this.routeInfo.rightActions.keys());
+        this.actions = this.routeInfo.rightActions;
       } break;
 
       default: {
-        this.groups = Array.from(this.routeInfo.actions.keys());
-        this.actions = this.routeInfo.actions;
+        if (this.routeInfo.dropDownMenus.has(this.placement)) {
+          this.dropDownMenu = this.routeInfo.dropDownMenus.get(this.placement);
+
+          this.groups = Array.from(this.dropDownMenu.groups.keys());
+          this.actions = this.dropDownMenu.groups;
+        }
       }
     }
 
-    this.isHidden = !(this.groups.length > 0);
+    this.isHidden = !this.groups || this.groups.length === 0;
   }
 }

@@ -39,6 +39,10 @@ export class InputsDataComponent implements OnInit, OnDestroy {
     //   }
     // });
 
+    // Custom drop down menu
+    this.stack.addDropDownMenu('share', 'share');
+
+    // Actions
     this.stack.setActions([
       // Save text button placed outside of menu
       {
@@ -65,6 +69,22 @@ export class InputsDataComponent implements OnInit, OnDestroy {
         click: function () {
           console.log('Clicked Settings');
         }
+      },
+      // Extra dropdown menu actions
+      {
+        label: 'Facebook',
+        menu: 'share',
+        group: 'Post to'
+      },
+      {
+        label: 'Twitter',
+        menu: 'share',
+        group: 'Post to'
+      },
+      {
+        label: 'iTunes',
+        menu: 'share',
+        group: 'Post to'
       },
       // Edit text menu item placed inside menu
       {

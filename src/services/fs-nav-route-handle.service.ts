@@ -111,6 +111,18 @@ export class FsNavRouteHandleService {
   }
 
   /**
+   * Add new action what will work like dropDownMenu
+   * @param id { string }
+   * @param icon { string }
+   */
+  public addDropDownMenu(id, icon) {
+    const routeInfo: RouteInfo = this.routeInfo[this.activeRoutePath];
+    if (routeInfo && !routeInfo.dropDownMenus.has(id)) {
+      routeInfo.addDropDownMenu(id, icon);
+    }
+  }
+
+  /**
    * Set title for current active page
    * @param title
    */
@@ -133,9 +145,7 @@ export class FsNavRouteHandleService {
    * @param group { string }
    */
   public setAction(action: UrlInfoAction, group = 'default') {
-    if (!this.actionExists(action)) {
-      this.addActionToRouteInfo(action, action.group || group)
-    }
+    this.addActionToRouteInfo(action, action.group || group)
 
     this.onActionsUpdated.emit(true);
   }
@@ -148,9 +158,7 @@ export class FsNavRouteHandleService {
   public setActions(actions: UrlInfoAction[], group = 'default') {
     if (actions) {
       actions.forEach((action: UrlInfoAction) => {
-        if (!this.actionExists(action)) {
-          this.addActionToRouteInfo(action, action.group || group);
-        }
+        this.addActionToRouteInfo(action, action.group || group);
       })
     }
 
@@ -255,35 +263,32 @@ export class FsNavRouteHandleService {
     }
   }
 
-  private actionExists(targetAction: UrlInfoAction) {
-    const actions = Array.from(this.routeInfo[this.activeRoutePath].actions.entries());
-    const menuActions = Array.from(this.routeInfo[this.activeRoutePath].menuActions.entries());
-    const leftActions = Array.from(this.routeInfo[this.activeRoutePath].leftActions.entries());
+  // private actionExists(targetAction: UrlInfoAction) {
+  //   const actions = Array.from(this.routeInfo[this.activeRoutePath].actions.entries());
+  //   const menuActions = Array.from(this.routeInfo[this.activeRoutePath].menuActions.entries());
+  //   const leftActions = Array.from(this.routeInfo[this.activeRoutePath].leftActions.entries());
+  //
+  //   return this.routeInfo[this.activeRoutePath] &&
+  //     (
+  //       actions.some(action => this.compareActions(action , targetAction)) ||
+  //       menuActions.some(action => this.compareActions(action , targetAction)) ||
+  //       leftActions.some(action => this.compareActions(action , targetAction))
+  //     );
+  // }
 
-    return this.routeInfo[this.activeRoutePath] &&
-      (
-        actions.some(action => this.compareActions(action , targetAction)) ||
-        menuActions.some(action => this.compareActions(action , targetAction)) ||
-        leftActions.some(action => this.compareActions(action , targetAction))
-      );
-  }
-
-  private compareActions(action, targetAction) {
-    return action.label === targetAction.label &&
-      (action.type === targetAction.type || (action.type === ActionType.basic && !targetAction.type)) &&
-      action.icon === targetAction.icon;
-  }
+  // private compareActions(action, targetAction) {
+  //   return action.label === targetAction.label &&
+  //     (action.type === targetAction.type || (action.type === ActionType.basic && !targetAction.type)) &&
+  //     action.icon === targetAction.icon;
+  // }
 
   private addActionToRouteInfo(action: UrlInfoAction, group: any) {
     const actionModel = new NavAction(action);
 
-    if (action.placement == Placement.left) {
-      this.routeInfo[this.activeRoutePath].addGroup(action.placement, group);
-      this.routeInfo[this.activeRoutePath].leftActions.get(group).push(actionModel);
+    if (!action.menu) {
+      this.routeInfo[this.activeRoutePath].addAction(actionModel, group);
     } else {
-      const target = action.menu ? 'menuActions' : 'actions';
-      this.routeInfo[this.activeRoutePath].addGroup(target, group);
-      this.routeInfo[this.activeRoutePath][target].get(group).push(actionModel);
+      this.routeInfo[this.activeRoutePath].addActionToDropDownMenu(actionModel, group);
     }
   }
 }

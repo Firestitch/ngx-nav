@@ -7,7 +7,7 @@ export interface UrlInfoAction {
   className?: string;
   click?: Function;
   placement?: Placement;
-  menu?: boolean;
+  menu?: boolean | string;
   url?: string;
   image?: string;
   group?: string;

@@ -3,7 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule } from '@angular/material';
 
-import { FsScrollSaverComponent, FsNavTitleComponent, FsNavActionsComponent } from './components';
+import {
+  FsScrollSaverComponent,
+  FsNavTitleComponent,
+  FsNavActionsComponent,
+  FsSimpleActionsComponent,
+  FsDropDownActionsComponent
+} from './components';
 import { FsNavBackDirective } from './directives';
 
 
@@ -28,6 +34,8 @@ import { FsNavBackDirective } from './directives';
     FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionsComponent,
+    FsSimpleActionsComponent,
+    FsDropDownActionsComponent,
     FsNavBackDirective,
   ],
   providers: [
