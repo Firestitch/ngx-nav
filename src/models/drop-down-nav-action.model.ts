@@ -17,7 +17,7 @@ export class DropDownNavMenu extends Model {
   }
 
   public addAction(action, group) {
-    if (!this.groups.has('group')) {
+    if (!this.groups.has(group)) {
       this.groups.set(group, []);
     }
 
