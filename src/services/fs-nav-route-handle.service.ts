@@ -1,6 +1,6 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Router } from '@angular/router';
-import { NavAction, ActionType, Placement, RouteInfo } from '../models';
+import { NavAction, RouteInfo } from '../models';
 
 import { UrlInfoAction } from '../interfaces';
 
@@ -51,6 +51,7 @@ export class FsNavRouteHandleService {
     if (this.urlsStack[this.urlsStack.length - 1] !== url) {
       this.urlsStack.push(url);
     }
+
     this._lastOperationIsBack = false;
   }
 
@@ -101,6 +102,7 @@ export class FsNavRouteHandleService {
    */
   public setActivePath(route: ActivatedRouteSnapshot) {
     this._activeRoutePath = this.getFullRoutePath(route);
+    this._lastOperationIsBack = false;
   }
 
   /**
@@ -132,7 +134,6 @@ export class FsNavRouteHandleService {
 
   /**
    * Set root param from route data
-   * @param path
    * @param isRoot
    */
   public setIsRoot(isRoot) {
@@ -145,7 +146,7 @@ export class FsNavRouteHandleService {
    * @param group { string }
    */
   public setAction(action: UrlInfoAction, group = 'default') {
-    this.addActionToRouteInfo(action, action.group || group)
+    this.addActionToRouteInfo(action, action.group || group);
 
     this.onActionsUpdated.emit(true);
   }
