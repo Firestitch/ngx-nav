@@ -85,6 +85,7 @@ export class RouteInfo {
    * Clear actions
    */
   public reset() {
+    this.title = null;
     this.rightActions.clear();
     this.dropDownMenus.clear();
     this.leftActions.clear();

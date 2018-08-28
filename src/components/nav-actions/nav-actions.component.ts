@@ -18,6 +18,7 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
   @Input() public placement: string;
 
   @HostBinding('hidden') public isHidden = true;
+  @HostBinding('class.fs-nav-actions') public selfClass = true;
 
   public routeInfo: RouteInfo;
   public actions: Map<string, NavAction[]>;

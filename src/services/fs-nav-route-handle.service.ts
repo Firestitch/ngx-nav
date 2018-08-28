@@ -8,7 +8,7 @@ import { UrlInfoAction } from '../interfaces';
 @Injectable()
 export class FsNavRouteHandleService {
   public onActionsUpdated = new EventEmitter();
-  public onStackReset = new EventEmitter();
+  // public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
   public routeInfo: RouteInfo[] = [];
   public stopBackToUrls: any[] = [];
@@ -69,7 +69,40 @@ export class FsNavRouteHandleService {
     this.urlsStack.length = 0;
     this.routeInfo.length = 0;
     this._isBackNavigated = false;
-    this.onStackReset.next(true);
+    this.onActionsUpdated.next();
+    // this.onStackReset.next(true);
+  }
+
+  /**
+   * Reset all information about active route
+   */
+  public resetActiveRoute() {
+    this.routeInfo[this.activeRoutePath].reset();
+    this.onActionsUpdated.next();
+  }
+
+  /**
+   * Reset left actions for active route
+   */
+  public resetActiveRouteLeftActions() {
+    this.routeInfo[this.activeRoutePath].leftActions.clear();
+    this.onActionsUpdated.next();
+  }
+
+  /**
+   * Reset right actions for active route
+   */
+  public resetActiveRouteRightActions() {
+    this.routeInfo[this.activeRoutePath].rightActions.clear();
+    this.onActionsUpdated.next();
+  }
+
+  /**
+   * Reset drop down menus actions for active route
+   */
+  public resetActiveRouteDropDownActions() {
+    this.routeInfo[this.activeRoutePath].dropDownMenus.clear();
+    this.onActionsUpdated.next();
   }
 
   /**
