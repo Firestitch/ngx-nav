@@ -18,9 +18,9 @@ export class RouteInfo {
   public isRoot? = false;
 
   constructor() {
-    this.rightActions.set('default', []);
-    this.leftActions.set('default', []);
-    this.dropDownMenus.set('menu', new DropDownNavMenu());
+    this.setDefaultLeftActions();
+    this.setDefaultRightActions();
+    this.setDefaultDropDownMenu();
   }
 
   /**
@@ -82,12 +82,57 @@ export class RouteInfo {
   }
 
   /**
+   * Empty array with 'default' key
+   */
+  public setDefaultLeftActions() {
+    this.leftActions.set('default', []);
+  }
+
+  /**
+   * Empty array with 'default' key
+   */
+  public setDefaultRightActions() {
+    this.rightActions.set('default', []);
+  }
+
+  /**
+   * Clean DropDown model for default 'menu' key
+   */
+  public setDefaultDropDownMenu() {
+    this.dropDownMenus.set('menu', new DropDownNavMenu());
+  }
+
+  /**
    * Clear actions
    */
   public reset() {
     this.title = null;
+    this.resetLeftActions();
+    this.resetRightActions();
+    this.resetDropDownMenuActions();
+  }
+
+  /**
+   * Reset right actions to default
+   */
+  public resetRightActions() {
     this.rightActions.clear();
-    this.dropDownMenus.clear();
+    this.setDefaultRightActions();
+  }
+
+  /**
+   * Reset left actions to default
+   */
+  public resetLeftActions() {
     this.leftActions.clear();
+    this.setDefaultLeftActions();
+  }
+
+  /**
+   * Reset DropDown actions to default
+   */
+  public resetDropDownMenuActions() {
+    this.dropDownMenus.clear();
+    this.setDefaultDropDownMenu();
   }
 }

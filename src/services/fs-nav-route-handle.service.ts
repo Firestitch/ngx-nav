@@ -84,24 +84,24 @@ export class FsNavRouteHandleService {
   /**
    * Reset left actions for active route
    */
-  public resetActiveRouteLeftActions() {
-    this.routeInfo[this.activeRoutePath].leftActions.clear();
+  public resetLeftActions() {
+    this.routeInfo[this.activeRoutePath].resetLeftActions();
     this.onActionsUpdated.next();
   }
 
   /**
    * Reset right actions for active route
    */
-  public resetActiveRouteRightActions() {
-    this.routeInfo[this.activeRoutePath].rightActions.clear();
+  public resetRightActions() {
+    this.routeInfo[this.activeRoutePath].resetRightActions();
     this.onActionsUpdated.next();
   }
 
   /**
    * Reset drop down menus actions for active route
    */
-  public resetActiveRouteDropDownActions() {
-    this.routeInfo[this.activeRoutePath].dropDownMenus.clear();
+  public resetDropDownActions() {
+    this.routeInfo[this.activeRoutePath].resetDropDownMenuActions();
     this.onActionsUpdated.next();
   }
 
