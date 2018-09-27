@@ -14,10 +14,8 @@ export class StaticPageComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.stack.setTitle('Static Page');
-    // this.stack.setAction(() => {
-    //   console.log('Action "Static Page" was clicked');
-    // });
+    this.stack.setTitle('Static Page','Static Page Super Title','Static Page Subtile');
+
 
     this.stack.setActions([
       {

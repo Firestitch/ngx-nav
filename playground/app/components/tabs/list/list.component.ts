@@ -16,12 +16,12 @@ import { FsNavRouteHandleService } from '../../../../../src/services';
 })
 export class ListComponent implements OnInit, OnDestroy {
 
-  constructor(private stack: FsNavRouteHandleService) {
-
-  }
+  constructor(private stack: FsNavRouteHandleService) { }
 
   public ngOnInit() {
     this.stack.setTitle('List Page');
+    this.stack.setComponent('avatar', 'https://www.w3schools.com/howto/img_avatar.png');
+
     // this.stack.setAction(() => {
     //   console.log('Action "List Page" was clicked');
     // });

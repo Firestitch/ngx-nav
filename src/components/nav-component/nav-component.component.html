@@ -1,0 +1,2 @@
+<img [src]="activeRouteInfo[component]" *ngIf="activeRouteInfo[component] && type=='image'; else elseText">
+<ng-template #elseText>{{activeRouteInfo[component]}}</ng-template>

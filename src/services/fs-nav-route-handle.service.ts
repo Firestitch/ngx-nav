@@ -161,8 +161,14 @@ export class FsNavRouteHandleService {
    * Set title for current active page
    * @param title
    */
-  public setTitle(title) {
-    this.routeInfo[this.activeRoutePath].title = title
+  public setTitle(title: string, supertitle?: string, subtitle?: string) {
+    this.routeInfo[this.activeRoutePath].title = title;
+    this.routeInfo[this.activeRoutePath].subtitle = subtitle;
+    this.routeInfo[this.activeRoutePath].supertitle = supertitle;
+  }
+
+  public setComponent(name, value) {
+    this.routeInfo[this.activeRoutePath][name] = value;
   }
 
   /**

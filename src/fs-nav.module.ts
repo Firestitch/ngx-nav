@@ -8,8 +8,12 @@ import {
   FsNavTitleComponent,
   FsNavActionsComponent,
   FsSimpleActionsComponent,
-  FsDropDownActionsComponent
+  FsDropDownActionsComponent,
+  FsNavSubtitleComponent,
+  FsNavSupertitleComponent,
+  FsNavComponentComponent
 } from './components';
+
 import { FsNavBackDirective } from './directives';
 
 
@@ -25,7 +29,10 @@ import { FsNavBackDirective } from './directives';
   exports: [
     FsScrollSaverComponent,
     FsNavTitleComponent,
+    FsNavSubtitleComponent,
+    FsNavSupertitleComponent,   
     FsNavActionsComponent,
+    FsNavComponentComponent,
     FsNavBackDirective,
   ],
   entryComponents: [
@@ -37,12 +44,9 @@ import { FsNavBackDirective } from './directives';
     FsSimpleActionsComponent,
     FsDropDownActionsComponent,
     FsNavBackDirective,
-  ],
-  providers: [
-    // FsNavRouteHandleService,
-    // {
-    //   provide: RouteReuseStrategy, useClass: FsNavRouteReuseStrategy
-    // }
-  ],
+    FsNavSubtitleComponent,
+    FsNavSupertitleComponent,
+    FsNavComponentComponent
+  ]
 })
 export class FsNavModule {}

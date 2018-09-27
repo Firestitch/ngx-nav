@@ -6,16 +6,16 @@ import { FsNavRouteHandleService } from '../../services';
 
 
 @Component({
-  selector: '[fsNavTitle]',
+  selector: '[fsNavSupertitle]',
   templateUrl: '../nav-component/nav-component.component.html'
 })
-export class FsNavTitleComponent extends FsNavComponentComponent {
+export class FsNavSupertitleComponent extends FsNavComponentComponent {
 
   constructor ( protected stack: FsNavRouteHandleService,
                 protected router: Router,
                 protected elementRef: ElementRef,
                 protected renderer: Renderer2) {
     super(stack, router, elementRef, renderer);
-    this.component = 'title';
+    this.component = 'supertitle';
   }
 }

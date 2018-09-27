@@ -9,6 +9,8 @@ import { DropDownNavMenu } from './drop-down-nav-action.model';
 export class RouteInfo {
 
   public title?: string;
+  public subtitle?: string;
+  public supertitle?: string;
 
   public rightActions = new Map<string, NavAction[]>();
   public leftActions = new Map<string, NavAction[]>();
@@ -107,6 +109,8 @@ export class RouteInfo {
    */
   public reset() {
     this.title = null;
+    this.subtitle = null;
+    this.supertitle = null;
     this.resetLeftActions();
     this.resetRightActions();
     this.resetDropDownMenuActions();

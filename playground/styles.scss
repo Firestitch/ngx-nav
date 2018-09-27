@@ -1,0 +1,11 @@
+@import './../tools/assets/playground.scss';
+@import '../src/styles.scss';
+
+.fs-nav-avatar {
+    display: flex;
+    img {
+        height: 25px;
+        clip-path: circle(48% at center);
+        margin: 0 8px;
+    }
+}
