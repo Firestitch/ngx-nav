@@ -162,13 +162,32 @@ export class FsNavRouteHandleService {
    * @param title
    */
   public setTitle(title: string, supertitle?: string, subtitle?: string) {
-    this.routeInfo[this.activeRoutePath].title = title;
-    this.routeInfo[this.activeRoutePath].subtitle = subtitle;
-    this.routeInfo[this.activeRoutePath].supertitle = supertitle;
+    this.setComponent('title',title);
+    this.setComponent('supertitle',supertitle);
+    this.setComponent('subtitle',subtitle);
   }
 
   public setComponent(name, value) {
-    this.routeInfo[this.activeRoutePath][name] = value;
+
+    const routInfo = this.routeInfo[this.activeRoutePath];
+    
+    const values = routInfo.valueSubject.getValue();
+    values[name] = value;
+
+    routInfo.valueSubject.next(values); 
+  }
+
+  public hideComponent(name) {
+    const routInfo = this.routeInfo[this.activeRoutePath];
+    
+    const values = routInfo.hideSubject.getValue();
+    values[name] = true;
+
+    routInfo.hideSubject.next(values); 
+  }
+
+  public hideBack() {
+    this.hideComponent('back');
   }
 
   /**

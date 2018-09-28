@@ -4,13 +4,13 @@ import * as _isString from 'lodash/isString';
 import { NavAction } from './nav-action.model';
 import { Placement } from './index';
 import { DropDownNavMenu } from './drop-down-nav-action.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 export class RouteInfo {
 
-  public title?: string;
-  public subtitle?: string;
-  public supertitle?: string;
+  public valueSubject = new BehaviorSubject({});
+  public hideSubject = new BehaviorSubject({});
 
   public rightActions = new Map<string, NavAction[]>();
   public leftActions = new Map<string, NavAction[]>();
@@ -107,10 +107,9 @@ export class RouteInfo {
   /**
    * Clear actions
    */
-  public reset() {
-    this.title = null;
-    this.subtitle = null;
-    this.supertitle = null;
+  public reset() {    
+    this.valueSubject.next({});
+    this.hideSubject.next({});
     this.resetLeftActions();
     this.resetRightActions();
     this.resetDropDownMenuActions();

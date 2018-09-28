@@ -7,7 +7,8 @@ import { FsNavRouteHandleService } from '../../services';
 
 @Component({
   selector: '[fsNavTitle]',
-  templateUrl: '../nav-component/nav-component.component.html'
+  templateUrl: '../nav-component/nav-component.component.html',
+  styleUrls: ['../nav-component/nav-component.component.scss']
 })
 export class FsNavTitleComponent extends FsNavComponentComponent {
 

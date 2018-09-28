@@ -11,10 +11,9 @@ import {
   FsDropDownActionsComponent,
   FsNavSubtitleComponent,
   FsNavSupertitleComponent,
-  FsNavComponentComponent
+  FsNavComponentComponent,
+  FsNavBackComponent
 } from './components';
-
-import { FsNavBackDirective } from './directives';
 
 
 @NgModule({
@@ -33,7 +32,7 @@ import { FsNavBackDirective } from './directives';
     FsNavSupertitleComponent,   
     FsNavActionsComponent,
     FsNavComponentComponent,
-    FsNavBackDirective,
+    FsNavBackComponent
   ],
   entryComponents: [
   ],
@@ -43,7 +42,7 @@ import { FsNavBackDirective } from './directives';
     FsNavActionsComponent,
     FsSimpleActionsComponent,
     FsDropDownActionsComponent,
-    FsNavBackDirective,
+    FsNavBackComponent,
     FsNavSubtitleComponent,
     FsNavSupertitleComponent,
     FsNavComponentComponent
