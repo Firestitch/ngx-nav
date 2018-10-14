@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Nav } from '../../../../src/services';
+
 
 @Component({
   selector: 'tabs',
@@ -6,17 +8,20 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 })
 export class TabsComponent implements OnInit, OnDestroy{
 
+  constructor(private nav: Nav) {}
+
   public tabs = [
-    { path: '/tabs/data-inputs', label: 'Inputs Page' },
-    { path: '/tabs/list', label: 'List Page' },
-    { path: '/tabs/static-page', label: 'Static Page' }
+    { path: '/tabs/a', label: 'Tab A' },
+    { path: '/tabs/b', label: 'Tab B' },
+    { path: '/tabs/c', label: 'Tab C' },
+    { path: '/tabs/d', label: 'Tab D' }
   ];
 
   public ngOnInit() {
-    console.log('init tabs');
+    this.nav.setTitle('Tabs');
   }
 
   public ngOnDestroy() {
-    console.log('destroy tabs');
+
   }
 }

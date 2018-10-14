@@ -1,0 +1,7 @@
+<fs-list [config]="config" #table>
+  <fs-list-column title="Name">
+    <ng-template fs-list-cell let-index="index">
+        <button mat-raised-button color="primary" routerLink="/edit">Go to Edit</button>
+    </ng-template>
+  </fs-list-column>
+</fs-list>

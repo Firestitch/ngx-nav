@@ -1,34 +1,34 @@
 import { Alias, Model } from 'tsmodels';
-import { UrlInfoAction } from '../interfaces';
 
 export enum ActionType {
   basic = 'basic',
   raised = 'raised',
   icon = 'icon',
   fab = 'fab',
-  miniFab = 'mini-fab'
+  miniFab = 'mini-fab',
+  menu = 'menu'
 }
 
-export enum Placement {
+export enum ActionPlacement {
   left = 'left',
   right = 'right'
 }
 
 export class NavAction extends Model {
 
-  @Alias() public icon: string;
-  @Alias() public label: string;
-  @Alias() public placement: Placement;
-  @Alias() public menu: boolean;
-  @Alias() public click: Function;
-  @Alias() public className: string;
-  @Alias() public type: ActionType;
-  @Alias() public image: string;
-  @Alias() public url: string;
+  @Alias() public icon?: string = '';
+  @Alias() public label?: string;
+  @Alias() public placement?: ActionPlacement;
+  @Alias() public menu?: boolean;
+  @Alias() public click?: Function;
+  @Alias() public className?: string;
+  @Alias() public type?: ActionType = ActionType.basic;
+  @Alias() public image?: string;
+  @Alias() public url?: string;
+  @Alias() public children?: NavAction[] = [];
+  @Alias() public classArray?: String[];
 
-  public classArray: string[] = [];
-
-  constructor(config: UrlInfoAction = {}) {
+  constructor(config) {
     super();
 
     this._fromJSON(config);
@@ -38,7 +38,7 @@ export class NavAction extends Model {
     super._fromJSON(value);
 
     if (value.placement === void 0) {
-      this.placement = Placement.right;
+      this.placement = ActionPlacement.right;
     }
 
     if (value.menu === void 0) {

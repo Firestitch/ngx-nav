@@ -1,20 +1,23 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule } from '@angular/material';
+import {  MatButtonModule,
+          MatDividerModule,
+          MatIconModule,
+          MatMenuModule } from '@angular/material';
 
 import {
-  FsScrollSaverComponent,
   FsNavTitleComponent,
   FsNavActionsComponent,
-  FsSimpleActionsComponent,
-  FsDropDownActionsComponent,
+  FsSimpleActionComponent,
+  FsMenuActionComponent,
   FsNavSubtitleComponent,
   FsNavSupertitleComponent,
   FsNavComponentComponent,
   FsNavBackComponent
 } from './components';
 
+import { NavRouteHandler, Nav } from './services';
 
 @NgModule({
   imports: [
@@ -26,10 +29,9 @@ import {
     MatDividerModule,
   ],
   exports: [
-    FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavSubtitleComponent,
-    FsNavSupertitleComponent,   
+    FsNavSupertitleComponent,
     FsNavActionsComponent,
     FsNavComponentComponent,
     FsNavBackComponent
@@ -37,15 +39,30 @@ import {
   entryComponents: [
   ],
   declarations: [
-    FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionsComponent,
-    FsSimpleActionsComponent,
-    FsDropDownActionsComponent,
+    FsSimpleActionComponent,
+    FsMenuActionComponent,
     FsNavBackComponent,
     FsNavSubtitleComponent,
     FsNavSupertitleComponent,
     FsNavComponentComponent
-  ]
+  ],
+
 })
-export class FsNavModule {}
+export class FsNavModule {
+
+  constructor(navRouteHandler: NavRouteHandler) {
+    navRouteHandler.init();
+  }
+
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: FsNavModule,
+      providers: [
+        NavRouteHandler,
+        Nav
+      ]
+    };
+  }
+}

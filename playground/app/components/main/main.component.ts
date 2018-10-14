@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FsNavRouteHandleService } from '../../../../src';
+import { Nav } from '../../../../src';
 
 
 @Component({
@@ -7,12 +7,11 @@ import { FsNavRouteHandleService } from '../../../../src';
   templateUrl: 'main.component.html'
 })
 export class MainComponent implements OnInit, OnDestroy{
-  
+
   constructor(
-    public stack: FsNavRouteHandleService) {}
-  
+    public nav: Nav) {}
+
   public ngOnInit() {
-    this.stack.hideBack();
     console.log('init main');
   }
 

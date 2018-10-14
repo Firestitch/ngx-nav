@@ -1,9 +1,8 @@
 import { OnInit, Component, OnDestroy, Input, ElementRef, Renderer2, HostBinding } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { RouteInfo } from '../../models';
 
-import { FsNavRouteHandleService } from '../../services';
+import { Nav } from '../../services';
+import { NavRoute } from '../../classes';
 
 
 @Component({
@@ -17,14 +16,13 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
   @Input('type') type;
 
   @HostBinding('class.hide') public classHide = false;
-  
+
   public value = '';
-  public activeRouteInfo: RouteInfo;
   public routerSubscription;
   public valueSubscription;
   public hideSubscription;
 
-  constructor ( protected stack: FsNavRouteHandleService,
+  constructor ( protected stack: Nav,
                 protected router: Router,
                 protected elementRef: ElementRef,
                 protected renderer: Renderer2) {}
@@ -32,15 +30,11 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
   public ngOnInit() {
 
     this.renderer.addClass(this.elementRef.nativeElement, 'fs-nav-' + this.component);
-    this.subscribeRouteInfo(this.stack.getActiveRouteInfo());
 
-    this.routerSubscription = this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd)
-      )
-      .subscribe(() => {
-        this.subscribeRouteInfo(this.stack.getActiveRouteInfo());
-      });      
+    this.routerSubscription = this.stack.navRouteHandler.onRouteChange
+    .subscribe((navRoute: NavRoute) => {
+      this.subscribeNavRoute(navRoute);
+    });
   }
 
   public ngOnDestroy() {
@@ -61,20 +55,16 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
     }
   }
 
-  private subscribeRouteInfo(activeRouteInfo) {
-
-    if (!activeRouteInfo) {
-      return;
-    }
+  private subscribeNavRoute(navRoute: NavRoute) {
 
     this.unsubscribeSubjects();
 
-    this.hideSubscription = activeRouteInfo.hideSubject.subscribe(values => {
+    this.hideSubscription = navRoute.navBar.hideSubject.subscribe(values => {
       this.classHide = values[this.component];
     });
 
-    this.valueSubscription = activeRouteInfo.valueSubject.subscribe(values => {
+    this.valueSubscription = navRoute.navBar.valueSubject.subscribe(values => {
       this.value = values[this.component];
-    });     
+    });
   }
 }

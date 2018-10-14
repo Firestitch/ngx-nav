@@ -1,11 +1,8 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { filter } from 'rxjs/operators';
-
-import { FsNavRouteHandleService } from '../../services';
-import { NavAction, RouteInfo } from '../../models';
-import { DropDownNavMenu } from '../../models/drop-down-nav-action.model';
+import { Nav } from '../../services';
+import { NavRoute, NavBar } from '../../classes';
 
 
 @Component({
@@ -20,25 +17,16 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
   @HostBinding('hidden') public isHidden = true;
   @HostBinding('class.fs-nav-actions') public selfClass = true;
 
-  public routeInfo: RouteInfo;
-  public actions: Map<string, NavAction[]>;
-  public dropDownMenu: DropDownNavMenu = null;
-  // public menuActions: Map<string, NavAction[]>;
-
-  public simpleActions = false;
-  public groups = [];
+  public actions = [];
 
   private _routerSubscription;
   private _actionsSubscription;
 
   constructor(private _router: Router,
-              private _stack: FsNavRouteHandleService) {}
+              private nav: Nav) {}
 
   public ngOnInit() {
     this.subscriptions();
-
-    // Predefine bool constants for show/hide target blocks in template
-    this.simpleActions = this.placement === 'left' || this.placement === 'right';
   }
 
   public ngOnDestroy() {
@@ -47,49 +35,20 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
   }
 
   public subscriptions() {
-    // Read actions from active route info
-    this._routerSubscription = this._router.events
-      .pipe(
-        filter(e => e instanceof NavigationEnd)
-      )
-      .subscribe(() => {
-        this.routeInfo = this._stack.getActiveRouteInfo();
-        this.updateActions();
-      });
 
     // React when actions was added/deleted and show/hide self component
-    this._actionsSubscription = this._stack.onActionsUpdated
-      .subscribe(() => {
-        this.updateActions();
+    this._routerSubscription = this.nav.navRouteHandler.onRouteChange
+      .subscribe((navRoute: NavRoute) => {
+        this.updateActions(navRoute.navBar);
+        this._actionsSubscription = navRoute.navBar.onActionsUpdated
+          .subscribe((navBar) => {
+            this.updateActions(navBar);
+          });
       });
   }
 
-  private updateActions() {
-    this.groups = null;
-    this.actions = null;
-    this.dropDownMenu = null;
-
-    switch (this.placement) {
-      case 'left': {
-        this.groups = Array.from(this.routeInfo.leftActions.keys());
-        this.actions = this.routeInfo.leftActions;
-      } break;
-
-      case 'right': {
-        this.groups = Array.from(this.routeInfo.rightActions.keys());
-        this.actions = this.routeInfo.rightActions;
-      } break;
-
-      default: {
-        if (this.routeInfo.dropDownMenus.has(this.placement)) {
-          this.dropDownMenu = this.routeInfo.dropDownMenus.get(this.placement);
-
-          this.groups = Array.from(this.dropDownMenu.groups.keys());
-          this.actions = this.dropDownMenu.groups;
-        }
-      }
-    }
-
-    this.isHidden = !this.groups || this.groups.length === 0;
+  private updateActions(navBar: NavBar) {
+    this.actions = navBar.actions[this.placement];
+    this.isHidden = !this.actions || !this.actions;
   }
 }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { FsNavComponentComponent } from '../nav-component';
-import { FsNavRouteHandleService } from '../../services';
+import { Nav } from '../../services';
 
 
 @Component({
@@ -11,7 +11,7 @@ import { FsNavRouteHandleService } from '../../services';
 })
 export class FsNavSubtitleComponent extends FsNavComponentComponent {
 
-  constructor ( protected stack: FsNavRouteHandleService,
+  constructor ( protected stack: Nav,
                 protected router: Router,
                 protected elementRef: ElementRef,
                 protected renderer: Renderer2) {

@@ -1,16 +1,13 @@
-<ng-container
-  *ngIf="simpleActions; else menuActions">
-  <fs-nav-simple-actions
-    *ngIf="groups && groups.length"
-    [groups]="groups"
-    [actions]="actions"></fs-nav-simple-actions>
-</ng-container>
+<div *ngFor="let action of actions">
 
-<ng-template #menuActions>
-  <fs-nav-drop-down-actions
-    *ngIf="groups && groups.length"
-    [dropDownMenu]="dropDownMenu"
-    [groups]="groups"
-    [actions]="actions">
-  </fs-nav-drop-down-actions>
-</ng-template>
+  <fs-menu-action
+    *ngIf="action.type==='menu';else elseSimpleAction"
+    [action]="action">
+  </fs-menu-action>
+
+  <ng-template #elseSimpleAction>
+    <fs-simple-action [action]="action"></fs-simple-action>
+  </ng-template>
+
+</div>
+

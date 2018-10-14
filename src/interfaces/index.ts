@@ -1,1 +1,1 @@
-export * from './nav-route-handle.interface';
+export * from './nav-action.interface';
