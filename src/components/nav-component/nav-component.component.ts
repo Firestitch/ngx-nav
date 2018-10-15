@@ -18,11 +18,10 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
   @HostBinding('class.hide') public classHide = false;
 
   public value = '';
-  public routerSubscription;
   public valueSubscription;
   public hideSubscription;
 
-  constructor ( protected stack: Nav,
+  constructor ( protected nav: Nav,
                 protected router: Router,
                 protected elementRef: ElementRef,
                 protected renderer: Renderer2) {}
@@ -31,21 +30,19 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
 
     this.renderer.addClass(this.elementRef.nativeElement, 'fs-nav-' + this.component);
 
-    this.routerSubscription = this.stack.navRouteHandler.onRouteChange
-    .subscribe((navRoute: NavRoute) => {
-      this.subscribeNavRoute(navRoute);
+    this.valueSubscription = this.nav.navBar.componentValue
+    .subscribe((values) => {
+      debugger;
+      this.value = values[this.component];
+    });
+
+    this.hideSubscription = this.nav.navBar.componentHide
+    .subscribe((values) => {
+      this.classHide = values[this.component];
     });
   }
 
   public ngOnDestroy() {
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
-
-    this.unsubscribeSubjects();
-  }
-
-  private unsubscribeSubjects() {
     if (this.valueSubscription) {
       this.valueSubscription.unsubscribe();
     }
@@ -55,16 +52,4 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
     }
   }
 
-  private subscribeNavRoute(navRoute: NavRoute) {
-
-    this.unsubscribeSubjects();
-
-    this.hideSubscription = navRoute.navBar.hideSubject.subscribe(values => {
-      this.classHide = values[this.component];
-    });
-
-    this.valueSubscription = navRoute.navBar.valueSubject.subscribe(values => {
-      this.value = values[this.component];
-    });
-  }
 }

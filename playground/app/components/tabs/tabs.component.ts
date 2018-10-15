@@ -1,14 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Nav } from '../../../../src/services';
+import { Router, NavigationEnd } from '@angular/router';
 
 
 @Component({
   selector: 'tabs',
   templateUrl: 'tabs.component.html'
 })
-export class TabsComponent implements OnInit, OnDestroy{
+export class TabsComponent implements OnDestroy{
 
-  constructor(private nav: Nav) {}
+  public routerSubscription;
+
+  constructor(private nav: Nav,
+              private router: Router) {
+
+    this.routerSubscription = this.router.events
+    .filter((event) => event instanceof NavigationEnd)
+    .subscribe(() => {
+      this.nav.setTitle('Tabs');
+    });
+  }
 
   public tabs = [
     { path: '/tabs/a', label: 'Tab A' },
@@ -17,11 +28,7 @@ export class TabsComponent implements OnInit, OnDestroy{
     { path: '/tabs/d', label: 'Tab D' }
   ];
 
-  public ngOnInit() {
-    this.nav.setTitle('Tabs');
-  }
-
   public ngOnDestroy() {
-
+    this.routerSubscription.unsubscribe();
   }
 }

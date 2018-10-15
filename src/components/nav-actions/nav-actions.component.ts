@@ -37,18 +37,10 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
   public subscriptions() {
 
     // React when actions was added/deleted and show/hide self component
-    this._routerSubscription = this.nav.navRouteHandler.onRouteChange
-      .subscribe((navRoute: NavRoute) => {
-        this.updateActions(navRoute.navBar);
-        this._actionsSubscription = navRoute.navBar.onActionsUpdated
-          .subscribe((navBar) => {
-            this.updateActions(navBar);
-          });
+    this._routerSubscription = this.nav.navBar.actions
+      .subscribe(actions => {
+        this.actions = actions[this.placement];
+        this.isHidden = !this.actions || !this.actions;
       });
-  }
-
-  private updateActions(navBar: NavBar) {
-    this.actions = navBar.actions[this.placement];
-    this.isHidden = !this.actions || !this.actions;
   }
 }

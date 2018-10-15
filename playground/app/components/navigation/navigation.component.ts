@@ -18,8 +18,8 @@ export class NavigationComponent {
 
       this.nav.navRouteHandler.onRouteChange
         .subscribe(() => {
-          //this.navRoutes = clone(this.nav.navRouteHandler.navRoutes).reverse();
-          this.navRoutes = this.nav.navRouteHandler.navRoutes;
+          this.navRoutes = clone(this.nav.navRouteHandler.navRoutes).reverse();
+          //this.navRoutes = this.nav.navRouteHandler.navRoutes;
         });
   }
 }

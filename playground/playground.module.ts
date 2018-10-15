@@ -35,13 +35,13 @@ import {
 } from '../src';
 
 const appRoutes: Routes = [
-  { path: 'menu/a', component: MenuAComponent, data: { fsNavRoot: true } },
-  { path: 'menu/b', component: MenuBComponent, data: { fsNavRoot: true } },
-  { path: 'menu/c', component: MenuCComponent, data: { fsNavRoot: false } },
-  { path: 'menu/d', component: MenuDComponent, data: { fsNavRoot: true } },
+  { path: 'menu/a', component: MenuAComponent, data: { FsNav: { root: true } } },
+  { path: 'menu/b', component: MenuBComponent, data: { FsNav: { root: true } } },
+  { path: 'menu/c', component: MenuCComponent, data: { FsNav: { root: false } } },
+  { path: 'menu/d', component: MenuDComponent, data: { FsNav: { root: true } } },
   { path: 'list', component: ListComponent },
   { path: 'edit', component: EditComponent, data: { }   },
-  { path: 'tabs', component: TabsComponent, data: { fsNavLastChild: true }, children:
+  { path: 'tabs', component: TabsComponent, data: { FsNav: { lastChild: true }}, children:
     [
       { path: '', redirectTo: 'a', pathMatch: 'full'},
       { path: 'a', component: TabAComponent },
@@ -52,12 +52,12 @@ const appRoutes: Routes = [
   },
   { path: 'workflow', children:
     [
-      { path: '1', component: Workflow1Component, data: { fsNavIgnore: true } },
-      { path: '2', component: Workflow2Component, data: { fsNavIgnore: true } },
-      { path: '3', component: Workflow3Component, data: { fsNavIgnore: true } },
+      { path: '1', component: Workflow1Component, data: { FsNav: { ignore: true } } },
+      { path: '2', component: Workflow2Component, data: { FsNav: { ignore: true } } },
+      { path: '3', component: Workflow3Component, data: { FsNav: { ignore: true } } },
     ]
   },
-  { path: '', pathMatch: 'full', component: RootComponent, data: { fsNavRoot: true } },
+  { path: '', pathMatch: 'full', component: RootComponent, data: { FsNav: { root: true } } },
 ];
 
 @NgModule({

@@ -14,10 +14,10 @@
 
     <div>
       <mat-list class="page-stack">
-        <h3 mat-header>Route Stack</h3>
-        <ng-container *ngFor="let navRoute of this.navRoutes; let index = index">
+        <h3 mat-header>Route Stack (Recent to Older)</h3>
+        <ng-container *ngFor="let navRoute of navRoutes; let index = index">
           <mat-list-item>
-            <span class="index">{{index + 1}}</span>
+            <span class="index">{{navRoutes.length - 1 - index}}</span>
             <a [routerLink]="navRoute.url">{{navRoute.url}}</a> <span *ngIf="navRoute.getData('fsNavIgnore')">(Ignore)</span>
           </mat-list-item>
         </ng-container>

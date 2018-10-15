@@ -53,6 +53,7 @@ import { NavRouteHandler, Nav } from './services';
 export class FsNavModule {
 
   constructor(navRouteHandler: NavRouteHandler) {
+    // TODO: check for multiple constructor calls
     navRouteHandler.init();
   }
 

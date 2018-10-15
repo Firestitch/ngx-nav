@@ -9,28 +9,11 @@ import { INavAction } from './../interfaces';
 
 export class NavBar {
 
-  public valueSubject = new BehaviorSubject({});
-  public hideSubject = new BehaviorSubject({});
-  public onActionsUpdated = new EventEmitter();
+  public componentValue = new BehaviorSubject({});
+  public componentHide = new BehaviorSubject({});
+  public actions = new BehaviorSubject([]);
 
-  public actions = {};
-
-  constructor() {
-
-  }
-
-
-  /**
-   * Add action to left/right actions
-   * @param action { NavAction }
-   * @param groupName { string }
-   */
-  public addAction(action: NavAction) {
-    if(!this.actions[action.placement]) {
-      this.actions[action.placement] = [];
-    }
-    this.actions[action.placement].push(action);
-  }
+  constructor() {}
 
   /**
    * Set action (function) for current active page
@@ -38,29 +21,54 @@ export class NavBar {
    * @param group : { string }
    */
   public setActions(actions: INavAction[]) {
-    if (actions) {
-      actions.forEach((action: INavAction) => {
-        this.addAction(new NavAction(action));
-      });
-    }
 
-    this.onActionsUpdated.emit(this);
+    const items = this.actions.getValue();
+
+    actions.forEach((iaction: INavAction) => {
+
+      const action = new NavAction(iaction);
+
+      if(!items[action.placement]) {
+        items[action.placement] = [];
+      }
+
+      items[action.placement].push(action);
+    });
+
+    this.actions.next(items);
   }
 
   /**
    * Empty array with 'default' key
    */
   public clearActions() {
-    this.actions = {};
-    this.onActionsUpdated.emit(this);
+    this.actions.next([]);
   }
+
+  public setComponentValues(values) {
+    debugger;
+    this.componentValue.next(values);
+  }
+
+  public setComponentValue(name, value) {
+    const values = this.componentValue.getValue();
+    values[name] = value;
+    this.setComponentValues(values);
+  }
+
+  public hideComponent(name) {
+    const values = this.componentHide.getValue();
+    values[name] = true;
+    this.componentHide.next(values);
+  }
+
 
   /**
    * Clear actions
    */
   public clear() {
-    this.valueSubject.next({});
-    this.hideSubject.next({});
+    this.componentValue.next({});
+    this.componentHide.next({});
     this.clearActions();
   }
 }

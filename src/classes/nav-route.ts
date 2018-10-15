@@ -1,6 +1,5 @@
 import * as _isBoolean from 'lodash/isBoolean';
 import * as _isString from 'lodash/isString';
-import { NavBar } from '.';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
 
@@ -8,12 +7,10 @@ export class NavRoute {
 
   public route: ActivatedRouteSnapshot;
   public url;
-  public navBar: NavBar;
   public ignore = false;
 
   constructor(route) {
     this.route = route;
-    this.navBar = new NavBar();
     this.url = this.getFullRoutePath(route);
   }
 
