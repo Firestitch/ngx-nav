@@ -52,9 +52,9 @@ const appRoutes: Routes = [
   },
   { path: 'workflow', children:
     [
-      { path: '1', component: Workflow1Component, data: { FsNav: { ignore: true } } },
-      { path: '2', component: Workflow2Component, data: { FsNav: { ignore: true } } },
-      { path: '3', component: Workflow3Component, data: { FsNav: { ignore: true } } },
+      { path: '1', component: Workflow1Component, data: { FsNav: { history: false } } },
+      { path: '2', component: Workflow2Component, data: { FsNav: { history: false } } },
+      { path: '3', component: Workflow3Component, data: { FsNav: { history: false } } },
     ]
   },
   { path: '', pathMatch: 'full', component: RootComponent, data: { FsNav: { root: true } } },

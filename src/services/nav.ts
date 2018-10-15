@@ -9,6 +9,7 @@ export class Nav {
 
   public navRouteHandler: NavRouteHandler;
   public navBar: NavBar;
+  public onBacks: Array<any> = [];
 
   /**
    * Set title for current active page
@@ -29,8 +30,8 @@ export class Nav {
     this.navBar.setComponentValues(values);
   }
 
-  public setSupertitle(value) {
-    this.navBar.setComponentValue('supertitle', value);
+  public setBackPath(path) {
+    this.navBar.setBackPath(path);
   }
 
   public setSubtitle(value) {
@@ -43,6 +44,10 @@ export class Nav {
 
   public hideBack() {
     this.hideComponent('back');
+  }
+
+  public onBack(func) {
+    this.onBacks.push(func);
   }
 
   /**

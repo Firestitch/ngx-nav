@@ -12,6 +12,7 @@ export class NavBar {
   public componentValue = new BehaviorSubject({});
   public componentHide = new BehaviorSubject({});
   public actions = new BehaviorSubject([]);
+  public backPath = '';
 
   constructor() {}
 
@@ -46,7 +47,6 @@ export class NavBar {
   }
 
   public setComponentValues(values) {
-    debugger;
     this.componentValue.next(values);
   }
 
@@ -70,5 +70,10 @@ export class NavBar {
     this.componentValue.next({});
     this.componentHide.next({});
     this.clearActions();
+    this.backPath = '';
+  }
+
+  public setBackPath(path) {
+    this.backPath = path;
   }
 }

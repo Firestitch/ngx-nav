@@ -41,7 +41,7 @@ export class NavRouteHandler {
     this.router.events
     .filter((event) => event instanceof NavigationStart)
     .subscribe(item => {
-
+      this.nav.onBacks = [];
     });
 
     this.router.events

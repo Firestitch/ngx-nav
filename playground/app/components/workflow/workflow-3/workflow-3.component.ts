@@ -10,5 +10,9 @@ export class Workflow3Component implements OnInit {
 
   public ngOnInit() {
     this.nav.setTitle('Workflow 3');
+    this.nav.onBack((data, observer) => {
+      // IDEA: Do something to bypass the history: false for the
+      observer.next(data);
+    });
   }
 }

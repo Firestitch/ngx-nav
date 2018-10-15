@@ -32,7 +32,6 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
 
     this.valueSubscription = this.nav.navBar.componentValue
     .subscribe((values) => {
-      debugger;
       this.value = values[this.component];
     });
 
