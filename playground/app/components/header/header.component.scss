@@ -19,6 +19,13 @@
   padding-left: 20px;
 }
 
-.nav-top .save {
+.back {
+  display: flex;
+}
 
+
+.fs-nav-actions {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
 }

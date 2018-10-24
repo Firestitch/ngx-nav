@@ -1,25 +1,31 @@
-<div fxLayout fxLayout="row">
-  <div fxFlex>
-    <header></header>
-    <div class="container">
+
+<header></header>
+<div>
+  <div fxFlex fxLayout="row" fxLayoutGap="10px">
+    <div class="sidenav" fxLayout="column">
+      <button mat-raised-button color="primary" routerLink="/menu/a">Go to Menu A</button>
+      <button mat-raised-button color="primary" routerLink="/menu/b">Go to Menu B</button>
+      <button mat-raised-button color="primary" routerLink="/menu/c">Go to Menu C</button>
+      <button mat-raised-button color="primary" routerLink="/menu/d">Go to Menu D</button>
+    </div>
+    <div class="container" fxFlex>
       <router-outlet></router-outlet>
     </div>
 
-    <div class="nav-bottom" fxLayout="row" fxLayoutAlign="start center">
-      <a routerLink="/"><mat-icon>home</mat-icon></a>
-      <span fxFlex></span>
-      <a routerLink="/messages"><mat-icon>chat_bubble</mat-icon></a>
+    <div>
+      <mat-list class="page-stack">
+        <h3 mat-header>Route Stack (Recent to Oldest)</h3>
+        <ng-container *ngFor="let navRoute of navRoutes; let index = index">
+          <mat-list-item>
+            <span class="index">{{navRoutes.length - 1 - index}}</span>
+            <a [routerLink]="navRoute.url">{{navRoute.url}}</a> <span *ngIf="navRoute.getData('fsNavIgnore')">(Ignore)</span>
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
     </div>
+
   </div>
-  <div>
-    <mat-list class="page-stack">
-      <h3 mat-subheader>Current Page Stack</h3>
-      <ng-container *ngFor="let url of stack.urlsStack">
-        <mat-list-item>
-          <mat-icon mat-list-icon>link</mat-icon>
-          <a [routerLink]="url">{{url}}</a>
-        </mat-list-item>
-      </ng-container>
-    </mat-list>
-  </div>
+</div>
+<div class="nav-bottom" fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign="space-between">
+  <button mat-raised-button color="primary" routerLink="/">Go to Root</button>
 </div>

@@ -7,35 +7,57 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FsExampleModule } from '@firestitch/example';
+import { FsListModule } from '@firestitch/list';
+import { FsScrollModule } from '@firestitch/scroll';
 
 import { AppMaterialModule } from './app/material.module';
 import { MainComponent } from './app/components/main/main.component';
-import { TabsComponent } from './app/components/tabs/tabs.component';
-import { ListComponent } from './app/components/tabs/list/list.component';
-import { InputsDataComponent } from './app/components/tabs/inputs-data/inputs-data.component';
-import { MessagesComponent } from './app/components/messages/messages.component';
-import { StaticPageComponent } from './app/components/tabs/static-page/static-page.component';
+import {  TabAComponent,
+  TabBComponent,
+  TabCComponent,
+  TabDComponent,
+  TabsComponent,
+  MenuAComponent,
+  MenuBComponent,
+  MenuCComponent,
+  MenuDComponent,
+  ListComponent,
+  EditComponent,
+  Workflow1Component,
+  Workflow2Component,
+  Workflow3Component,
+  RootComponent} from './app/components';
 import { HeaderComponent } from './app/components/header/header.component';
 import { NavigationComponent } from './app/components/navigation/navigation.component';
-import { UsersComponent } from './app/components/users/users.component';
-import { AccountsComponent } from './app/components/accounts/accounts.component';
 
 import {
-  FsNavModule,
-  FsNavRouteHandleService
+  FsNavModule, FsNavRouteHandleService
 } from '../src';
 
 const appRoutes: Routes = [
-  { path: '', component: MainComponent, data: { fsNavRoot: true } },
-  { path: 'messages', component: MessagesComponent, data: { fsNavRoot: true } },
-  { path: 'accounts', component: AccountsComponent },
-  { path: 'users', component: UsersComponent },
-  { path: 'tabs', component: TabsComponent, children: [
-    { path: '', redirectTo: '/tabs/list', pathMatch: 'full'},
-    { path: 'list', component: ListComponent },
-    { path: 'static-page', component: StaticPageComponent },
-    { path: 'data-inputs', component: InputsDataComponent },
-  ] },
+  { path: 'menu/a', component: MenuAComponent, data: { FsNav: { root: true } } },
+  { path: 'menu/b', component: MenuBComponent, data: { FsNav: { root: true } } },
+  { path: 'menu/c', component: MenuCComponent, data: { FsNav: { root: false } } },
+  { path: 'menu/d', component: MenuDComponent, data: { FsNav: { root: true } } },
+  { path: 'list', component: ListComponent },
+  { path: 'edit', component: EditComponent, data: { }   },
+  { path: 'tabs', component: TabsComponent, data: { FsNav: { lastChild: true }}, children:
+      [
+        { path: '', redirectTo: 'a', pathMatch: 'full'},
+        { path: 'a', component: TabAComponent },
+        { path: 'b', component: TabBComponent },
+        { path: 'c', component: TabCComponent },
+        { path: 'd', component: TabDComponent },
+      ]
+  },
+  { path: 'workflow', children:
+      [
+        { path: '1', component: Workflow1Component, data: { FsNav: { history: false } } },
+        { path: '2', component: Workflow2Component, data: { FsNav: { history: false } } },
+        { path: '3', component: Workflow3Component, data: { FsNav: { history: false } } },
+      ]
+  },
+  { path: '', pathMatch: 'full', component: RootComponent, data: { FsNav: { root: true } } },
 ];
 
 @NgModule({
@@ -43,6 +65,8 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FsNavModule,
+    FsListModule.forRoot(),
+    FsScrollModule.forRoot(),
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,
@@ -55,18 +79,26 @@ const appRoutes: Routes = [
     AppComponent,
     MainComponent,
     TabsComponent,
-    ListComponent,
-    MessagesComponent,
-    InputsDataComponent,
-    StaticPageComponent,
+    TabAComponent,
+    TabBComponent,
+    TabCComponent,
+    TabDComponent,
+    MenuAComponent,
+    MenuBComponent,
+    MenuCComponent,
+    MenuDComponent,
     HeaderComponent,
     NavigationComponent,
-    AccountsComponent,
-    UsersComponent
+    ListComponent,
+    EditComponent,
+    Workflow1Component,
+    Workflow2Component,
+    Workflow3Component,
+    RootComponent
   ],
   providers: [
     FsNavRouteHandleService
-  ],
+  ]
 })
 export class PlaygroundModule {
 }

@@ -18,3 +18,22 @@
 ::ng-deep .full-width {
   display: block !important;
 }
+
+.sidenav {
+  padding: 20px 0;
+  button {
+    margin: 0 10px 10px 10px;
+  }
+}
+
+.index {
+  background: #2196F3;
+  color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  min-width: 18px;
+  height: 18px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 19px;
+}
