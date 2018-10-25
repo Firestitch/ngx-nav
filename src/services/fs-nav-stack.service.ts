@@ -1,12 +1,18 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, DetachedRouteHandle, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  DetachedRouteHandle,
+  NavigationEnd,
+  Router
+} from '@angular/router';
 import { NavAction, RouteInfo } from '../models';
-
 import { UrlInfoAction } from '../interfaces';
 
 
 @Injectable()
-export class FsNavRouteHandleService {
+export class FsNavStackService {
+
   public onActionsUpdated = new EventEmitter();
   // public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
@@ -17,9 +23,13 @@ export class FsNavRouteHandleService {
   private _isBackNavigated = false;
   private _lastOperationIsBack = false;
   private _handlers: {[key: string]: DetachedRouteHandle} = {};
-  private _router: Router;
 
-  constructor() { }
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    private _router: Router
+  ) {
+    this.subscribeToRouteChange();
+  }
 
   get activeRoutePath() {
     return this._activeRoutePath;
@@ -29,16 +39,16 @@ export class FsNavRouteHandleService {
     return this._lastOperationIsBack;
   }
 
-  /**
-   * Setter for router. We can't do @Inject because it will create recursive inject
-   * @param {Router} value
-   */
-  set router(value: Router) {
-    this._router = value;
-  }
-
-  get router() {
-    return this._router;
+  public subscribeToRouteChange() {
+    this._router.events
+      .filter((event) => event instanceof NavigationEnd)
+      .map(() => this._activatedRoute)
+      .map((route) => {
+        while (route.firstChild) route = route.firstChild;
+        return route;
+      })
+      .filter((route) => route.outlet === 'primary')
+      .subscribe(this.setupActivatedRoute.bind(this));
   }
 
   public setActiveUrlAsStop() {
@@ -297,25 +307,6 @@ export class FsNavRouteHandleService {
     }
   }
 
-  // private actionExists(targetAction: UrlInfoAction) {
-  //   const actions = Array.from(this.routeInfo[this.activeRoutePath].actions.entries());
-  //   const menuActions = Array.from(this.routeInfo[this.activeRoutePath].menuActions.entries());
-  //   const leftActions = Array.from(this.routeInfo[this.activeRoutePath].leftActions.entries());
-  //
-  //   return this.routeInfo[this.activeRoutePath] &&
-  //     (
-  //       actions.some(action => this.compareActions(action , targetAction)) ||
-  //       menuActions.some(action => this.compareActions(action , targetAction)) ||
-  //       leftActions.some(action => this.compareActions(action , targetAction))
-  //     );
-  // }
-
-  // private compareActions(action, targetAction) {
-  //   return action.label === targetAction.label &&
-  //     (action.type === targetAction.type || (action.type === ActionType.basic && !targetAction.type)) &&
-  //     action.icon === targetAction.icon;
-  // }
-
   private addActionToRouteInfo(action: UrlInfoAction, group: any) {
     const actionModel = new NavAction(action);
 
@@ -324,5 +315,16 @@ export class FsNavRouteHandleService {
     } else {
       this.routeInfo[this.activeRoutePath].addActionToDropDownMenu(actionModel, group);
     }
+  }
+
+  private setupActivatedRoute(event) {
+    console.log('event');
+    if (!this.lastOperationIsBack) {
+      this.addUrlToStack(this.activeRoutePath);
+    }
+    this.setActivePath(event.snapshot);
+    this.createActiveRouteInfo();
+    const isRoot = event && event.data && (event.data as any).fsNavRoot;
+    this.setIsRoot(isRoot);
   }
 }

@@ -1,3 +1,4 @@
+/*
 import { Inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -63,3 +64,4 @@ export class FsNavRouteReuseStrategy implements RouteReuseStrategy {
   }
 
 }
+*/

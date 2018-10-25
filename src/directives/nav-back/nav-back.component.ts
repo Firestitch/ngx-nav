@@ -1,6 +1,6 @@
 import { Directive, HostBinding, HostListener } from '@angular/core';
 
-import { FsNavRouteHandleService } from '../../services';
+import { FsNavStackService } from '../../services';
 
 
 @Directive({
@@ -11,7 +11,7 @@ export class FsNavBackDirective {
   @HostBinding('class.fs-nav-back') public selfClass = true;
 
   constructor(
-    private _stack: FsNavRouteHandleService,
+    private _stack: FsNavStackService,
   ) {}
 
 

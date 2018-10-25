@@ -2,7 +2,7 @@ import { OnInit, Component, OnDestroy, HostBinding } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-import { FsNavRouteHandleService } from '../../services';
+import { FsNavStackService } from '../../services';
 
 
 @Component({
@@ -15,7 +15,7 @@ export class FsNavTitleComponent implements OnInit, OnDestroy {
   public activeRouteInfo;
   public routerChangesSubscription;
 
-  constructor(public stack: FsNavRouteHandleService, public router: Router) {
+  constructor(public stack: FsNavStackService, public router: Router) {
   }
 
   public ngOnInit() {

@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule } from '@angular/material';
 
 import {
-  FsScrollSaverComponent,
   FsNavTitleComponent,
   FsNavActionsComponent,
   FsSimpleActionsComponent,
   FsDropDownActionsComponent
 } from './components';
 import { FsNavBackDirective } from './directives';
+import { FsNavStackService } from './services';
 
 
 @NgModule({
@@ -23,7 +23,6 @@ import { FsNavBackDirective } from './directives';
     MatDividerModule,
   ],
   exports: [
-    FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionsComponent,
     FsNavBackDirective,
@@ -31,18 +30,20 @@ import { FsNavBackDirective } from './directives';
   entryComponents: [
   ],
   declarations: [
-    FsScrollSaverComponent,
     FsNavTitleComponent,
     FsNavActionsComponent,
     FsSimpleActionsComponent,
     FsDropDownActionsComponent,
     FsNavBackDirective,
   ],
-  providers: [
-    // FsNavRouteHandleService,
-    // {
-    //   provide: RouteReuseStrategy, useClass: FsNavRouteReuseStrategy
-    // }
-  ],
 })
-export class FsNavModule {}
+export class FsNavModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: FsNavModule,
+      providers: [
+        FsNavStackService,
+      ]
+    };
+  }
+}

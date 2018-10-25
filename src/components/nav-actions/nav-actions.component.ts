@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 
 import { filter } from 'rxjs/operators';
 
-import { FsNavRouteHandleService } from '../../services';
+import { FsNavStackService } from '../../services';
 import { NavAction, RouteInfo } from '../../models';
 import { DropDownNavMenu } from '../../models/drop-down-nav-action.model';
 
@@ -32,7 +32,7 @@ export class FsNavActionsComponent implements OnInit, OnDestroy {
   private _actionsSubscription;
 
   constructor(private _router: Router,
-              private _stack: FsNavRouteHandleService) {}
+              private _stack: FsNavStackService) {}
 
   public ngOnInit() {
     this.subscriptions();

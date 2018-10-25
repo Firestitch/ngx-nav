@@ -30,18 +30,16 @@ import {  TabAComponent,
 import { HeaderComponent } from './app/components/header/header.component';
 import { NavigationComponent } from './app/components/navigation/navigation.component';
 
-import {
-  FsNavModule, FsNavRouteHandleService
-} from '../src';
+import { FsNavModule, } from '../src';
 
 const appRoutes: Routes = [
-  { path: 'menu/a', component: MenuAComponent, data: { FsNav: { root: true } } },
-  { path: 'menu/b', component: MenuBComponent, data: { FsNav: { root: true } } },
-  { path: 'menu/c', component: MenuCComponent, data: { FsNav: { root: false } } },
-  { path: 'menu/d', component: MenuDComponent, data: { FsNav: { root: true } } },
+  { path: 'menu/a', component: MenuAComponent, data: { fsNav: { root: true } } },
+  { path: 'menu/b', component: MenuBComponent, data: { fsNav: { root: true } } },
+  { path: 'menu/c', component: MenuCComponent, data: { fsNav: { root: false } } },
+  { path: 'menu/d', component: MenuDComponent, data: { fsNav: { root: true } } },
   { path: 'list', component: ListComponent },
   { path: 'edit', component: EditComponent, data: { }   },
-  { path: 'tabs', component: TabsComponent, data: { FsNav: { lastChild: true }}, children:
+  { path: 'tabs', component: TabsComponent, data: { fsNav: { lastChild: true }}, children:
       [
         { path: '', redirectTo: 'a', pathMatch: 'full'},
         { path: 'a', component: TabAComponent },
@@ -52,19 +50,19 @@ const appRoutes: Routes = [
   },
   { path: 'workflow', children:
       [
-        { path: '1', component: Workflow1Component, data: { FsNav: { history: false } } },
-        { path: '2', component: Workflow2Component, data: { FsNav: { history: false } } },
-        { path: '3', component: Workflow3Component, data: { FsNav: { history: false } } },
+        { path: '1', component: Workflow1Component, data: { fsNav: { history: false } } },
+        { path: '2', component: Workflow2Component, data: { fsNav: { history: false } } },
+        { path: '3', component: Workflow3Component, data: { fsNav: { history: false } } },
       ]
   },
-  { path: '', pathMatch: 'full', component: RootComponent, data: { FsNav: { root: true } } },
+  { path: '', pathMatch: 'full', component: RootComponent, data: { fsNav: { root: true } } },
 ];
 
 @NgModule({
   bootstrap: [ AppComponent ],
   imports: [
     BrowserModule,
-    FsNavModule,
+    FsNavModule.forRoot(),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
     BrowserAnimationsModule,
@@ -96,9 +94,6 @@ const appRoutes: Routes = [
     Workflow3Component,
     RootComponent
   ],
-  providers: [
-    FsNavRouteHandleService
-  ]
 })
 export class PlaygroundModule {
 }

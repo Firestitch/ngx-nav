@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FsNavRouteHandleService } from '../../../../src/services';
+import { FsNavStackService } from '../../../../src/services';
 import { Router, NavigationEnd } from '@angular/router';
 
 
@@ -11,7 +11,7 @@ export class TabsComponent implements OnDestroy{
 
   public routerSubscription;
 
-  constructor(private stack: FsNavRouteHandleService,
+  constructor(private stack: FsNavStackService,
               private router: Router) {
 
     this.routerSubscription = this.router.events

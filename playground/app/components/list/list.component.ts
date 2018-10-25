@@ -3,7 +3,7 @@ import { FsListConfig } from '@firestitch/list';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { FsNavRouteHandleService } from '../../../../src/services';
+import { FsNavStackService } from '../../../../src/services';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class ListComponent implements OnInit {
 
   public config: FsListConfig;
 
-  constructor(private router: Router, private stack: FsNavRouteHandleService) {}
+  constructor(private router: Router, private stack: FsNavStackService) {}
 
   public ngOnInit() {
     this.stack.setTitle('List');
