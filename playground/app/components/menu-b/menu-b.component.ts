@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FsNavStackService } from '../../../../src';
+import { FsNavService } from '../../../../src';
 
 
 @Component({
@@ -7,7 +7,7 @@ import { FsNavStackService } from '../../../../src';
 })
 export class MenuBComponent implements OnInit {
 
-  constructor(public stack: FsNavStackService) {}
+  constructor(public stack: FsNavService) {}
 
   ngOnInit() {
     this.stack.setTitle('Menu B');

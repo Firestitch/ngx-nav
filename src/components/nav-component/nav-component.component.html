@@ -1,0 +1,2 @@
+<img [src]="component?.value" *ngIf="type=='image' && component?.value; else elseText">
+<ng-template #elseText>{{ component?.value }}</ng-template>

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FsNavStackService } from '../../../../../src';
+import { FsNavService } from '../../../../../src';
 
 @Component({
   selector: 'static-page',
@@ -8,7 +8,7 @@ import { FsNavStackService } from '../../../../../src';
 })
 export class TabCComponent implements OnInit, OnDestroy {
 
-  constructor(public stack: FsNavStackService) {
+  constructor(public stack: FsNavService) {
 
   }
 

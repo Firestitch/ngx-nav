@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FsNavStackService } from '../../../../../src';
+import { FsNavService } from '../../../../../src';
 
 @Component({
   templateUrl: 'workflow-3.component.html'
 })
 export class Workflow3Component implements OnInit {
 
-  constructor(public stack: FsNavStackService) {}
+  constructor(public stack: FsNavService) {}
 
   public ngOnInit() {
     this.stack.setTitle('Workflow 3');

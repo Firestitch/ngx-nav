@@ -7,10 +7,13 @@ import {
   FsNavTitleComponent,
   FsNavActionsComponent,
   FsSimpleActionsComponent,
-  FsDropDownActionsComponent
+  FsDropDownActionsComponent,
+  FsNavComponentComponent
 } from './components';
 import { FsNavBackDirective } from './directives';
-import { FsNavStackService } from './services';
+import { FsNavService, FsNavStackService } from './services';
+import { FsNavSubTitleComponent } from './components/nav-subtitle/nav-subtitle.component';
+import { FsNavSuperTitleComponent } from './components/nav-supertitle/nav-supertitle.component';
 
 
 @NgModule({
@@ -24,16 +27,22 @@ import { FsNavStackService } from './services';
   ],
   exports: [
     FsNavTitleComponent,
+    FsNavSuperTitleComponent,
+    FsNavSubTitleComponent,
     FsNavActionsComponent,
+    FsNavComponentComponent,
     FsNavBackDirective,
   ],
   entryComponents: [
   ],
   declarations: [
     FsNavTitleComponent,
+    FsNavSuperTitleComponent,
+    FsNavSubTitleComponent,
     FsNavActionsComponent,
     FsSimpleActionsComponent,
     FsDropDownActionsComponent,
+    FsNavComponentComponent,
     FsNavBackDirective,
   ],
 })
@@ -42,6 +51,7 @@ export class FsNavModule {
     return {
       ngModule: FsNavModule,
       providers: [
+        FsNavService,
         FsNavStackService,
       ]
     };

@@ -5,11 +5,11 @@ import { FsNavComponentComponent } from '../nav-component';
 
 
 @Component({
-  selector: '[fsNavTitle]',
+  selector: '[fsNavSubTitle]',
   templateUrl: '../nav-component/nav-component.component.html',
   styleUrls: ['../nav-component/nav-component.component.scss']
 })
-export class FsNavTitleComponent extends FsNavComponentComponent {
+export class FsNavSubTitleComponent extends FsNavComponentComponent {
 
   constructor (
     stack: FsNavStackService,
@@ -18,6 +18,6 @@ export class FsNavTitleComponent extends FsNavComponentComponent {
   ) {
     super(stack, elementRef, renderer);
 
-    this.componentName = 'title';
+    this.componentName = 'subtitle';
   }
 }

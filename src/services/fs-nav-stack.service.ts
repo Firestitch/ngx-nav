@@ -6,20 +6,27 @@ import {
   NavigationEnd,
   Router
 } from '@angular/router';
+
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { filter, map, takeUntil } from 'rxjs/operators';
+
 import { NavAction, RouteInfo } from '../models';
 import { UrlInfoAction } from '../interfaces';
+import { FsNavComponents } from '../classes';
 
 
 @Injectable()
 export class FsNavStackService {
 
   public onActionsUpdated = new EventEmitter();
+  public updated = new EventEmitter();
   // public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
-  public routeInfo: RouteInfo[] = [];
   public stopBackToUrls: any[] = [];
+  public components = new FsNavComponents(this.updated);
 
-  private _activeRoutePath = '';
+  private _activeRoutePath = new BehaviorSubject('');
+  private _routeInfo: RouteInfo[] = [];
   private _isBackNavigated = false;
   private _lastOperationIsBack = false;
   private _handlers: {[key: string]: DetachedRouteHandle} = {};
@@ -32,22 +39,45 @@ export class FsNavStackService {
   }
 
   get activeRoutePath() {
-    return this._activeRoutePath;
+    return this._activeRoutePath.getValue();
+  }
+
+  get routeInfo(): RouteInfo {
+    return this._routeInfo[this.activeRoutePath];
   }
 
   get lastOperationIsBack() {
     return this._lastOperationIsBack;
   }
 
+  public componentUpdate(name, destroy = null) {
+
+    const updater = this.updated.pipe(
+      filter(
+        (event: any) => {
+          console.log('event', event);
+          return event.target === 'component' && event.payload.name === name;
+        }
+      ),
+      map((event: any) => {
+        return event.payload;
+      })
+    );
+
+    return destroy ? updater.pipe(takeUntil(destroy)) : updater;
+  }
+
   public subscribeToRouteChange() {
     this._router.events
-      .filter((event) => event instanceof NavigationEnd)
-      .map(() => this._activatedRoute)
-      .map((route) => {
-        while (route.firstChild) route = route.firstChild;
-        return route;
-      })
-      .filter((route) => route.outlet === 'primary')
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this._activatedRoute),
+        map((route) => {
+          while (route.firstChild) route = route.firstChild;
+          return route;
+        }),
+        filter((route) => route.outlet === 'primary')
+      )
       .subscribe(this.setupActivatedRoute.bind(this));
   }
 
@@ -77,7 +107,7 @@ export class FsNavStackService {
     }
     this._handlers = {};
     this.urlsStack.length = 0;
-    this.routeInfo.length = 0;
+    this._routeInfo.length = 0;
     this._isBackNavigated = false;
     this.onActionsUpdated.next();
     // this.onStackReset.next(true);
@@ -87,7 +117,7 @@ export class FsNavStackService {
    * Reset all information about active route
    */
   public resetActiveRoute() {
-    this.routeInfo[this.activeRoutePath].reset();
+    this._routeInfo[this.activeRoutePath].reset();
     this.onActionsUpdated.next();
   }
 
@@ -95,7 +125,7 @@ export class FsNavStackService {
    * Reset left actions for active route
    */
   public resetLeftActions() {
-    this.routeInfo[this.activeRoutePath].resetLeftActions();
+    this._routeInfo[this.activeRoutePath].resetLeftActions();
     this.onActionsUpdated.next();
   }
 
@@ -103,7 +133,7 @@ export class FsNavStackService {
    * Reset right actions for active route
    */
   public resetRightActions() {
-    this.routeInfo[this.activeRoutePath].resetRightActions();
+    this._routeInfo[this.activeRoutePath].resetRightActions();
     this.onActionsUpdated.next();
   }
 
@@ -111,7 +141,7 @@ export class FsNavStackService {
    * Reset drop down menus actions for active route
    */
   public resetDropDownActions() {
-    this.routeInfo[this.activeRoutePath].resetDropDownMenuActions();
+    this._routeInfo[this.activeRoutePath].resetDropDownMenuActions();
     this.onActionsUpdated.next();
   }
 
@@ -144,7 +174,7 @@ export class FsNavStackService {
    * @param {ActivatedRouteSnapshot} route
    */
   public setActivePath(route: ActivatedRouteSnapshot) {
-    this._activeRoutePath = this.getFullRoutePath(route);
+    this._activeRoutePath.next(this.getFullRoutePath(route));
     this._lastOperationIsBack = false;
   }
 
@@ -152,7 +182,7 @@ export class FsNavStackService {
    * Create empty router info if not exists
    */
   public createActiveRouteInfo() {
-    this.routeInfo[this.activeRoutePath] = new RouteInfo();
+    this._routeInfo[this.activeRoutePath] = new RouteInfo();
   }
 
   /**
@@ -161,18 +191,10 @@ export class FsNavStackService {
    * @param icon { string }
    */
   public addDropDownMenu(id, icon) {
-    const routeInfo: RouteInfo = this.routeInfo[this.activeRoutePath];
+    const routeInfo: RouteInfo = this._routeInfo[this.activeRoutePath];
     if (routeInfo && !routeInfo.dropDownMenus.has(id)) {
       routeInfo.addDropDownMenu(id, icon);
     }
-  }
-
-  /**
-   * Set title for current active page
-   * @param title
-   */
-  public setTitle(title) {
-    this.routeInfo[this.activeRoutePath].title = title
   }
 
   /**
@@ -180,7 +202,7 @@ export class FsNavStackService {
    * @param isRoot
    */
   public setIsRoot(isRoot) {
-    this.routeInfo[this._activeRoutePath].isRoot = isRoot;
+    this._routeInfo[this.activeRoutePath].isRoot = isRoot;
   }
 
   /**
@@ -214,7 +236,7 @@ export class FsNavStackService {
    * @returns {any}
    */
   public getActiveRouteInfo() {
-    return this.routeInfo[this.activeRoutePath];
+    return this._routeInfo[this.activeRoutePath];
   }
 
   /**
@@ -248,25 +270,9 @@ export class FsNavStackService {
     }
 
     this._lastOperationIsBack = true;
-
-
-    // console.log(window.history.state);
-    // window.history.back();
-    // console.log(this.urlsStack);
-    // if (this.urlsStack[this.urlsStack.length - 1] === this.activeRoutePath) {
-    //   const url = this.urlsStack.pop();
-    //   if (this.urlsStack.indexOf(url) === -1) {
-    //     this.deactivateOutlet(this._handlers[url]);
-    //     delete this._handlers[url];
-    //     delete this.routeInfo[url];
-    //   }
-    // }
-    //
-    // this._isBackNavigated = true;
-    // return this.urlsStack[this.urlsStack.length - 1] || '/';
   }
 
-  public backDelta(prevUrl, delta) {
+  private backDelta(prevUrl, delta) {
     if (prevUrl && this.stopBackToUrls.length > 0) {
       if (this.stopBackToUrls[this.stopBackToUrls.length - 1] === prevUrl) {
         delta -= 1;
@@ -311,20 +317,24 @@ export class FsNavStackService {
     const actionModel = new NavAction(action);
 
     if (!action.menu) {
-      this.routeInfo[this.activeRoutePath].addAction(actionModel, group);
+      this._routeInfo[this.activeRoutePath].addAction(actionModel, group);
     } else {
-      this.routeInfo[this.activeRoutePath].addActionToDropDownMenu(actionModel, group);
+      this._routeInfo[this.activeRoutePath].addActionToDropDownMenu(actionModel, group);
     }
   }
 
   private setupActivatedRoute(event) {
-    console.log('event');
+    this.components.clear();
+
     if (!this.lastOperationIsBack) {
       this.addUrlToStack(this.activeRoutePath);
+
     }
     this.setActivePath(event.snapshot);
     this.createActiveRouteInfo();
+
     const isRoot = event && event.data && (event.data as any).fsNavRoot;
+
     this.setIsRoot(isRoot);
   }
 }

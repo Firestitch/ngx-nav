@@ -9,6 +9,8 @@ import { DropDownNavMenu } from './drop-down-nav-action.model';
 export class RouteInfo {
 
   public title?: string;
+  public subTitle?: string;
+  public superTitle?: string;
 
   public rightActions = new Map<string, NavAction[]>();
   public leftActions = new Map<string, NavAction[]>();
@@ -21,6 +23,18 @@ export class RouteInfo {
     this.setDefaultLeftActions();
     this.setDefaultRightActions();
     this.setDefaultDropDownMenu();
+  }
+
+  public setTitle(value) {
+    this.title = value;
+  }
+
+  public setSuperTitle(value) {
+    this.superTitle = value;
+  }
+
+  public setSubTitle(value) {
+    this.subTitle = value;
   }
 
   /**

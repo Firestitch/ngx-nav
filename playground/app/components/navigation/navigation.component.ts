@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FsNavStackService } from '../../../../src';
+import { FsNavService } from '../../../../src';
 import { clone } from 'lodash';
 
 @Component({
@@ -12,7 +12,7 @@ export class NavigationComponent {
 
   public navRoutes = [];
   constructor(
-    public stack: FsNavStackService,
+    public stack: FsNavService,
     protected router: Router,
     protected activatedRoute: ActivatedRoute) {
 

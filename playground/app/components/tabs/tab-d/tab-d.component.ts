@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FsNavStackService } from '../../../../../src/services';
+import { FsNavService } from '../../../../../src/services';
 
 
 @Component({
@@ -8,7 +8,7 @@ import { FsNavStackService } from '../../../../../src/services';
 })
 export class TabDComponent implements OnInit, OnDestroy {
 
-  constructor(public stack: FsNavStackService) {}
+  constructor(public stack: FsNavService) {}
 
   public ngOnInit() {
     //this.nav.setTitle('Tab D');

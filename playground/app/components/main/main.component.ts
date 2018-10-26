@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FsNavStackService } from '../../../../src';
+import { FsNavService } from '../../../../src';
 
 
 @Component({
@@ -8,7 +8,7 @@ import { FsNavStackService } from '../../../../src';
 })
 export class MainComponent implements OnInit, OnDestroy{
 
-  constructor(public stack: FsNavStackService) {}
+  constructor(public stack: FsNavService) {}
 
   public ngOnInit() {
     console.log('init main');

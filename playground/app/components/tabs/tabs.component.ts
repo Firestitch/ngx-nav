@@ -1,6 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FsNavStackService } from '../../../../src/services';
 import { Router, NavigationEnd } from '@angular/router';
+
+import { filter } from 'rxjs/operators';
+
+import { FsNavService } from '../../../../src/services';
 
 
 @Component({
@@ -11,14 +14,14 @@ export class TabsComponent implements OnDestroy{
 
   public routerSubscription;
 
-  constructor(private stack: FsNavStackService,
+  constructor(private stack: FsNavService,
               private router: Router) {
 
     this.routerSubscription = this.router.events
-    .filter((event) => event instanceof NavigationEnd)
-    .subscribe(() => {
-      this.stack.setTitle('Tabs');
-    });
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.stack.setTitle('Tabs');
+      });
   }
 
   public tabs = [

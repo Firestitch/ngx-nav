@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FsNavStackService } from '../../../../../src/services';
+import { FsNavService } from '../../../../../src/services';
 
 @Component({
   selector: 'list',
@@ -16,7 +16,7 @@ import { FsNavStackService } from '../../../../../src/services';
 })
 export class TabBComponent implements OnInit, OnDestroy {
 
-  constructor(public stack: FsNavStackService) { }
+  constructor(public stack: FsNavService) { }
 
   public ngOnInit() {
   }
