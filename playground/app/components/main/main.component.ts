@@ -8,7 +8,7 @@ import { FsNavService } from '../../../../src';
 })
 export class MainComponent implements OnInit, OnDestroy{
 
-  constructor(public stack: FsNavService) {}
+  constructor(public nav: FsNavService) {}
 
   public ngOnInit() {
     console.log('init main');

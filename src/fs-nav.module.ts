@@ -1,19 +1,25 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatDividerModule,
+  MatIconModule,
+  MatMenuModule
+} from '@angular/material';
 
 import {
   FsNavTitleComponent,
   FsNavActionsComponent,
-  FsSimpleActionsComponent,
-  FsDropDownActionsComponent,
-  FsNavComponentComponent
+  FsNavComponentComponent,
+  FsNavSubTitleComponent,
+  FsNavSuperTitleComponent,
+  FsNavMenuComponent
 } from './components';
+
 import { FsNavBackDirective } from './directives';
 import { FsNavService, FsNavStackService } from './services';
-import { FsNavSubTitleComponent } from './components/nav-subtitle/nav-subtitle.component';
-import { FsNavSuperTitleComponent } from './components/nav-supertitle/nav-supertitle.component';
+import { FsNavUpdatesService } from './services';
 
 
 @NgModule({
@@ -32,6 +38,7 @@ import { FsNavSuperTitleComponent } from './components/nav-supertitle/nav-supert
     FsNavActionsComponent,
     FsNavComponentComponent,
     FsNavBackDirective,
+    FsNavMenuComponent,
   ],
   entryComponents: [
   ],
@@ -40,10 +47,9 @@ import { FsNavSuperTitleComponent } from './components/nav-supertitle/nav-supert
     FsNavSuperTitleComponent,
     FsNavSubTitleComponent,
     FsNavActionsComponent,
-    FsSimpleActionsComponent,
-    FsDropDownActionsComponent,
     FsNavComponentComponent,
-    FsNavBackDirective,
+    FsNavMenuComponent,
+    FsNavBackDirective
   ],
 })
 export class FsNavModule {
@@ -53,6 +59,7 @@ export class FsNavModule {
       providers: [
         FsNavService,
         FsNavStackService,
+        FsNavUpdatesService,
       ]
     };
   }

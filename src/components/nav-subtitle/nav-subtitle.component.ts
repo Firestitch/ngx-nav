@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 
-import { FsNavStackService } from '../../services';
 import { FsNavComponentComponent } from '../nav-component';
+import { FsNavUpdatesService } from '../../services';
 
 
 @Component({
@@ -12,11 +12,11 @@ import { FsNavComponentComponent } from '../nav-component';
 export class FsNavSubTitleComponent extends FsNavComponentComponent {
 
   constructor (
-    stack: FsNavStackService,
+    navUpdates: FsNavUpdatesService,
     elementRef: ElementRef,
     renderer: Renderer2
   ) {
-    super(stack, elementRef, renderer);
+    super(navUpdates, elementRef, renderer);
 
     this.componentName = 'subtitle';
   }

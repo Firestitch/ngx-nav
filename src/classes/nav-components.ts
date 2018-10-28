@@ -1,14 +1,22 @@
-import { NavComponent } from '../models/component.model';
+import { FsNavUpdatesService } from '../services';
+import { NavComponent } from '../models';
+
 
 export class FsNavComponents {
 
   private _components = new Map<string, NavComponent>();
 
   constructor(
-    private _stackUpdated
+    private _navUpdates: FsNavUpdatesService
   ) {}
 
-  public setComponentValue(name, value, permanent) {
+  /**
+   * Set special value for component by name
+   * @param name { string }
+   * @param value
+   * @param permanent - do not clear component value when url changed
+   */
+  public setComponentValue(name: string, value: any, permanent: boolean = null) {
     this.createComponentIfNotExists(name);
 
     if (this._components.has(name)) {
@@ -21,15 +29,28 @@ export class FsNavComponents {
       }
     }
 
-    this._stackUpdated.emit({
-      target: 'component',
-      payload: {
-        name,
-        component: this._components.get(name)
-      }
-    })
+    this._navUpdates.updateComponent(name, this._components.get(name));
   }
 
+  /**
+   * Show component
+   * @param name { string }
+   */
+  public showComponent(name: string) {
+    this._navUpdates.showComponent(name);
+  }
+
+  /**
+   * Hide component
+   * @param name { string }
+   */
+  public hideComponent(name: string) {
+    this._navUpdates.hideComponent(name);
+  }
+
+  /**
+   * Clear all components
+   */
   public clear() {
     this._components.forEach((component) => {
       if (!component.permanent) {
@@ -38,6 +59,9 @@ export class FsNavComponents {
     })
   }
 
+  /**
+   * @param name { string }
+   */
   private createComponentIfNotExists(name: string) {
     if (!this._components.has(name)) {
       const component = new NavComponent();

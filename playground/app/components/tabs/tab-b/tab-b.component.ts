@@ -16,7 +16,7 @@ import { FsNavService } from '../../../../../src/services';
 })
 export class TabBComponent implements OnInit, OnDestroy {
 
-  constructor(public stack: FsNavService) { }
+  constructor(public nav: FsNavService) { }
 
   public ngOnInit() {
   }

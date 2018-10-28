@@ -13,10 +13,10 @@ export class ListComponent implements OnInit {
 
   public config: FsListConfig;
 
-  constructor(private router: Router, private stack: FsNavService) {}
+  constructor(private router: Router, private nav: FsNavService) {}
 
   public ngOnInit() {
-    this.stack.setTitle('List');
+    this.nav.setTitle('List');
 
     this.config = {
       actions: [

@@ -7,9 +7,9 @@ import { FsNavService } from '../../../../src';
 })
 export class RootComponent implements OnInit {
 
-  constructor(public stack: FsNavService) {}
+  constructor(public nav: FsNavService) {}
 
   ngOnInit() {
-    this.stack.setTitle('Root');
+    this.nav.setTitle('Root');
   }
 }

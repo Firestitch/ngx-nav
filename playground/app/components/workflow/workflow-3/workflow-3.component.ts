@@ -6,10 +6,10 @@ import { FsNavService } from '../../../../../src';
 })
 export class Workflow3Component implements OnInit {
 
-  constructor(public stack: FsNavService) {}
+  constructor(public nav: FsNavService) {}
 
   public ngOnInit() {
-    this.stack.setTitle('Workflow 3');
+    this.nav.setTitle('Workflow 3');
     // this.nav.onBack((data, observer) => {
     //   // IDEA: Do something to bypass the history: false for the
     //   observer.next(data);

@@ -14,13 +14,13 @@ export class TabsComponent implements OnDestroy{
 
   public routerSubscription;
 
-  constructor(private stack: FsNavService,
+  constructor(private nav: FsNavService,
               private router: Router) {
 
     this.routerSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.stack.setTitle('Tabs');
+        this.nav.setTitle('Tabs');
       });
   }
 

@@ -7,9 +7,9 @@ import { FsNavService } from '../../../../src';
 })
 export class MenuDComponent implements OnInit {
 
-  constructor(public stack: FsNavService) {}
+  constructor(public nav: FsNavService) {}
 
   ngOnInit() {
-    this.stack.setTitle('Menu D');
+    this.nav.setTitle('Menu D');
   }
 }

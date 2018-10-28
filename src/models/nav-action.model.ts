@@ -1,28 +1,21 @@
 import { Alias, Model } from 'tsmodels';
 import { UrlInfoAction } from '../interfaces';
 
-export enum ActionType {
+export enum NavActionType {
   basic = 'basic',
   raised = 'raised',
   icon = 'icon',
   fab = 'fab',
-  miniFab = 'mini-fab'
-}
-
-export enum Placement {
-  left = 'left',
-  right = 'right'
+  miniFab = 'mini-fab',
 }
 
 export class NavAction extends Model {
 
   @Alias() public icon: string;
   @Alias() public label: string;
-  @Alias() public placement: Placement;
-  @Alias() public menu: boolean;
   @Alias() public click: Function;
   @Alias() public className: string;
-  @Alias() public type: ActionType;
+  @Alias() public type: NavActionType;
   @Alias() public image: string;
   @Alias() public url: string;
 
@@ -37,16 +30,8 @@ export class NavAction extends Model {
   public _fromJSON(value: any) {
     super._fromJSON(value);
 
-    if (value.placement === void 0) {
-      this.placement = Placement.right;
-    }
-
-    if (value.menu === void 0) {
-      this.menu = true;
-    }
-
     if (value.type === void 0) {
-      this.type = ActionType.basic;
+      this.type = NavActionType.basic;
     }
 
     if (value.click === void 0) {

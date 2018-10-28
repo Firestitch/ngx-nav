@@ -1,14 +1,16 @@
 import {
-  OnInit,
-  OnDestroy,
-  Input,
+  Component,
   ElementRef,
-  Renderer2,
+  EventEmitter,
   HostBinding,
-  Component, EventEmitter
+  Input,
+  OnDestroy,
+  OnInit,
+  Renderer2
 } from '@angular/core';
-import { FsNavStackService } from '../../services';
-import { NavComponent } from '../../models/component.model';
+
+import { FsNavUpdatesService, FsNavUpdateType } from '../../services';
+import { NavComponent } from '../../models';
 
 
 @Component({
@@ -21,7 +23,7 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
   @Input('fsNavComponent') public componentName;
   @Input('type') public type;
 
-  @HostBinding('class.hide') public classHide = false;
+  @HostBinding('class.hidden') public hidden = false;
 
   public value = '';
 
@@ -30,35 +32,43 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
   protected _destroy = new EventEmitter();
 
   constructor (
-    protected stack: FsNavStackService,
+    protected navUpdates: FsNavUpdatesService,
     protected elementRef: ElementRef,
     protected renderer: Renderer2
   ) {}
 
   public ngOnInit() {
 
-    this.renderer.addClass(this.elementRef.nativeElement, 'fs-nav-' + this.componentName);
+    this.renderer.addClass(
+      this.elementRef.nativeElement,
+      'fs-nav-component-' + this.componentName
+    );
 
-    this.stack.componentUpdate(this.componentName, this._destroy)
-      .subscribe((payload: any) => {
-        this.component = payload.component;
-      });
-
-
-    // this.valueSubscription = this.nav.navBar.componentValue
-    //   .subscribe((values) => {
-    //     this.value = values[this.component];
-    //   });
-    //
-    // this.hideSubscription = this.nav.navBar.componentHide
-    //   .subscribe((values) => {
-    //     this.classHide = values[this.component];
-    //   });
+    this.subscriptions();
   }
 
   public ngOnDestroy() {
-    this._destroy.emit()
+    this._destroy.emit();
     this._destroy.complete();
+  }
+
+  private subscriptions() {
+    this.navUpdates.componentUpdated$(this.componentName, this._destroy)
+      .subscribe((payload) => {
+        switch (payload.type) {
+          case FsNavUpdateType.show: {
+            this.hidden = false;
+          } break;
+
+          case FsNavUpdateType.hide: {
+            this.hidden = true;
+          } break;
+
+          default: {
+            this.component = payload.value;
+          }
+        }
+      })
   }
 
 }

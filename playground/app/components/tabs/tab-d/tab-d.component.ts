@@ -8,10 +8,10 @@ import { FsNavService } from '../../../../../src/services';
 })
 export class TabDComponent implements OnInit, OnDestroy {
 
-  constructor(public stack: FsNavService) {}
+  constructor(public nav: FsNavService) {}
 
   public ngOnInit() {
-    //this.nav.setTitle('Tab D');
+    this.nav.setTitle('Tab D');
 
 
   }

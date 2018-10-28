@@ -1,5 +1,14 @@
-export * from './fs-nav.module';
-export * from './components';
-export * from './directives';
+export {
+  FsNavActionsComponent,
+  FsNavComponentComponent,
+  FsNavSubTitleComponent,
+  FsNavSuperTitleComponent,
+  FsNavTitleComponent,
+  FsNavMenuComponent,
+} from './components';
+
+export { NavActionType } from './models';
+export { FsNavBackDirective } from './directives';
 export { FsNavService } from './services';
-export * from './models';
+
+export { FsNavModule } from './fs-nav.module';

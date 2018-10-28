@@ -8,32 +8,34 @@ import {
 } from '@angular/router';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
-import { NavAction, RouteInfo } from '../models';
-import { UrlInfoAction } from '../interfaces';
-import { FsNavComponents } from '../classes';
+import { FsNavComponents, FsNavActions } from '../classes';
+import { FsNavUpdatesService } from './fs-nav-updates.service';
+import { FsNavMenus } from '../classes/nav-menus';
 
 
 @Injectable()
 export class FsNavStackService {
 
   public onActionsUpdated = new EventEmitter();
-  public updated = new EventEmitter();
+
   // public onStackReset = new EventEmitter();
   public urlsStack: string[] = [];
   public stopBackToUrls: any[] = [];
-  public components = new FsNavComponents(this.updated);
+  public components = new FsNavComponents(this._navUpdates);
+  public actions = new FsNavActions(this._navUpdates);
+  public menus = new FsNavMenus(this._navUpdates);
 
   private _activeRoutePath = new BehaviorSubject('');
-  private _routeInfo: RouteInfo[] = [];
   private _isBackNavigated = false;
   private _lastOperationIsBack = false;
   private _handlers: {[key: string]: DetachedRouteHandle} = {};
 
   constructor(
     private _activatedRoute: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _navUpdates: FsNavUpdatesService,
   ) {
     this.subscribeToRouteChange();
   }
@@ -42,29 +44,8 @@ export class FsNavStackService {
     return this._activeRoutePath.getValue();
   }
 
-  get routeInfo(): RouteInfo {
-    return this._routeInfo[this.activeRoutePath];
-  }
-
   get lastOperationIsBack() {
     return this._lastOperationIsBack;
-  }
-
-  public componentUpdate(name, destroy = null) {
-
-    const updater = this.updated.pipe(
-      filter(
-        (event: any) => {
-          console.log('event', event);
-          return event.target === 'component' && event.payload.name === name;
-        }
-      ),
-      map((event: any) => {
-        return event.payload;
-      })
-    );
-
-    return destroy ? updater.pipe(takeUntil(destroy)) : updater;
   }
 
   public subscribeToRouteChange() {
@@ -107,66 +88,9 @@ export class FsNavStackService {
     }
     this._handlers = {};
     this.urlsStack.length = 0;
-    this._routeInfo.length = 0;
     this._isBackNavigated = false;
     this.onActionsUpdated.next();
     // this.onStackReset.next(true);
-  }
-
-  /**
-   * Reset all information about active route
-   */
-  public resetActiveRoute() {
-    this._routeInfo[this.activeRoutePath].reset();
-    this.onActionsUpdated.next();
-  }
-
-  /**
-   * Reset left actions for active route
-   */
-  public resetLeftActions() {
-    this._routeInfo[this.activeRoutePath].resetLeftActions();
-    this.onActionsUpdated.next();
-  }
-
-  /**
-   * Reset right actions for active route
-   */
-  public resetRightActions() {
-    this._routeInfo[this.activeRoutePath].resetRightActions();
-    this.onActionsUpdated.next();
-  }
-
-  /**
-   * Reset drop down menus actions for active route
-   */
-  public resetDropDownActions() {
-    this._routeInfo[this.activeRoutePath].resetDropDownMenuActions();
-    this.onActionsUpdated.next();
-  }
-
-  /**
-   * Get handler by path
-   * @param {string} path
-   * @returns {DetachedRouteHandle}
-   */
-  public getHandler(path: string) {
-    return this._handlers[path];
-  }
-
-  /**
-   * Add route handler for path
-   * @param {string} path
-   * @param {DetachedRouteHandle} handler
-   */
-  public addHandler(path: string, handler: DetachedRouteHandle) {
-    if (this.urlsStack[this.urlsStack.length - 1] === path) { return }
-    if (this._isBackNavigated) { this._isBackNavigated = false; return }
-    if (handler !== null) {
-      this._handlers[path] = handler;
-      this.urlsStack.push(path);
-    }
-
   }
 
   /**
@@ -179,78 +103,12 @@ export class FsNavStackService {
   }
 
   /**
-   * Create empty router info if not exists
-   */
-  public createActiveRouteInfo() {
-    this._routeInfo[this.activeRoutePath] = new RouteInfo();
-  }
-
-  /**
-   * Add new action what will work like dropDownMenu
-   * @param id { string }
-   * @param icon { string }
-   */
-  public addDropDownMenu(id, icon) {
-    const routeInfo: RouteInfo = this._routeInfo[this.activeRoutePath];
-    if (routeInfo && !routeInfo.dropDownMenus.has(id)) {
-      routeInfo.addDropDownMenu(id, icon);
-    }
-  }
-
-  /**
-   * Set root param from route data
-   * @param isRoot
-   */
-  public setIsRoot(isRoot) {
-    this._routeInfo[this.activeRoutePath].isRoot = isRoot;
-  }
-
-  /**
-   * Set action (function) for current active page
-   * @param action { UrlInfoAction }
-   * @param group { string }
-   */
-  public setAction(action: UrlInfoAction, group = 'default') {
-    this.addActionToRouteInfo(action, action.group || group);
-
-    this.onActionsUpdated.emit(true);
-  }
-
-  /**
-   * Set action (function) for current active page
-   * @param actions { UrlInfoAction[] }
-   * @param group : { string }
-   */
-  public setActions(actions: UrlInfoAction[], group = 'default') {
-    if (actions) {
-      actions.forEach((action: UrlInfoAction) => {
-        this.addActionToRouteInfo(action, action.group || group);
-      })
-    }
-
-    this.onActionsUpdated.emit(true);
-  }
-
-  /**
-   * Get active route info object for header.
-   * @returns {any}
-   */
-  public getActiveRouteInfo() {
-    return this._routeInfo[this.activeRoutePath];
-  }
-
-  /**
    * Recursevly get full path for route
    * @param {ActivatedRouteSnapshot} route
    * @param {string} path
    * @returns {string}
    */
   public getFullRoutePath(route: ActivatedRouteSnapshot, path = '') {
-    // if (route.parent !== null) {
-    //   return this.getFullRoutePath(route.parent, path) + '/' + route.url.join('/');
-    // } else {
-    //   return route.url.join('/')
-    // }
     if (route.firstChild) {
       return this.getTailPath(route);
     } else {
@@ -313,28 +171,18 @@ export class FsNavStackService {
     }
   }
 
-  private addActionToRouteInfo(action: UrlInfoAction, group: any) {
-    const actionModel = new NavAction(action);
-
-    if (!action.menu) {
-      this._routeInfo[this.activeRoutePath].addAction(actionModel, group);
-    } else {
-      this._routeInfo[this.activeRoutePath].addActionToDropDownMenu(actionModel, group);
-    }
-  }
-
   private setupActivatedRoute(event) {
     this.components.clear();
+    this.actions.clear();
+    this.menus.clear();
 
     if (!this.lastOperationIsBack) {
       this.addUrlToStack(this.activeRoutePath);
 
     }
     this.setActivePath(event.snapshot);
-    this.createActiveRouteInfo();
 
-    const isRoot = event && event.data && (event.data as any).fsNavRoot;
-
-    this.setIsRoot(isRoot);
+    // const isRoot = event && event.data && (event.data as any).fsNavRoot;
+    // this.setIsRoot(isRoot);
   }
 }

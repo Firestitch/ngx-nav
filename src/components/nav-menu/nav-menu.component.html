@@ -1,5 +1,5 @@
-<button mat-icon-button [matMenuTriggerFor]="menuActionsRef">
-  <mat-icon>{{ dropDownMenu?.icon || 'more_vert' }}</mat-icon>
+<button mat-icon-button [matMenuTriggerFor]="menuActionsRef" *ngIf="menu">
+  <mat-icon>{{ menu?.icon || 'more_vert' }}</mat-icon>
 </button>
 <mat-menu #menuActionsRef>
   <ng-container *ngFor="let group of groups; let groupIndex = index">

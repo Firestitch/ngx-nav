@@ -1,11 +1,16 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
+  Renderer2
+} from '@angular/core';
 
-import { filter } from 'rxjs/operators';
-
-import { FsNavStackService } from '../../services';
-import { NavAction, RouteInfo } from '../../models';
-import { DropDownNavMenu } from '../../models/drop-down-nav-action.model';
+import { FsNavUpdatesService, FsNavUpdateType } from '../../services';
+import { NavAction } from '../../models';
 
 
 @Component({
@@ -15,81 +20,50 @@ import { DropDownNavMenu } from '../../models/drop-down-nav-action.model';
 })
 export class FsNavActionsComponent implements OnInit, OnDestroy {
 
-  @Input() public placement: string;
+  @Input('fsNavActions') public actionsComponentName: string;
 
-  @HostBinding('hidden') public isHidden = true;
+  @HostBinding('hidden') public hidden = true;
   @HostBinding('class.fs-nav-actions') public selfClass = true;
 
-  public routeInfo: RouteInfo;
-  public actions: Map<string, NavAction[]>;
-  public dropDownMenu: DropDownNavMenu = null;
-  // public menuActions: Map<string, NavAction[]>;
+  public actions: NavAction[];
+  private _destroy$ = new EventEmitter();
 
-  public simpleActions = false;
-  public groups = [];
-
-  private _routerSubscription;
-  private _actionsSubscription;
-
-  constructor(private _router: Router,
-              private _stack: FsNavStackService) {}
+  constructor(
+    private _elementRef: ElementRef,
+    private _navUpdaes: FsNavUpdatesService,
+    private _renderer: Renderer2
+  ) {}
 
   public ngOnInit() {
-    this.subscriptions();
+    this._renderer.addClass(
+      this._elementRef.nativeElement,
+      'fs-nav-action-' + this.actionsComponentName
+    );
 
-    // Predefine bool constants for show/hide target blocks in template
-    this.simpleActions = this.placement === 'left' || this.placement === 'right';
+    this.subscriptions();
   }
 
   public ngOnDestroy() {
-    this._routerSubscription.unsubscribe();
-    this._actionsSubscription.unsubscribe();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
-  public subscriptions() {
-    // Read actions from active route info
-    this._routerSubscription = this._router.events
-      .pipe(
-        filter(e => e instanceof NavigationEnd)
-      )
-      .subscribe(() => {
-        this.routeInfo = this._stack.getActiveRouteInfo();
-        this.updateActions();
-      });
+  private subscriptions() {
+    this._navUpdaes.actionUpdated$(this.actionsComponentName, this._destroy$)
+      .subscribe((payload) => {
+        switch (payload.type) {
+          case FsNavUpdateType.show: {
+            this.hidden = false;
+          } break;
 
-    // React when actions was added/deleted and show/hide self component
-    this._actionsSubscription = this._stack.onActionsUpdated
-      .subscribe(() => {
-        this.updateActions();
-      });
-  }
+          case FsNavUpdateType.hide: {
+            this.hidden = true;
+          } break;
 
-  private updateActions() {
-    this.groups = null;
-    this.actions = null;
-    this.dropDownMenu = null;
-
-    switch (this.placement) {
-      case 'left': {
-        this.groups = Array.from(this.routeInfo.leftActions.keys());
-        this.actions = this.routeInfo.leftActions;
-      } break;
-
-      case 'right': {
-        this.groups = Array.from(this.routeInfo.rightActions.keys());
-        this.actions = this.routeInfo.rightActions;
-      } break;
-
-      default: {
-        if (this.routeInfo.dropDownMenus.has(this.placement)) {
-          this.dropDownMenu = this.routeInfo.dropDownMenus.get(this.placement);
-
-          this.groups = Array.from(this.dropDownMenu.groups.keys());
-          this.actions = this.dropDownMenu.groups;
+          default: {
+            this.actions = payload.value;
+          }
         }
-      }
-    }
-
-    this.isHidden = !this.groups || this.groups.length === 0;
+      })
   }
 }
