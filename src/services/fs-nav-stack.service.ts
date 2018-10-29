@@ -1,4 +1,4 @@
-import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
@@ -10,27 +10,23 @@ import {
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter, map } from 'rxjs/operators';
 
-import { FsNavComponents, FsNavActions } from '../classes';
+import { FsNavComponents, FsNavActions, FsNavMenus } from '../classes';
 import { FsNavUpdatesService } from './fs-nav-updates.service';
-import { FsNavMenus } from '../classes/nav-menus';
 
 
 @Injectable()
 export class FsNavStackService {
 
-  public onActionsUpdated = new EventEmitter();
-
-  // public onStackReset = new EventEmitter();
-  public urlsStack: string[] = [];
-  public stopBackToUrls: any[] = [];
   public components = new FsNavComponents(this._navUpdates);
   public actions = new FsNavActions(this._navUpdates);
   public menus = new FsNavMenus(this._navUpdates);
 
+  private _urlsStack: string[] = [];
+  private _stopBackToUrls: any[] = [];
+
   private _activeRoutePath = new BehaviorSubject('');
-  private _isBackNavigated = false;
   private _lastOperationIsBack = false;
-  private _handlers: {[key: string]: DetachedRouteHandle} = {};
+  // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -60,17 +56,17 @@ export class FsNavStackService {
         filter((route) => route.outlet === 'primary')
       )
       .subscribe(this.setupActivatedRoute.bind(this));
-  }
+  }sou
 
   public setActiveUrlAsStop() {
-    if (this.stopBackToUrls.indexOf(this.activeRoutePath) === -1) {
-      this.stopBackToUrls.push(this.activeRoutePath);
+    if (this._stopBackToUrls.indexOf(this.activeRoutePath) === -1) {
+      this._stopBackToUrls.push(this.activeRoutePath);
     }
   }
 
   public addUrlToStack(url: string) {
-    if (this.urlsStack[this.urlsStack.length - 1] !== url) {
-      this.urlsStack.push(url);
+    if (this._urlsStack[this._urlsStack.length - 1] !== url) {
+      this._urlsStack.push(url);
     }
 
     this._lastOperationIsBack = false;
@@ -80,16 +76,16 @@ export class FsNavStackService {
    * Remove all information about stacked pages and handlers
    */
   public resetStack() {
-    for (const key in this._handlers) {
-      if (this._handlers.hasOwnProperty(key)) {
-        // Destroy component
-        this.deactivateOutlet(this._handlers[key])
-      }
-    }
-    this._handlers = {};
-    this.urlsStack.length = 0;
-    this._isBackNavigated = false;
-    this.onActionsUpdated.next();
+    // for (const key in this._handlers) {
+    //   if (this._handlers.hasOwnProperty(key)) {
+    //     // Destroy component
+    //     this.deactivateOutlet(this._handlers[key])
+    //   }
+    // }
+    // this._handlers = {};
+    this._urlsStack.length = 0;
+    // this._isBackNavigated = false;
+    // this.onActionsUpdated.next();
     // this.onStackReset.next(true);
   }
 
@@ -120,10 +116,10 @@ export class FsNavStackService {
     if (steps) {
       window.history.go(-steps);
     } else {
-      const prevUrl = this.urlsStack[this.urlsStack.length - 1];
+      const prevUrl = this._urlsStack[this._urlsStack.length - 1];
       const delta = this.backDelta(prevUrl, -1);
 
-      this.urlsStack.splice(delta, Math.abs(delta));
+      this._urlsStack.splice(delta, Math.abs(delta));
       window.history.go(delta);
     }
 
@@ -131,11 +127,11 @@ export class FsNavStackService {
   }
 
   private backDelta(prevUrl, delta) {
-    if (prevUrl && this.stopBackToUrls.length > 0) {
-      if (this.stopBackToUrls[this.stopBackToUrls.length - 1] === prevUrl) {
+    if (prevUrl && this._stopBackToUrls.length > 0) {
+      if (this._stopBackToUrls.indexOf(prevUrl) > -1) {
         delta -= 1;
 
-        return this.backDelta(this.urlsStack[this.urlsStack.length + delta], delta);
+        return this.backDelta(this._urlsStack[this._urlsStack.length + delta], delta);
       }
     }
 
@@ -160,29 +156,45 @@ export class FsNavStackService {
   }
 
   /**
-   * Destroy component
+   * Destroy component !!! DO NOT REMOVE !!!
    * @param {DetachedRouteHandle} handle
    */
-  private deactivateOutlet(handle: DetachedRouteHandle): void {
-    if (handle === null) { return; }
-    const componentRef: ComponentRef<any> = handle['componentRef'];
-    if (componentRef) {
-      componentRef.destroy()
-    }
-  }
+  // private deactivateOutlet(handle: DetachedRouteHandle): void {
+  //   if (handle === null) { return; }
+  //   const componentRef: ComponentRef<any> = handle['componentRef'];
+  //   if (componentRef) {
+  //     componentRef.destroy()
+  //   }
+  // }
 
-  private setupActivatedRoute(event) {
+  private setupActivatedRoute(route: ActivatedRoute) {
     this.components.clear();
     this.actions.clear();
     this.menus.clear();
 
     if (!this.lastOperationIsBack) {
       this.addUrlToStack(this.activeRoutePath);
-
     }
-    this.setActivePath(event.snapshot);
 
-    // const isRoot = event && event.data && (event.data as any).fsNavRoot;
-    // this.setIsRoot(isRoot);
+    this.setActivePath(route.snapshot);
+
+    const data = this.getRouteData(route.snapshot, 'fsNav');
+
+    if (data) {
+      // const isRoot = data.root || false; // TODO
+
+      if (data.history === false) {
+        this.setActiveUrlAsStop();
+      }
+    }
   }
+
+  private getRouteData(route: ActivatedRouteSnapshot, key: string = null) {
+    if (key) {
+      return route && route.data && route.data[key] || null;
+    } else {
+      return route && route.data || null;
+    }
+  }
+
 }
