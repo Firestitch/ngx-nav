@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
-  DetachedRouteHandle,
   NavigationEnd,
   Router
 } from '@angular/router';
@@ -26,6 +25,7 @@ export class FsNavStackService {
 
   private _activeRoutePath = new BehaviorSubject('');
   private _lastOperationIsBack = false;
+  private _browserBack = false;
   // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
 
   constructor(
@@ -34,6 +34,7 @@ export class FsNavStackService {
     private _navUpdates: FsNavUpdatesService,
   ) {
     this.subscribeToRouteChange();
+    this.subscribeToBrowserBack();
   }
 
   get activeRoutePath() {
@@ -44,6 +45,9 @@ export class FsNavStackService {
     return this._lastOperationIsBack;
   }
 
+  /**
+   * Important method that do subscribe to route changes and setup route
+   */
   public subscribeToRouteChange() {
     this._router.events
       .pipe(
@@ -56,14 +60,37 @@ export class FsNavStackService {
         filter((route) => route.outlet === 'primary')
       )
       .subscribe(this.setupActivatedRoute.bind(this));
-  }sou
+  }
 
+  /**
+   * Prevent default behaviour of browser back button
+   */
+  public subscribeToBrowserBack() {
+    window.addEventListener('popstate', () => {
+      if (!this._lastOperationIsBack) {
+        this._browserBack = true;
+
+        // Hack to prevent native back button
+        history.go(1);
+
+        this.goBack();
+      }
+    });
+  }
+
+  /**
+   * Set activated route as stop route. You will be unable to go back to this url
+   */
   public setActiveUrlAsStop() {
     if (this._stopBackToUrls.indexOf(this.activeRoutePath) === -1) {
       this._stopBackToUrls.push(this.activeRoutePath);
     }
   }
 
+  /**
+   * Add url to current urls stack
+   * @param url
+   */
   public addUrlToStack(url: string) {
     if (this._urlsStack[this._urlsStack.length - 1] !== url) {
       this._urlsStack.push(url);
@@ -82,11 +109,8 @@ export class FsNavStackService {
     //     this.deactivateOutlet(this._handlers[key])
     //   }
     // }
-    // this._handlers = {};
+
     this._urlsStack.length = 0;
-    // this._isBackNavigated = false;
-    // this.onActionsUpdated.next();
-    // this.onStackReset.next(true);
   }
 
   /**
@@ -96,6 +120,7 @@ export class FsNavStackService {
   public setActivePath(route: ActivatedRouteSnapshot) {
     this._activeRoutePath.next(this.getFullRoutePath(route));
     this._lastOperationIsBack = false;
+    this._browserBack = false;
   }
 
   /**
@@ -112,20 +137,35 @@ export class FsNavStackService {
     }
   }
 
+  /**
+   * Window history go back to N steps
+   * @param steps
+   */
   public goBack(steps = null) {
     if (steps) {
       window.history.go(-steps);
     } else {
+
       const prevUrl = this._urlsStack[this._urlsStack.length - 1];
-      const delta = this.backDelta(prevUrl, -1);
+      let delta = this.backDelta(prevUrl, -1);
 
       this._urlsStack.splice(delta, Math.abs(delta));
-      window.history.go(delta);
+
+      delta *= 2;
+
+      if (delta != 0) {
+        window.history.go(delta);
+      }
     }
 
     this._lastOperationIsBack = true;
   }
 
+  /**
+   * Method that counts number of steps to go back based on banned urls
+   * @param prevUrl
+   * @param delta
+   */
   private backDelta(prevUrl, delta) {
     if (prevUrl && this._stopBackToUrls.length > 0) {
       if (this._stopBackToUrls.indexOf(prevUrl) > -1) {
@@ -139,6 +179,11 @@ export class FsNavStackService {
 
   }
 
+  /**
+   * Support method for getFullRoutePath
+   * @param route
+   * @param path
+   */
   private getHeadPath(route: ActivatedRouteSnapshot, path = '') {
     if (route.parent !== null) {
       return this.getHeadPath(route.parent, path) + '/' + route.url.join('/');
@@ -147,6 +192,11 @@ export class FsNavStackService {
     }
   }
 
+  /**
+   * Support method for getFullRoutePath
+   * @param route
+   * @param path
+   */
   private getTailPath(route: ActivatedRouteSnapshot, path = '') {
     if (route.firstChild) {
       return `/${route.url.join('/')}/${this.getTailPath(route.firstChild, path)}`;
@@ -155,10 +205,10 @@ export class FsNavStackService {
     }
   }
 
-  /**
-   * Destroy component !!! DO NOT REMOVE !!!
-   * @param {DetachedRouteHandle} handle
-   */
+  // /**
+  //  * Destroy component !!! DO NOT REMOVE !!!
+  //  * @param {DetachedRouteHandle} handle
+  //  */
   // private deactivateOutlet(handle: DetachedRouteHandle): void {
   //   if (handle === null) { return; }
   //   const componentRef: ComponentRef<any> = handle['componentRef'];
@@ -167,6 +217,10 @@ export class FsNavStackService {
   //   }
   // }
 
+  /**
+   * Important method - do operations for setup activated route
+   * @param route
+   */
   private setupActivatedRoute(route: ActivatedRoute) {
     this.components.clear();
     this.actions.clear();
@@ -174,6 +228,9 @@ export class FsNavStackService {
 
     if (!this.lastOperationIsBack) {
       this.addUrlToStack(this.activeRoutePath);
+
+      // Hack to prevent native back button
+      history.pushState(null, null, location.href);
     }
 
     this.setActivePath(route.snapshot);
@@ -181,7 +238,9 @@ export class FsNavStackService {
     const data = this.getRouteData(route.snapshot, 'fsNav');
 
     if (data) {
-      // const isRoot = data.root || false; // TODO
+      if (data.root) {
+        this.resetStack();
+      }
 
       if (data.history === false) {
         this.setActiveUrlAsStop();
@@ -189,6 +248,11 @@ export class FsNavStackService {
     }
   }
 
+  /**
+   * Get route data from Activated route snapshot
+   * @param route
+   * @param key
+   */
   private getRouteData(route: ActivatedRouteSnapshot, key: string = null) {
     if (key) {
       return route && route.data && route.data[key] || null;
