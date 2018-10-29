@@ -6,7 +6,7 @@ import {
   Router
 } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { FsNavComponents, FsNavActions, FsNavMenus } from '../classes';
@@ -23,7 +23,7 @@ export class FsNavStackService {
   private _urlsStack: string[] = [];
   private _stopBackToUrls: any[] = [];
 
-  private _activeRoutePath = new BehaviorSubject('');
+  private _activeRoutePath = new BehaviorSubject(null);
   private _lastOperationIsBack = false;
   private _browserBack = false;
   // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
@@ -45,20 +45,19 @@ export class FsNavStackService {
     return this._lastOperationIsBack;
   }
 
+  get urlsStack() {
+    return this._urlsStack.slice();
+  }
+
+  get stackRouteChangeSubscription() {
+    return this.routeChangeSubscription();
+  }
+
   /**
    * Important method that do subscribe to route changes and setup route
    */
   public subscribeToRouteChange() {
-    this._router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        map(() => this._activatedRoute),
-        map((route) => {
-          while (route.firstChild) route = route.firstChild;
-          return route;
-        }),
-        filter((route) => route.outlet === 'primary')
-      )
+    this.routeChangeSubscription()
       .subscribe(this.setupActivatedRoute.bind(this));
   }
 
@@ -226,7 +225,7 @@ export class FsNavStackService {
     this.actions.clear();
     this.menus.clear();
 
-    if (!this.lastOperationIsBack) {
+    if (!this.lastOperationIsBack && this.activeRoutePath) {
       this.addUrlToStack(this.activeRoutePath);
 
       // Hack to prevent native back button
@@ -259,6 +258,22 @@ export class FsNavStackService {
     } else {
       return route && route.data || null;
     }
+  }
+
+  /**
+   * Subscription that used for listening routes change
+   */
+  private routeChangeSubscription() {
+    return this._router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this._activatedRoute),
+        map((route) => {
+          while (route.firstChild) route = route.firstChild;
+          return route;
+        }),
+        filter((route) => route.outlet === 'primary')
+      );
   }
 
 }

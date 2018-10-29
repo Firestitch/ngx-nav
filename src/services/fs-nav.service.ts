@@ -8,6 +8,14 @@ export class FsNavService {
 
   constructor(private _stack: FsNavStackService) {}
 
+  get urlsStack() {
+    return this._stack.urlsStack;
+  }
+
+  get routeChange() {
+    return this._stack.stackRouteChangeSubscription;
+  }
+
   /**
    * @param value { string }
    */

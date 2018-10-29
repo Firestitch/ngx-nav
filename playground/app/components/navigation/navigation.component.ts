@@ -12,14 +12,11 @@ export class NavigationComponent {
 
   public navRoutes = [];
   constructor(
-    public stack: FsNavService,
-    protected router: Router,
-    protected activatedRoute: ActivatedRoute) {
+    public stack: FsNavService
+  ) {
 
-      // this.sta.navRouteHandler.onRouteChange
-      //   .subscribe(() => {
-      //     this.navRoutes = clone(this.nav.navRouteHandler.navRoutes).reverse();
-      //     //this.navRoutes = this.nav.navRouteHandler.navRoutes;
-      //   });
+    this.stack.routeChange.subscribe(() => {
+      this.navRoutes = this.stack.urlsStack.reverse();
+    })
   }
 }

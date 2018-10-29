@@ -6,11 +6,11 @@ import { FsNavService } from '../../../../../src';
 })
 export class Workflow1Component implements OnInit {
 
-  constructor(public nav: FsNavService) {
-
-  }
+  constructor(public nav: FsNavService) {}
 
   public ngOnInit() {
+    console.log('workflow 1 init');
+
     this.nav.setTitle('Workflow 1');
   }
 }

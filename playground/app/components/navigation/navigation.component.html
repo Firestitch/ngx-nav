@@ -18,7 +18,7 @@
         <ng-container *ngFor="let navRoute of navRoutes; let index = index">
           <mat-list-item>
             <span class="index">{{navRoutes.length - 1 - index}}</span>
-            <a [routerLink]="navRoute.url">{{navRoute.url}}</a> <span *ngIf="navRoute.getData('fsNavIgnore')">(Ignore)</span>
+            <a [routerLink]="navRoute">{{navRoute}}</a>
           </mat-list-item>
         </ng-container>
       </mat-list>
