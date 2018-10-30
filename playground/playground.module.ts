@@ -68,7 +68,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,
-    FsExampleModule,
+    FsExampleModule.forRoot(),
     RouterModule.forRoot(appRoutes),
   ],
   entryComponents: [
