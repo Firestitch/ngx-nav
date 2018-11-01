@@ -167,7 +167,11 @@ export class FsNavStackService {
    */
   private backDelta(prevUrl, delta) {
     if (prevUrl && this._stopBackToUrls.length > 0) {
-      if (this._stopBackToUrls.indexOf(prevUrl) > -1) {
+      // In case when we do back between history: false pages - we need to go just back
+      if (
+        this._stopBackToUrls.indexOf(this.activeRoutePath) === -1 &&
+        this._stopBackToUrls.indexOf(prevUrl) > -1
+      ) {
         delta -= 1;
 
         return this.backDelta(this._urlsStack[this._urlsStack.length + delta], delta);
