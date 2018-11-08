@@ -116,7 +116,11 @@
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
     "webpack-merge": "^4.1.1",
     "webpack-node-externals": "^1.6.0",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "@firestitch/list": "^0.2.7",
+    "@firestitch/common": "^0.3.1",
+    "node-dir": "^0.1.17",
+    "rxjs-compat": "^6.3.3"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -126,9 +130,5 @@
     "tsmodels": ">=0.4.0",
     "zone.js": ">=0.8.4"
   },
-  "dependencies": {
-    "@firestitch/list": "^0.2.7",
-    "node-dir": "^0.1.17",
-    "rxjs-compat": "^6.3.3"
-  }
+  "dependencies": {}
 }
