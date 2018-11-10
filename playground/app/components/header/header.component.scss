@@ -23,9 +23,35 @@
   display: flex;
 }
 
+.back.root {
+  display: none;
+}
+
 
 .fs-nav-actions {
   flex-direction: row;
   display: flex;
   align-items: center;
+}
+
+::ng-deep {
+
+  .fs-nav-back {
+    margin-right: 10px;
+  }
+
+  .fs-nav-component-avatar {
+
+    margin-right: 10px;
+    display: flex;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+  }
+
+  .fs-nav-component-supertitle, .fs-nav-component-subtitle {
+    font-size: 12px;
+  }
 }

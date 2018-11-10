@@ -14,10 +14,10 @@ import {
   FsNavComponentComponent,
   FsNavSubTitleComponent,
   FsNavSuperTitleComponent,
-  FsNavMenuComponent
+  FsNavMenuComponent,
+  FsNavBackComponent
 } from './components';
 
-import { FsNavBackDirective } from './directives';
 import { FsNavService, FsNavStackService } from './services';
 import { FsNavUpdatesService } from './services';
 
@@ -37,7 +37,7 @@ import { FsNavUpdatesService } from './services';
     FsNavSubTitleComponent,
     FsNavActionsComponent,
     FsNavComponentComponent,
-    FsNavBackDirective,
+    FsNavBackComponent,
     FsNavMenuComponent,
   ],
   entryComponents: [
@@ -49,7 +49,7 @@ import { FsNavUpdatesService } from './services';
     FsNavActionsComponent,
     FsNavComponentComponent,
     FsNavMenuComponent,
-    FsNavBackDirective
+    FsNavBackComponent
   ],
 })
 export class FsNavModule {

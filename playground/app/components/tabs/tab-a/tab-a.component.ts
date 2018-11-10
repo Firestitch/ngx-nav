@@ -51,7 +51,7 @@ export class TabAComponent implements OnInit, OnDestroy {
       ]
     );
 
-    this.nav.setMenuIcon('share', 'Share');
+    this.nav.setMenuIcon('share', 'share');
 
     this.nav.setMenuActions(
       'share',

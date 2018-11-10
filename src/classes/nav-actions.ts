@@ -46,7 +46,7 @@ export class FsNavActions {
    * @param name { string }
    */
   public showAction(name: string) {
-    this._navUpdates.showAction(name);
+    this._navUpdates.showComponent(name);
   }
 
   /**
@@ -54,7 +54,7 @@ export class FsNavActions {
    * @param name { string }
    */
   public hideAction(name: string) {
-    this._navUpdates.hideAction(name);
+    this._navUpdates.hideComponent(name);
   }
 
   /**

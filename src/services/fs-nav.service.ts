@@ -20,21 +20,21 @@ export class FsNavService {
    * @param value { string }
    */
   public setTitle(value: string) {
-    this.component('title', value);
+    this.setComponent('title', value);
   }
 
   /**
    * @param value { string }
    */
   public setSuperTitle(value: string) {
-    this.component('supertitle', value);
+    this.setComponent('supertitle', value);
   }
 
   /**
    * @param value { string }
    */
   public setSubTitle(value: string) {
-    this.component('subtitle', value);
+    this.setComponent('subtitle', value);
   }
 
   /**
@@ -142,7 +142,7 @@ export class FsNavService {
    * @param value
    * @param permanent { boolean } - do not clear component value when url changed
    */
-  public component(name, value, permanent: boolean = null) {
+  public setComponent(name, value, permanent: boolean = null) {
     this._stack.components.setComponentValue(name, value, permanent);
   }
 

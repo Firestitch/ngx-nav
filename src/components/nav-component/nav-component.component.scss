@@ -1,3 +1,4 @@
-:host-context(.hidden) {
+:host-context(.hidden),
+:host-context(.empty) {
   display: none
 }

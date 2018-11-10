@@ -11,6 +11,6 @@ export class MenuAComponent implements OnInit {
 
   ngOnInit() {
     this.nav.setTitle('Menu A');
-    this.nav.component('avatar', 'test');
+    this.nav.setComponent('avatar', '/assets/avatar.png');
   }
 }

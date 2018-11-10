@@ -52,9 +52,10 @@ export class FsNavComponents {
    * Clear all components
    */
   public clear() {
-    this._components.forEach((component) => {
+    this._components.forEach((component,name) => {
       if (!component.permanent) {
         component.clear();
+        this._navUpdates.clearComponent(name);
       }
     })
   }

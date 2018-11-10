@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 
 import { FsNavComponentComponent } from '../nav-component';
-import { FsNavUpdatesService } from '../../services';
+import { FsNavUpdatesService, FsNavStackService } from '../../services';
 
 
 @Component({
@@ -13,10 +13,11 @@ export class FsNavSuperTitleComponent extends FsNavComponentComponent {
 
   constructor (
     navUpdates: FsNavUpdatesService,
+    navStack: FsNavStackService,
     elementRef: ElementRef,
     renderer: Renderer2
   ) {
-    super(navUpdates, elementRef, renderer);
+    super(navUpdates, navStack, elementRef, renderer);
 
     this.componentName = 'supertitle';
   }

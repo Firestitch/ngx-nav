@@ -43,14 +43,6 @@ export class FsNavUpdatesService {
     this.update(FsNavUpdateTarget.button, FsNavUpdateType.update, name, value);
   }
 
-  public showAction(name) {
-    this.update(FsNavUpdateTarget.button, FsNavUpdateType.show, name);
-  }
-
-  public hideAction(name) {
-    this.update(FsNavUpdateTarget.button, FsNavUpdateType.hide, name);
-  }
-
   public updateMenu(name, value) {
     this.update(FsNavUpdateTarget.menu, FsNavUpdateType.update, name, value);
   }
@@ -67,12 +59,12 @@ export class FsNavUpdatesService {
     this.update(FsNavUpdateTarget.menu, FsNavUpdateType.clear, name, value);
   }
 
-  public componentUpdated$(name, destroy = null) {
-    return this.onUpdate(FsNavUpdateTarget.component, name, destroy);
+  public clearComponent(name) {
+    this.update(FsNavUpdateTarget.component, FsNavUpdateType.clear, name, null);
   }
 
-  public actionUpdated$(name, destroy = null) {
-    return this.onUpdate(FsNavUpdateTarget.button, name, destroy);
+  public componentUpdated$(name, destroy = null) {
+    return this.onUpdate(FsNavUpdateTarget.component, name, destroy);
   }
 
   public menuUpdated$(name, destroy = null) {
@@ -94,8 +86,7 @@ export class FsNavUpdatesService {
     const updater = this._updated.pipe(
       filter(
         (event: any) => {
-          return event.target === target
-            && (event.payload.name === name || event.payload.name === '__all__');
+          return (event.payload.name === name || event.payload.name === '__all__');
         }
       ),
       map((event: any) => {

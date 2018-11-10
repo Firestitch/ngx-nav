@@ -23,7 +23,7 @@ export class FsNavStackService {
   private _urlsStack: string[] = [];
   private _stopBackToUrls: any[] = [];
 
-  private _activeRoutePath = new BehaviorSubject(null);
+  private _activeRoute = new BehaviorSubject(null);
   private _lastOperationIsBack = false;
   private _browserBack = false;
   // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
@@ -37,8 +37,12 @@ export class FsNavStackService {
     this.subscribeToBrowserBack();
   }
 
-  get activeRoutePath() {
-    return this._activeRoutePath.getValue();
+  get activeRoute() {
+    return this._activeRoute.getValue() || {};
+  }
+
+  get activeRouteObservable() {
+    return this._activeRoute.asObservable();
   }
 
   get lastOperationIsBack() {
@@ -81,8 +85,8 @@ export class FsNavStackService {
    * Set activated route as stop route. You will be unable to go back to this url
    */
   public setActiveUrlAsStop() {
-    if (this._stopBackToUrls.indexOf(this.activeRoutePath) === -1) {
-      this._stopBackToUrls.push(this.activeRoutePath);
+    if (this._stopBackToUrls.indexOf(this.activeRoute.path) === -1) {
+      this._stopBackToUrls.push(this.activeRoute.path);
     }
   }
 
@@ -116,8 +120,8 @@ export class FsNavStackService {
    * Set active route path based on passed route path
    * @param {ActivatedRouteSnapshot} route
    */
-  public setActivePath(route: ActivatedRouteSnapshot) {
-    this._activeRoutePath.next(this.getFullRoutePath(route));
+  public setActiveRoute(route: ActivatedRouteSnapshot, data) {
+    this._activeRoute.next({ path: this.getFullRoutePath(route), data: data });
     this._lastOperationIsBack = false;
     this._browserBack = false;
   }
@@ -128,7 +132,7 @@ export class FsNavStackService {
    * @param {string} path
    * @returns {string}
    */
-  public getFullRoutePath(route: ActivatedRouteSnapshot, path = '') {
+  public getFullRoutePath(route: ActivatedRouteSnapshot) {
     if (route.firstChild) {
       return this.getTailPath(route);
     } else {
@@ -169,7 +173,7 @@ export class FsNavStackService {
     if (prevUrl && this._stopBackToUrls.length > 0) {
       // In case when we do back between history: false pages - we need to go just back
       if (
-        this._stopBackToUrls.indexOf(this.activeRoutePath) === -1 &&
+        this._stopBackToUrls.indexOf(this.activeRoute.path) === -1 &&
         this._stopBackToUrls.indexOf(prevUrl) > -1
       ) {
         delta -= 1;
@@ -229,25 +233,24 @@ export class FsNavStackService {
     this.actions.clear();
     this.menus.clear();
 
-    if (!this.lastOperationIsBack && this.activeRoutePath) {
-      this.addUrlToStack(this.activeRoutePath);
+    if (!this.lastOperationIsBack && this.activeRoute.path) {
+      this.addUrlToStack(this.activeRoute.path);
 
       // Hack to prevent native back button
       history.pushState(null, null, location.href);
     }
 
-    this.setActivePath(route.snapshot);
+    const data = Object.assign( { root: false, history: true },
+                                this.getRouteData(route.snapshot, 'fsNav'));
 
-    const data = this.getRouteData(route.snapshot, 'fsNav');
+    this.setActiveRoute(route.snapshot, data);
 
-    if (data) {
-      if (data.root) {
-        this.resetStack();
-      }
+    if (data.root === true) {
+      this.resetStack();
+    }
 
-      if (data.history === false) {
-        this.setActiveUrlAsStop();
-      }
+    if (data.history === false) {
+      this.setActiveUrlAsStop();
     }
   }
 

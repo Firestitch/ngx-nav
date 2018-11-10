@@ -19,8 +19,8 @@ export class TabCComponent implements OnInit, OnDestroy {
     this.nav.setActions('right', [
       {
         label: 'My Link',
-        icon: 'menu',
-        url: '/tabs/data-inputs'
+        icon: 'link',
+        url: '/tabs/a'
       },
       {
         type: NavActionType.basic,
