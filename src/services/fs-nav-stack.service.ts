@@ -6,7 +6,7 @@ import {
   Router
 } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { FsNavComponents, FsNavActions, FsNavMenus } from '../classes';
@@ -41,7 +41,7 @@ export class FsNavStackService {
     return this._activeRoute.getValue() || {};
   }
 
-  get activeRouteObservable() {
+  get activeRouteObservable(): Observable<any> {
     return this._activeRoute.asObservable();
   }
 
@@ -53,7 +53,7 @@ export class FsNavStackService {
     return this._urlsStack.slice();
   }
 
-  get stackRouteChangeSubscription() {
+  get stackRouteChangeSubscription(): Observable<any> {
     return this.routeChangeSubscription();
   }
 
@@ -270,7 +270,7 @@ export class FsNavStackService {
   /**
    * Subscription that used for listening routes change
    */
-  private routeChangeSubscription() {
+  private routeChangeSubscription(): Observable<any> {
     return this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

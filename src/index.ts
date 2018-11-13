@@ -1,8 +1,8 @@
 export {
   FsNavActionsComponent,
   FsNavComponentComponent,
-  FsNavSubTitleComponent,
-  FsNavSuperTitleComponent,
+  FsNavSubtitleComponent,
+  FsNavSupertitleComponent,
   FsNavTitleComponent,
   FsNavMenuComponent,
 } from './components';

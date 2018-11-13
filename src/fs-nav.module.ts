@@ -12,8 +12,8 @@ import {
   FsNavTitleComponent,
   FsNavActionsComponent,
   FsNavComponentComponent,
-  FsNavSubTitleComponent,
-  FsNavSuperTitleComponent,
+  FsNavSubtitleComponent,
+  FsNavSupertitleComponent,
   FsNavMenuComponent,
   FsNavBackComponent
 } from './components';
@@ -33,8 +33,8 @@ import { FsNavUpdatesService } from './services';
   ],
   exports: [
     FsNavTitleComponent,
-    FsNavSuperTitleComponent,
-    FsNavSubTitleComponent,
+    FsNavSubtitleComponent,
+    FsNavSupertitleComponent,
     FsNavActionsComponent,
     FsNavComponentComponent,
     FsNavBackComponent,
@@ -44,8 +44,8 @@ import { FsNavUpdatesService } from './services';
   ],
   declarations: [
     FsNavTitleComponent,
-    FsNavSuperTitleComponent,
-    FsNavSubTitleComponent,
+    FsNavSupertitleComponent,
+    FsNavSubtitleComponent,
     FsNavActionsComponent,
     FsNavComponentComponent,
     FsNavMenuComponent,

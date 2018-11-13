@@ -1,7 +1,7 @@
 {
   "name": "@firestitch/nav",
   "description": "@firestitch/nav",
-  "version": "0.1.22",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/fs-nav"
@@ -109,7 +109,7 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "tsmodels": "^0.4.6",
-    "typescript": "^2.9.2",
+    "typescript": "^2.7.2",
     "ucfirst": "^1.0.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.0",

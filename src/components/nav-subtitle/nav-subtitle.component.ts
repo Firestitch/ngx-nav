@@ -1,15 +1,17 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2, HostBinding } from '@angular/core';
 
 import { FsNavComponentComponent } from '../nav-component';
 import { FsNavUpdatesService, FsNavStackService } from '../../services';
 
 
 @Component({
-  selector: '[fsNavSubTitle]',
+  selector: '[fsNavSubtitle]',
   templateUrl: '../nav-component/nav-component.component.html',
   styleUrls: ['../nav-component/nav-component.component.scss']
 })
-export class FsNavSubTitleComponent extends FsNavComponentComponent {
+export class FsNavSubtitleComponent extends FsNavComponentComponent {
+
+  @HostBinding('class.fs-nav-subtitle') public subtitleClass = true;
 
   constructor (
     navUpdates: FsNavUpdatesService,

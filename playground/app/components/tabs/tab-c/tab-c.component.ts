@@ -13,7 +13,7 @@ export class TabCComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.nav.setTitles('Tab C', 'Tab C Super Title', 'Tab C Subtile');
+    this.nav.setTitle('Tab C', 'Tab C Super Title', 'Tab C Subtile');
 
 
     this.nav.setActions('right', [

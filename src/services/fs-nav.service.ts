@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FsNavStackService } from './fs-nav-stack.service';
 import { UrlInfoAction } from '../interfaces';
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -12,28 +13,21 @@ export class FsNavService {
     return this._stack.urlsStack;
   }
 
-  get routeChange() {
+  get routeChange(): Observable<any> {
     return this._stack.stackRouteChangeSubscription;
   }
 
   /**
    * @param value { string }
    */
-  public setTitle(value: string) {
-    this.setComponent('title', value);
-  }
-
-  /**
-   * @param value { string }
-   */
-  public setSuperTitle(value: string) {
+  public setSupertitle(value: string) {
     this.setComponent('supertitle', value);
   }
 
   /**
    * @param value { string }
    */
-  public setSubTitle(value: string) {
+  public setSubtitle(value: string) {
     this.setComponent('subtitle', value);
   }
 
@@ -43,17 +37,17 @@ export class FsNavService {
    * @param supertitle { string }
    * @param subtitle { string }
    */
-  public setTitles(title: string, supertitle?: string, subtitle?: string ) {
+  public setTitle(title: string, supertitle?: string, subtitle?: string ) {
     if (title) {
-      this.setTitle(title);
+      this.setComponent('title', title);
     }
 
     if (supertitle) {
-      this.setSuperTitle(supertitle);
+      this.setSupertitle(supertitle);
     }
 
     if (subtitle) {
-      this.setSubTitle(subtitle);
+      this.setSubtitle(subtitle);
     }
   }
 
