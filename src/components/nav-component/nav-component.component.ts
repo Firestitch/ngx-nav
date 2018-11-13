@@ -28,7 +28,7 @@ export class FsNavComponentComponent implements OnInit, OnDestroy {
   @HostBinding('class.empty') public empty = true;
   @HostBinding('class.root') public root = false;
 
-  public value: NavComponent | Array<NavAction>;
+  public value: any;
   public actions = [];
   protected _activeRouteSubscription: Subscription;
   protected _destroy = new EventEmitter();
