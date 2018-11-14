@@ -3,20 +3,22 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { NavUpdated } from '../interfaces';
+import { NavStackItem, NavUpdated } from '../interfaces';
 
 
 export enum FsNavUpdateType {
+  data = 'data',
   update = 'update',
   clear = 'clear',
   show = 'show',
-  hide = 'hide'
+  hide = 'hide',
 }
 
 enum FsNavUpdateTarget {
+  all = '__all__',
   component = 'component',
   menu = 'menu',
-  button = 'button'
+  button = 'button',
 }
 
 
@@ -26,6 +28,10 @@ export class FsNavUpdatesService {
   private _updated = new EventEmitter();
 
   constructor() {}
+
+  public updateRouteData(data: NavStackItem) {
+    this.update(FsNavUpdateTarget.all, FsNavUpdateType.data, '__all__', data);
+  }
 
   public updateComponent(name, value) {
     this.update(FsNavUpdateTarget.component, FsNavUpdateType.update, name, value);
@@ -37,6 +43,10 @@ export class FsNavUpdatesService {
 
   public hideComponent(name) {
     this.update(FsNavUpdateTarget.component, FsNavUpdateType.hide, name);
+  }
+
+  public clearComponent(name) {
+    this.update(FsNavUpdateTarget.component, FsNavUpdateType.clear, name, null);
   }
 
   public updateButton(name, value) {
@@ -57,10 +67,6 @@ export class FsNavUpdatesService {
 
   public clearMenu(name, value) {
     this.update(FsNavUpdateTarget.menu, FsNavUpdateType.clear, name, value);
-  }
-
-  public clearComponent(name) {
-    this.update(FsNavUpdateTarget.component, FsNavUpdateType.clear, name, null);
   }
 
   public componentUpdated$(name, destroy = null) {

@@ -18,7 +18,8 @@
         <ng-container *ngFor="let navRoute of navRoutes; let index = index">
           <mat-list-item>
             <span class="index">{{navRoutes.length - 1 - index}}</span>
-            <a [routerLink]="navRoute">{{navRoute}}</a>
+            <a [routerLink]="navRoute.path">{{navRoute.path}}</a>
+            <div class="route-data"> {{ navRoute.data | json }} </div>
           </mat-list-item>
         </ng-container>
       </mat-list>

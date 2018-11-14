@@ -9,6 +9,23 @@
 
 .page-stack {
   width: 300px;
+
+  .route-data {
+    flex: 0 0 100%;
+    margin: 0 10px;
+
+    font-size: 12px;
+    color: #000;
+    opacity: 0.4;
+  }
+}
+
+::ng-deep {
+  mat-list-item {
+    .mat-list-item-content {
+      flex-wrap: wrap;
+    }
+  }
 }
 
 .container {

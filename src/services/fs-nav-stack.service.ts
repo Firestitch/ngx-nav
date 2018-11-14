@@ -11,6 +11,7 @@ import { filter, map } from 'rxjs/operators';
 
 import { FsNavComponents, FsNavActions, FsNavMenus } from '../classes';
 import { FsNavUpdatesService } from './fs-nav-updates.service';
+import { NavStackItem } from '../interfaces';
 
 
 @Injectable()
@@ -20,10 +21,10 @@ export class FsNavStackService {
   public actions = new FsNavActions(this._navUpdates);
   public menus = new FsNavMenus(this._navUpdates);
 
-  private _urlsStack: string[] = [];
+  private _urlsStack: NavStackItem[] = [];
   private _stopBackToUrls: any[] = [];
 
-  private _activeRoute = new BehaviorSubject(null);
+  private _activeRoute = new BehaviorSubject<NavStackItem>({});
   private _lastOperationIsBack = false;
   private _browserBack = false;
   // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
@@ -37,12 +38,8 @@ export class FsNavStackService {
     this.subscribeToBrowserBack();
   }
 
-  get activeRoute() {
-    return this._activeRoute.getValue() || {};
-  }
-
-  get activeRouteObservable(): Observable<any> {
-    return this._activeRoute.asObservable();
+  get activeRoute(): NavStackItem {
+    return this._activeRoute.getValue();
   }
 
   get lastOperationIsBack() {
@@ -92,11 +89,12 @@ export class FsNavStackService {
 
   /**
    * Add url to current urls stack
-   * @param url
+   * @param item
    */
-  public addUrlToStack(url: string) {
-    if (this._urlsStack[this._urlsStack.length - 1] !== url) {
-      this._urlsStack.push(url);
+  public addUrlToStack(item: NavStackItem) {
+    const lastStackItem = this._urlsStack[this._urlsStack.length - 1];
+    if (!lastStackItem || lastStackItem.path !== item.path) {
+      this._urlsStack.push(item);
     }
 
     this._lastOperationIsBack = false;
@@ -119,8 +117,9 @@ export class FsNavStackService {
   /**
    * Set active route path based on passed route path
    * @param {ActivatedRouteSnapshot} route
+   * @param {any} data
    */
-  public setActiveRoute(route: ActivatedRouteSnapshot, data) {
+  public setActiveRoute(route: ActivatedRouteSnapshot, data: any) {
     this._activeRoute.next({ path: this.getFullRoutePath(route), data: data });
     this._lastOperationIsBack = false;
     this._browserBack = false;
@@ -129,7 +128,6 @@ export class FsNavStackService {
   /**
    * Recursevly get full path for route
    * @param {ActivatedRouteSnapshot} route
-   * @param {string} path
    * @returns {string}
    */
   public getFullRoutePath(route: ActivatedRouteSnapshot) {
@@ -149,8 +147,8 @@ export class FsNavStackService {
       window.history.go(-steps);
     } else {
 
-      const prevUrl = this._urlsStack[this._urlsStack.length - 1];
-      let delta = this.backDelta(prevUrl, -1);
+      const prevItem = this._urlsStack[this._urlsStack.length - 1];
+      let delta = this.backDelta(prevItem, -1);
 
       this._urlsStack.splice(delta, Math.abs(delta));
 
@@ -166,15 +164,15 @@ export class FsNavStackService {
 
   /**
    * Method that counts number of steps to go back based on banned urls
-   * @param prevUrl
+   * @param prevStackItem
    * @param delta
    */
-  private backDelta(prevUrl, delta) {
-    if (prevUrl && this._stopBackToUrls.length > 0) {
+  private backDelta(prevStackItem: NavStackItem, delta) {
+    if (prevStackItem && this._stopBackToUrls.length > 0) {
       // In case when we do back between history: false pages - we need to go just back
       if (
         this._stopBackToUrls.indexOf(this.activeRoute.path) === -1 &&
-        this._stopBackToUrls.indexOf(prevUrl) > -1
+        this._stopBackToUrls.indexOf(prevStackItem.path) > -1
       ) {
         delta -= 1;
 
@@ -234,16 +232,19 @@ export class FsNavStackService {
     this.menus.clear();
 
     if (!this.lastOperationIsBack && this.activeRoute.path) {
-      this.addUrlToStack(this.activeRoute.path);
+      this.addUrlToStack(this.activeRoute);
 
       // Hack to prevent native back button
       history.pushState(null, null, location.href);
     }
 
-    const data = Object.assign( { root: false, history: true },
-                                this.getRouteData(route.snapshot, 'fsNav'));
+    const data = Object.assign(
+      { root: false, history: true },
+      this.getRouteData(route.snapshot, 'fsNav')
+    );
 
     this.setActiveRoute(route.snapshot, data);
+    this._navUpdates.updateRouteData(data);
 
     if (data.root === true) {
       this.resetStack();
