@@ -32,6 +32,9 @@ export class TabCComponent implements OnInit, OnDestroy {
         }
       }
     ]);
+
+
+    this.nav.hideComponent('title');
   }
 
   public ngOnDestroy() {

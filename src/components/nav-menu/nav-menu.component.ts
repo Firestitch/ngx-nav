@@ -1,16 +1,18 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
   HostBinding,
   Input,
-  OnDestroy,
-  OnInit,
   Renderer2,
 } from '@angular/core';
 
-import { FsNavUpdatesService, FsNavUpdateType } from '../../services';
+import {
+  FsNavStackService,
+  FsNavUpdatesService,
+  FsNavUpdateTarget,
+} from '../../services';
 import { NavAction, NavDropDownMenu } from '../../models';
+import { FsNavBaseComponent } from '../nav-base';
 
 
 @Component({
@@ -18,68 +20,54 @@ import { NavAction, NavDropDownMenu } from '../../models';
   templateUrl: 'nav-menu.component.html',
   styleUrls: [ 'nav-menu.component.scss' ]
 })
-export class FsNavMenuComponent implements OnInit, OnDestroy {
+export class FsNavMenuComponent extends FsNavBaseComponent {
 
-  @Input('fsNavMenu') public menuName: string;
+  @Input('fsNavMenu')
+  set menuName(value) {
+    this._name = value;
+  };
 
-  @HostBinding('hidden') public hidden = false;
   @HostBinding('class.fs-nav-menu') public selfClass = true;
 
   public menu: NavDropDownMenu = null;
   public groups: string[] = [];
   public actions: Map<string, NavAction[]> = new Map();
 
-  private _destroy$ = new EventEmitter();
+  protected _type = FsNavUpdateTarget.menu;
 
   constructor(
-    private _elementRef: ElementRef,
-    private _navUpdaes: FsNavUpdatesService,
-    private _renderer: Renderer2
-  ) {}
+    navUpdates: FsNavUpdatesService,
+    navStack: FsNavStackService,
+    protected _elementRef: ElementRef,
+    protected _renderer: Renderer2
+  ) {
+    super(navUpdates, navStack, _elementRef, _renderer);
+  }
 
-  public ngOnInit() {
-    this._renderer.addClass(
-      this._elementRef.nativeElement,
-      'fs-nav-menu-' + this.menuName
+  protected setSelfClass() {
+    this.renderer.addClass(
+      this.elementRef.nativeElement,
+      'fs-nav-menu-' + this._name
     );
-
-    this.subscriptions();
   }
 
-  public ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+  protected subscriptions() {
+    this.navUpdates.menuUpdated$(this._name, this._destroy)
+      .subscribe((payload) => this.payloadUpdated(payload));
   }
 
-  private subscriptions() {
-    this._navUpdaes.menuUpdated$(this.menuName, this._destroy$)
-      .subscribe((payload) => {
+  protected updated(payload) {
+    this.menu = payload.value;
 
-        switch (payload.type) {
-          case FsNavUpdateType.update: {
-            this.menu = payload.value;
+    if (this.menu) {
+      this.groups = Array.from(this.menu.groups.keys());
+      this.actions = this.menu.groups;
+    }
+  }
 
-            if (this.menu) {
-              this.groups = Array.from(this.menu.groups.keys());
-              this.actions = this.menu.groups;
-            }
-          } break;
-
-          case FsNavUpdateType.clear: {
-            this.menu = null;
-            this.groups.length = 0;
-            this.actions.clear();
-
-          } break;
-
-          case FsNavUpdateType.show: {
-            this.hidden = false;
-          } break;
-
-          case FsNavUpdateType.hide: {
-            this.hidden = true;
-          } break;
-        }
-      })
+  protected updatedClear() {
+    this.menu = null;
+    this.groups.length = 0;
+    this.actions.clear();
   }
 }

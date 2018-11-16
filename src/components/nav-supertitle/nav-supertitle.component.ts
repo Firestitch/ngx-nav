@@ -1,17 +1,19 @@
 import { Component, ElementRef, Renderer2, HostBinding } from '@angular/core';
 
-import { FsNavComponentComponent } from '../nav-component';
-import { FsNavUpdatesService, FsNavStackService } from '../../services';
+import { FsNavBaseComponent } from '../nav-base';
+import { FsNavUpdatesService, FsNavStackService, FsNavUpdateTarget } from '../../services';
 
 
 @Component({
   selector: '[fsNavSupertitle]',
-  templateUrl: '../nav-component/nav-component.component.html',
-  styleUrls: ['../nav-component/nav-component.component.scss']
+  templateUrl: '../nav-base/nav-base.component.html',
+  styleUrls: ['../nav-base/nav-base.component.scss']
 })
-export class FsNavSupertitleComponent extends FsNavComponentComponent {
+export class FsNavSupertitleComponent extends FsNavBaseComponent {
 
   @HostBinding('class.fs-nav-supertitle') public subtitleClass = true;
+
+  protected _type = FsNavUpdateTarget.component;
 
   constructor (
     navUpdates: FsNavUpdatesService,
@@ -20,6 +22,7 @@ export class FsNavSupertitleComponent extends FsNavComponentComponent {
     renderer: Renderer2
   ) {
     super(navUpdates, navStack, elementRef, renderer);
-    this.componentName = 'supertitle';
+
+    this._name = 'supertitle';
   }
 }

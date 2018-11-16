@@ -1,7 +1,7 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 import { NavStackItem, NavUpdated } from '../interfaces';
 
@@ -14,18 +14,18 @@ export enum FsNavUpdateType {
   hide = 'hide',
 }
 
-enum FsNavUpdateTarget {
+export enum FsNavUpdateTarget {
   all = '__all__',
   component = 'component',
   menu = 'menu',
-  button = 'button',
+  actions = 'actions',
 }
 
 
 @Injectable()
 export class FsNavUpdatesService {
 
-  private _updated = new EventEmitter();
+  private _updated = new ReplaySubject(Infinity, 50);
 
   constructor() {}
 
@@ -49,8 +49,8 @@ export class FsNavUpdatesService {
     this.update(FsNavUpdateTarget.component, FsNavUpdateType.clear, name, null);
   }
 
-  public updateButton(name, value) {
-    this.update(FsNavUpdateTarget.button, FsNavUpdateType.update, name, value);
+  public updateAction(name, value) {
+    this.update(FsNavUpdateTarget.actions, FsNavUpdateType.update, name, value);
   }
 
   public updateMenu(name, value) {
@@ -73,12 +73,16 @@ export class FsNavUpdatesService {
     return this.onUpdate(FsNavUpdateTarget.component, name, destroy);
   }
 
+  public actionUpdated$(name, destroy = null) {
+    return this.onUpdate(FsNavUpdateTarget.actions, name, destroy);
+  }
+
   public menuUpdated$(name, destroy = null) {
     return this.onUpdate(FsNavUpdateTarget.menu, name, destroy);
   }
 
   private update(target: FsNavUpdateTarget, type: FsNavUpdateType, name: string, value: any = null) {
-    this._updated.emit({
+    this._updated.next({
       target,
       payload: {
         name,
@@ -92,7 +96,8 @@ export class FsNavUpdatesService {
     const updater = this._updated.pipe(
       filter(
         (event: any) => {
-          return (event.payload.name === name || event.payload.name === '__all__');
+          return (event.target === target || event.target == FsNavUpdateTarget.all)
+            && (event.payload.name === name || event.payload.name === '__all__');
         }
       ),
       map((event: any) => {

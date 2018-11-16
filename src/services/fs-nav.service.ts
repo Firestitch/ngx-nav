@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FsNavStackService } from './fs-nav-stack.service';
-import { UrlInfoAction } from '../interfaces';
+import { NavStackItem, UrlInfoAction } from '../interfaces';
 import { Observable } from 'rxjs';
 
 
@@ -9,7 +9,7 @@ export class FsNavService {
 
   constructor(private _stack: FsNavStackService) {}
 
-  get urlsStack() {
+  get urlsStack(): NavStackItem[] {
     return this._stack.urlsStack;
   }
 

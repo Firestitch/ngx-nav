@@ -1,7 +1,7 @@
 import { HostBinding, HostListener, Component, ElementRef, Renderer2 } from '@angular/core';
 
-import { FsNavStackService, FsNavUpdatesService } from '../../services';
-import { FsNavComponentComponent } from './../nav-component/nav-component.component';
+import { FsNavStackService, FsNavUpdatesService, FsNavUpdateTarget } from '../../services';
+import { FsNavBaseComponent } from '../nav-base';
 
 
 @Component({
@@ -9,9 +9,11 @@ import { FsNavComponentComponent } from './../nav-component/nav-component.compon
   template: '<ng-content></ng-content>',
   styles: ['']
 })
-export class FsNavBackComponent extends FsNavComponentComponent {
+export class FsNavBackComponent extends FsNavBaseComponent {
 
   @HostBinding('class.fs-nav-back') public selfClass = true;
+
+  protected _type = FsNavUpdateTarget.component;
 
   constructor (
     navUpdates: FsNavUpdatesService,
@@ -20,7 +22,7 @@ export class FsNavBackComponent extends FsNavComponentComponent {
     renderer: Renderer2
   ) {
     super(navUpdates, navStack, elementRef, renderer);
-    this.componentName = 'back';
+    this._name = 'back';
   }
 
   @HostListener('click', ['$event'])

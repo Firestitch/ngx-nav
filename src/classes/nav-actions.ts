@@ -25,7 +25,7 @@ export class FsNavActions {
     const elementAction = new NavAction(action);
     element.push(elementAction);
 
-    this._navUpdates.updateButton(name, element);
+    this._navUpdates.updateAction(name, element);
   }
 
   /**
