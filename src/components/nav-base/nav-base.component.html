@@ -1,2 +1,2 @@
-<img [src]="value?.value" *ngIf="type=='image' && value?.value; else elseText">
+<img [src]="value?.value" *ngIf="contentType=='image' && value?.value; else elseText">
 <ng-template #elseText>{{ value?.value }}</ng-template>

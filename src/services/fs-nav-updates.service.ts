@@ -25,7 +25,7 @@ export enum FsNavUpdateTarget {
 @Injectable()
 export class FsNavUpdatesService {
 
-  private _updated = new ReplaySubject(Infinity, 50);
+  private _updated = new ReplaySubject(Infinity, 200);
 
   constructor() {}
 

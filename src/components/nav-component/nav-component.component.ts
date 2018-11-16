@@ -16,6 +16,8 @@ import { FsNavUpdatesService, FsNavStackService, FsNavUpdateTarget } from '../..
 })
 export class FsNavComponentComponent extends FsNavBaseComponent {
 
+  @Input('type') public contentType;
+
   @Input('fsNavComponent')
   set name(value) {
     this._name = value;
