@@ -1,3 +1,4 @@
+export * from './nav-base';
 export * from './nav-title';
 export * from './nav-subtitle';
 export * from './nav-supertitle';

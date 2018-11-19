@@ -9,13 +9,14 @@ import {
 } from '@angular/material';
 
 import {
+  FsNavBaseComponent,
   FsNavTitleComponent,
   FsNavActionsComponent,
   FsNavComponentComponent,
   FsNavSubtitleComponent,
   FsNavSupertitleComponent,
   FsNavMenuComponent,
-  FsNavBackComponent
+  FsNavBackComponent,
 } from './components';
 
 import { FsNavService, FsNavStackService } from './services';
@@ -43,13 +44,15 @@ import { FsNavUpdatesService } from './services';
   entryComponents: [
   ],
   declarations: [
+    FsNavBaseComponent,
     FsNavTitleComponent,
     FsNavSupertitleComponent,
     FsNavSubtitleComponent,
     FsNavActionsComponent,
     FsNavComponentComponent,
     FsNavMenuComponent,
-    FsNavBackComponent
+    FsNavBackComponent,
+    FsNavBaseComponent,
   ],
 })
 export class FsNavModule {
