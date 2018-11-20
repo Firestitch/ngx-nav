@@ -12,11 +12,10 @@ import { FsNavUpdatesService, FsNavUpdateType, FsNavStackService } from '../../s
 
 
 @Component({
-  templateUrl: 'nav-base.component.html',
+  template: '',
   styleUrls: ['nav-base.component.scss']
 })
 export class FsNavBaseComponent implements OnInit, OnDestroy {
-
 
   @HostBinding('class.hidden') public hidden = false;
   @HostBinding('class.empty') public empty = true;

@@ -11,7 +11,7 @@ import { FsNavUpdatesService, FsNavStackService, FsNavUpdateTarget } from '../..
 
 @Component({
   selector: '[fsNavComponent]',
-  templateUrl: '../nav-base/nav-base.component.html',
+  templateUrl: './nav-component.component.html',
   styleUrls: ['../nav-base/nav-base.component.scss']
 })
 export class FsNavComponentComponent extends FsNavBaseComponent {
