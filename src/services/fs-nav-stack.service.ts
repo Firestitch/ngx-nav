@@ -93,8 +93,18 @@ export class FsNavStackService {
    */
   public addUrlToStack(item: NavStackItem) {
     const lastStackItem = this._urlsStack[this._urlsStack.length - 1];
-    if (!lastStackItem || lastStackItem.path !== item.path) {
+
+    debugger;
+    if (!lastStackItem || (lastStackItem && lastStackItem.path !== item.path)) {
       this._urlsStack.push(item);
+    } else {
+
+      // if (!save) {
+      //   const lastUrl = this._urlsStack[this._urlsStack.length - 1];
+      //   // lastUrl.backCounts--;
+      // } else {
+      //
+      // }
     }
 
     this._lastOperationIsBack = false;
@@ -120,9 +130,41 @@ export class FsNavStackService {
    * @param {any} data
    */
   public setActiveRoute(route: ActivatedRouteSnapshot, data: any) {
-    this._activeRoute.next({ path: this.getFullRoutePath(route), data: data });
+    const save = !(data.lastChild);
+    const path = save ? this.getFullRoutePath(route) : this.getRoutePath(route.parent);
+    debugger;
+    // const path = save ? this.getFullRoutePath(route) : this.getRoutePath(route.parent);
+
+    if (!save && this.activeRoute.path === path) {
+      this.activeRoute.backCounts++;
+    } else {
+      this._activeRoute.next({
+        path: path,
+        data: data,
+        save: save,
+        backCounts: 1
+      });
+    }
+
     this._lastOperationIsBack = false;
     this._browserBack = false;
+  }
+
+  public setLastStackRouteAsActiveRoute() {
+    const prevItem = this._urlsStack[this._urlsStack.length - 1];
+
+    this._activeRoute.next(prevItem);
+
+    this._lastOperationIsBack = false;
+    this._browserBack = false;
+  }
+
+  /**
+   * @param {ActivatedRouteSnapshot} route
+   * @returns {string}
+   */
+  public getRoutePath(route: ActivatedRouteSnapshot) {
+    return this.getHeadPath(route);
   }
 
   /**
@@ -143,16 +185,28 @@ export class FsNavStackService {
    * @param steps
    */
   public goBack(steps = null) {
+    // debugger;
     if (steps) {
       window.history.go(-steps);
     } else {
-
+      // debugger;
       const prevItem = this._urlsStack[this._urlsStack.length - 1];
-      let delta = this.backDelta(prevItem, -1);
+      const backDelta = this.backDelta(this.getLastStackItem(), -1);
+      let delta = this.activeRoute.save ? backDelta : -this.activeRoute.backCounts;
 
-      this._urlsStack.splice(delta, Math.abs(delta));
+      // if (backDelta < -1) {
+      //   delta += backDelta;
+      // }
+
+      if (prevItem && prevItem.save) {
+        this._urlsStack.splice(delta, Math.abs(delta));
+      } else {
+        const deleteItems = !this.activeRoute.save && !prevItem.save ? 2 : 1;
+        this._urlsStack.splice(-deleteItems, deleteItems);
+      }
 
       delta *= 2;
+      console.log('back with - ', delta, this.backDelta(prevItem, -1));
 
       if (delta != 0) {
         window.history.go(delta);
@@ -210,6 +264,17 @@ export class FsNavStackService {
     }
   }
 
+
+  private getLastStackItem() {
+    const itemsCount = this._urlsStack.length;
+
+    if (this._urlsStack[itemsCount - 1].save) {
+      return this._urlsStack[itemsCount - 1];
+    } else {
+      return this._urlsStack[itemsCount - 2];
+    }
+  }
+
   // /**
   //  * Destroy component !!! DO NOT REMOVE !!!
   //  * @param {DetachedRouteHandle} handle
@@ -231,6 +296,12 @@ export class FsNavStackService {
     this.actions.clear();
     this.menus.clear();
 
+    const data = Object.assign(
+      { root: false, history: true },
+      this.getRouteData(route.snapshot, 'fsNav'),
+      this.getRouteData(route.snapshot.parent, 'fsNav')
+    );
+
     if (!this.lastOperationIsBack && this.activeRoute.path) {
       this.addUrlToStack(this.activeRoute);
 
@@ -238,18 +309,22 @@ export class FsNavStackService {
       history.pushState(null, null, location.href);
     }
 
-    const data = Object.assign(
-      { root: false, history: true },
-      this.getRouteData(route.snapshot, 'fsNav')
-    );
+    if (this.lastOperationIsBack
+      && data.lastChild
+    ) {
+      this.setLastStackRouteAsActiveRoute();
+    } else {
+      this.setActiveRoute(route.snapshot, data);
+    }
 
-    this.setActiveRoute(route.snapshot, data);
+    // console.log(this);
     this._navUpdates.updateRouteData(data);
 
     if (data.root === true) {
       this.resetStack();
     }
 
+    debugger;
     if (data.history === false) {
       this.setActiveUrlAsStop();
     }
