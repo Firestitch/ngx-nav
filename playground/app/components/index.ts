@@ -6,6 +6,7 @@ export * from './tabs/tabs.component';
 export * from './list/list.component';
 export * from './edit/edit.component';
 export * from './tabs';
+export * from './super-tabs';
 export * from './workflow/workflow-1/workflow-1.component';
 export * from './workflow/workflow-2/workflow-2.component';
 export * from './workflow/workflow-3/workflow-3.component';

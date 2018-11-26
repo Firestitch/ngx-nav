@@ -7,20 +7,20 @@ import { FsNavService } from '../../../../src/services';
 
 
 @Component({
-  selector: 'tabs',
-  templateUrl: 'tabs.component.html'
+  selector: 'super-tabs',
+  templateUrl: 'super-tabs.component.html'
 })
-export class TabsComponent implements OnInit, OnDestroy{
+export class SuperTabsComponent implements OnInit, OnDestroy{
 
   private _destroy$ = new Subject();
 
   constructor(private nav: FsNavService) {}
 
   public tabs = [
-    { path: '/tabs/a', label: 'Tab A' },
-    { path: '/tabs/b', label: 'Tab B' },
-    { path: '/tabs/c', label: 'Tab C' },
-    { path: '/tabs/d', label: 'Tab D' }
+    { path: '/another-tabs/a', label: 'Tab A' },
+    { path: '/another-tabs/b', label: 'Tab B' },
+    { path: '/another-tabs/c', label: 'Tab C' },
+    { path: '/another-tabs/d', label: 'Tab D' }
   ];
 
   public ngOnInit() {
@@ -41,6 +41,6 @@ export class TabsComponent implements OnInit, OnDestroy{
   }
 
   private _updateTitle() {
-    this.nav.setTitle('Tabs');
+    this.nav.setTitle('Another Tabs');
   }
 }

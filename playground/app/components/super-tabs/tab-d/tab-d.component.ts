@@ -4,13 +4,14 @@ import { FsNavService } from '../../../../../src/services';
 
 @Component({
   templateUrl: 'tab-d.component.html',
-  styleUrls: [ 'tab-d.component.scss' ]
 })
-export class TabDComponent implements OnInit, OnDestroy {
+export class SuperTabDComponent implements OnInit, OnDestroy {
 
   constructor(public nav: FsNavService) {}
 
   public ngOnInit() {}
 
-  public ngOnDestroy() {}
+  public ngOnDestroy() {
+
+  }
 }
