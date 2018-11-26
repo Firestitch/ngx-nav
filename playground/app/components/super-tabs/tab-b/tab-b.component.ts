@@ -18,9 +18,7 @@ export class SuperTabBComponent implements OnInit, OnDestroy {
 
   constructor(public nav: FsNavService) { }
 
-  public ngOnInit() {
-  }
+  public ngOnInit() {}
 
-  public ngOnDestroy() {
-  }
+  public ngOnDestroy() {}
 }

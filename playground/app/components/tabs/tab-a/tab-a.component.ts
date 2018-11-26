@@ -23,8 +23,6 @@ export class TabAComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.nav.setTitle('Tab A');
-
     this.nav.setAction('right', {
       label: 'Save',
       class: 'md-primary',

@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { FsNavService } from '../../../../src/services';
 
@@ -10,28 +10,37 @@ import { FsNavService } from '../../../../src/services';
   selector: 'super-tabs',
   templateUrl: 'super-tabs.component.html'
 })
-export class SuperTabsComponent implements OnDestroy{
+export class SuperTabsComponent implements OnInit, OnDestroy{
 
-  public routerSubscription;
+  private _destroy$ = new Subject();
 
-  constructor(private nav: FsNavService,
-              private router: Router) {
+  constructor(private nav: FsNavService) {}
 
-    this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+  public tabs = [
+    { path: '/another-tabs/a', label: 'Tab A' },
+    { path: '/another-tabs/b', label: 'Tab B' },
+    { path: '/another-tabs/c', label: 'Tab C' },
+    { path: '/another-tabs/d', label: 'Tab D' }
+  ];
+
+  public ngOnInit() {
+    this._updateTitle();
+
+    this.nav.routeChange
+      .pipe(
+        takeUntil(this._destroy$),
+      )
       .subscribe(() => {
-        this.nav.setTitle('Tabs');
+        this._updateTitle();
       });
   }
 
-  public tabs = [
-    { path: '/super-tabs/a', label: 'Tab A' },
-    { path: '/super-tabs/b', label: 'Tab B' },
-    { path: '/super-tabs/c', label: 'Tab C' },
-    { path: '/super-tabs/d', label: 'Tab D' }
-  ];
-
   public ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  private _updateTitle() {
+    this.nav.setTitle('Another Tabs');
   }
 }

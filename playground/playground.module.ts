@@ -54,7 +54,7 @@ const appRoutes: Routes = [
         { path: 'd', component: TabDComponent },
       ]
   },
-  { path: 'super-tabs', component: SuperTabsComponent, data: { fsNav: { lastChild: true }}, children:
+  { path: 'another-tabs', component: SuperTabsComponent, data: { fsNav: { lastChild: true }}, children:
       [
         { path: '', redirectTo: 'a', pathMatch: 'full'},
         { path: 'a', component: SuperTabAComponent },

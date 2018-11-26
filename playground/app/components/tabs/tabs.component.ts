@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { FsNavService } from '../../../../src/services';
 
@@ -10,19 +10,11 @@ import { FsNavService } from '../../../../src/services';
   selector: 'tabs',
   templateUrl: 'tabs.component.html'
 })
-export class TabsComponent implements OnDestroy{
+export class TabsComponent implements OnInit, OnDestroy{
 
-  public routerSubscription;
+  private _destroy$ = new Subject();
 
-  constructor(private nav: FsNavService,
-              private router: Router) {
-
-    this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.nav.setTitle('Tabs');
-      });
-  }
+  constructor(private nav: FsNavService) {}
 
   public tabs = [
     { path: '/tabs/a', label: 'Tab A' },
@@ -31,7 +23,24 @@ export class TabsComponent implements OnDestroy{
     { path: '/tabs/d', label: 'Tab D' }
   ];
 
+  public ngOnInit() {
+    this._updateTitle();
+
+    this.nav.routeChange
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe(() => {
+        this._updateTitle();
+      });
+  }
+
   public ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  private _updateTitle() {
+    this.nav.setTitle('Tabs');
   }
 }

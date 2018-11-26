@@ -9,9 +9,7 @@ export class SuperTabDComponent implements OnInit, OnDestroy {
 
   constructor(public nav: FsNavService) {}
 
-  public ngOnInit() {
-    this.nav.setTitle('Tab D');
-  }
+  public ngOnInit() {}
 
   public ngOnDestroy() {
 

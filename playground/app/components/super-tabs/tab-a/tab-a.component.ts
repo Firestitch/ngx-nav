@@ -12,11 +12,7 @@ export class SuperTabAComponent implements OnInit, OnDestroy {
 
   }
 
-  public ngOnInit() {
-    this.nav.setTitle('Tab A');
-  }
+  public ngOnInit() {}
 
-  public ngOnDestroy() {
-    console.log('destroy inputs page');
-  }
+  public ngOnDestroy() {}
 }

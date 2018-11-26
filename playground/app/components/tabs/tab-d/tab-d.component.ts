@@ -10,11 +10,7 @@ export class TabDComponent implements OnInit, OnDestroy {
 
   constructor(public nav: FsNavService) {}
 
-  public ngOnInit() {
-    this.nav.setTitle('Tab D');
-  }
+  public ngOnInit() {}
 
-  public ngOnDestroy() {
-
-  }
+  public ngOnDestroy() {}
 }

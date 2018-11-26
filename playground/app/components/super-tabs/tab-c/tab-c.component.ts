@@ -11,10 +11,7 @@ export class SuperTabCComponent implements OnInit, OnDestroy {
 
   }
 
-  public ngOnInit() {
-    this.nav.setTitle('Tab C', 'Tab C Super Title', 'Tab C Subtile');
-  }
+  public ngOnInit() {}
 
-  public ngOnDestroy() {
-  }
+  public ngOnDestroy() {}
 }
