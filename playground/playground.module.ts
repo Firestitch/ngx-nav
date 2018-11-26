@@ -17,6 +17,11 @@ import {  TabAComponent,
   TabCComponent,
   TabDComponent,
   TabsComponent,
+  SuperTabAComponent,
+  SuperTabBComponent,
+  SuperTabCComponent,
+  SuperTabDComponent,
+  SuperTabsComponent,
   MenuAComponent,
   MenuBComponent,
   MenuCComponent,
@@ -32,6 +37,7 @@ import { NavigationComponent } from './app/components/navigation/navigation.comp
 
 import { FsNavModule, } from '../src';
 
+
 const appRoutes: Routes = [
   { path: 'menu/a', component: MenuAComponent, data: { fsNav: { root: true } } },
   { path: 'menu/b', component: MenuBComponent, data: { fsNav: { root: true } } },
@@ -46,6 +52,15 @@ const appRoutes: Routes = [
         { path: 'b', component: TabBComponent },
         { path: 'c', component: TabCComponent },
         { path: 'd', component: TabDComponent },
+      ]
+  },
+  { path: 'super-tabs', component: SuperTabsComponent, data: { fsNav: { lastChild: true }}, children:
+      [
+        { path: '', redirectTo: 'a', pathMatch: 'full'},
+        { path: 'a', component: SuperTabAComponent },
+        { path: 'b', component: SuperTabBComponent },
+        { path: 'c', component: SuperTabCComponent },
+        { path: 'd', component: SuperTabDComponent },
       ]
   },
   { path: 'workflow', children:
@@ -81,6 +96,11 @@ const appRoutes: Routes = [
     TabBComponent,
     TabCComponent,
     TabDComponent,
+    SuperTabAComponent,
+    SuperTabBComponent,
+    SuperTabCComponent,
+    SuperTabDComponent,
+    SuperTabsComponent,
     MenuAComponent,
     MenuBComponent,
     MenuCComponent,
