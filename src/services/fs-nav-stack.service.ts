@@ -126,9 +126,11 @@ export class FsNavStackService {
 
     if (!save && this.activeRoute.path === path) {
       this.activeRoute.backCounts++;
+      this.activeRoute.fullPath = this.getFullRoutePath(route);
     } else {
       this._activeRoute.next({
         path: path,
+        fullPath: this.getFullRoutePath(route),
         data: data,
         save: save,
         backCounts: 1
