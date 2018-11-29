@@ -12,26 +12,28 @@ import { FsScrollModule } from '@firestitch/scroll';
 
 import { AppMaterialModule } from './app/material.module';
 import { MainComponent } from './app/components/main/main.component';
-import {  TabAComponent,
-  TabBComponent,
-  TabCComponent,
-  TabDComponent,
-  TabsComponent,
+import {
+  EditComponent,
+  ListComponent,
+  MenuAComponent,
+  MenuBComponent,
+  MenuCComponent,
+  MenuDComponent,
+  RootComponent,
   SuperTabAComponent,
   SuperTabBComponent,
   SuperTabCComponent,
   SuperTabDComponent,
   SuperTabsComponent,
-  MenuAComponent,
-  MenuBComponent,
-  MenuCComponent,
-  MenuDComponent,
-  ListComponent,
-  EditComponent,
+  TabAComponent,
+  TabBComponent,
+  TabCComponent,
+  TabDComponent,
+  TabsComponent,
   Workflow1Component,
   Workflow2Component,
-  Workflow3Component,
-  RootComponent} from './app/components';
+  Workflow3Component
+} from './app/components';
 import { HeaderComponent } from './app/components/header/header.component';
 import { NavigationComponent } from './app/components/navigation/navigation.component';
 
@@ -44,26 +46,39 @@ const appRoutes: Routes = [
   { path: 'menu/c', component: MenuCComponent, data: { fsNav: { root: false } } },
   { path: 'menu/d', component: MenuDComponent, data: { fsNav: { root: true } } },
   { path: 'list', component: ListComponent },
-  { path: 'edit', component: EditComponent, data: { }   },
-  { path: 'tabs', component: TabsComponent, data: { fsNav: { lastChild: true }}, children:
+  { path: 'edit', component: EditComponent, data: {} },
+  {
+    path: 'tabs',
+    component: TabsComponent,
+    data: {
+      fsNav: {
+        lastChild: true
+      },
+    },
+    children:
       [
-        { path: '', redirectTo: 'a', pathMatch: 'full'},
+        { path: '', redirectTo: 'a', pathMatch: 'full' },
         { path: 'a', component: TabAComponent },
         { path: 'b', component: TabBComponent },
         { path: 'c', component: TabCComponent },
         { path: 'd', component: TabDComponent },
       ]
   },
-  { path: 'another-tabs', component: SuperTabsComponent, data: { fsNav: { lastChild: true }}, children:
+  {
+    path: 'another-tabs',
+    component: SuperTabsComponent,
+    data: { fsNav: { lastChild: true } },
+    children:
       [
-        { path: '', redirectTo: 'a', pathMatch: 'full'},
+        { path: '', redirectTo: 'a', pathMatch: 'full' },
         { path: 'a', component: SuperTabAComponent },
         { path: 'b', component: SuperTabBComponent },
         { path: 'c', component: SuperTabCComponent },
         { path: 'd', component: SuperTabDComponent },
       ]
   },
-  { path: 'workflow', children:
+  {
+    path: 'workflow', children:
       [
         { path: '1', component: Workflow1Component, data: { fsNav: { history: false } } },
         { path: '2', component: Workflow2Component, data: { fsNav: { history: false } } },
@@ -86,8 +101,7 @@ const appRoutes: Routes = [
     FsExampleModule.forRoot(),
     RouterModule.forRoot(appRoutes),
   ],
-  entryComponents: [
-  ],
+  entryComponents: [],
   declarations: [
     AppComponent,
     MainComponent,
