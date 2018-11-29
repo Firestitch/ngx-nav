@@ -121,7 +121,7 @@ export class FsNavStackService {
    * @param {any} data
    */
   public setActiveRoute(route: ActivatedRouteSnapshot, data: any) {
-    const save = !(data.lastChild);
+    const save = !data.lastChild;
     const path = save ? this.getFullRoutePath(route) : this.getRoutePath(route.parent);
 
     if (!save && this.activeRoute.path === path) {
@@ -141,6 +141,9 @@ export class FsNavStackService {
     this._browserBack = false;
   }
 
+  /**
+   * Set last stack route as active (restore)
+   */
   public setLastStackRouteAsActiveRoute() {
     const prevItem = this._urlsStack[this._urlsStack.length - 1];
 
@@ -182,97 +185,36 @@ export class FsNavStackService {
       return;
     }
 
+    const stackSize = this._urlsStack.length;
+
     // Can't go back because stack is empty
-    if (this._urlsStack.length === 0) {
+    if (stackSize === 0) {
       this._router.navigateByUrl('/');
 
       return;
     }
 
-    const lastStackItem = this._urlsStack[this._urlsStack.length - 1];
-    const backHistoryDelta = this.backDelta(this.getLastSaveElement(), -1);
-    let delta = this.activeRoute.save ? backHistoryDelta : -this.activeRoute.backCounts;
+    const lastStackItem = this._urlsStack[stackSize - 1];
 
-    /**
-     * Checking case when we are going from lastChild: true route to history: false.
-     * In this case we should go back to page, which was before history: false page
-     */
-    if (!this.activeRoute.save && backHistoryDelta < -1) {
-      /**
-       * Just imagine that we already have next sequence of user actions:
-       *
-       * /list =>
-       * /workflow 1 { history: false }  =>
-       * /workflow 2 { history: false }  =>
-       * /workflow 3 { history: false }  =>
-       * /tabs/b     { lastChild: true } =>
-       * /tabs/c     { lastChild: true }
-       *
-       * In this case when go back we should go to /list page
-       *
-       * But in case when we have (one more tabs visited, more than 2)
-       *
-       * /list =>
-       * /workflow 1 { history: false }  =>
-       * /workflow 2 { history: false }  =>
-       * /workflow 3 { history: false }  =>
-       * /tabs/b     { lastChild: true } =>
-       * /tabs/c     { lastChild: true } =>
-       * /tabs/a     { lastChild: true }
-       *
-       * We should summ backCounts and backDelta and also add "2"
-       * because of history manipulations was made
-       *
-       */
+    const routeDelta = this.activeRoute.backCounts;
+    const { delta: backDelta, depth: backCount } = this.backDelta(lastStackItem, 0);
 
-      if (delta < -2) {
-        delta += backHistoryDelta + 2;
-      } else {
-        delta = backHistoryDelta;
-      }
+    let delta = routeDelta + backDelta;
+
+    if (backDelta > 0 && lastStackItem.save && lastStackItem.data.history) {
+      delta -= 1;
     }
 
-    /**
-     * Checking if previous stack item can be saved
-     *
-     * When true => It's usual case for delta -1 or another value if item had history: false
-     */
-    if (lastStackItem && lastStackItem.save) {
-      this._urlsStack.splice(delta, Math.abs(delta));
-    } else {
-      /**
-       *
-       * In case when current route and prev route can not be saved
-       *
-       * Example:
-       * Go to /menu-c => /tabs/b => /tabs/c => /tabs/a
-       *
-       * In this case into stack will be stored only /menu-c and /tabs
-       * !! Note that was stored only /tabs (parent for /tabs/b and etc.) !!
-       *
-       * By logic of how working router stack item can be stored in stack only when user leave page.
-       * In example above /tabs stored when user goes from /tabs/b to /tabs/c,
-       * BUT if user goes /menu/c => /tabs/b (and do not go forward) then in stack will only /menu-c
-       *
-       * BY this reason we should check backCounts and remove from stack 1 or 2 rotes (depends from logic above)
-       *
-       */
-      if (!this.activeRoute.save && !lastStackItem.save && this.activeRoute.backCounts > 1) {
-        const sizeStack = this._urlsStack.length;
+    // !!! @Ref { stack_pop } - if target url for go back has save false then
+    // will do stack.pop() in setupActivated route
+    const reduceStackBy = !this._urlsStack[stackSize - backCount].save
+      ? backCount - 1
+      : backCount;
 
-        // If two routes in a row can not be saved (lastChildRoute : false)
-        const seqOfLastChildRoutes = sizeStack >= 2
-          && !this._urlsStack[sizeStack - 2].save
-          && !this._urlsStack[sizeStack - 1].save;
-
-        const sliceCount = !seqOfLastChildRoutes ? 2 : 1;
-
-        this._urlsStack.splice(-sliceCount, sliceCount);
-      }
-    }
+    this._urlsStack.splice(-reduceStackBy, reduceStackBy);
 
     // Increase delta because of history manipulation was made.
-    delta *= 2;
+    delta *= -2;
 
     if (delta !== 0) {
       window.history.go(delta);
@@ -285,21 +227,26 @@ export class FsNavStackService {
    * Method that counts number of steps to go back based on banned urls
    * @param prevStackItem
    * @param delta
+   * @param depth
    */
-  private backDelta(prevStackItem: NavStackItem, delta) {
+  private backDelta(prevStackItem: NavStackItem, delta, depth = 1) {
     if (prevStackItem && this._stopBackToUrls.length > 0) {
       // In case when we do back between history: false pages - we need to go just back
       if (
         this._stopBackToUrls.indexOf(this.activeRoute.path) === -1 &&
         this._stopBackToUrls.indexOf(prevStackItem.path) > -1
       ) {
-        delta -= 1;
+        delta += prevStackItem.backCounts;
+        depth++;
 
-        return this.backDelta(this._urlsStack[this._urlsStack.length + delta], delta);
+        return this.backDelta(this._urlsStack[this._urlsStack.length - depth], delta, depth);
       }
     }
 
-    return delta;
+    return {
+      delta,
+      depth
+    };
 
   }
 
@@ -364,9 +311,15 @@ export class FsNavStackService {
       this.getRouteData(route.snapshot.parent, 'fsNav')
     );
 
-    if (!this.lastOperationIsBack && this.activeRoute.path) {
-      this.addUrlToStack(this.activeRoute);
+    const routePath = !data.lastChild
+      ? this.getFullRoutePath(route.snapshot)
+      : this.getRoutePath(route.snapshot.parent);
 
+    if (!this.lastOperationIsBack && this.activeRoute.path !== routePath) {
+      this.addUrlToStack(this.activeRoute);
+    }
+
+    if (!this.lastOperationIsBack) {
       // Hack to prevent native back button
       history.pushState(null, null, location.href);
     }
@@ -378,6 +331,9 @@ export class FsNavStackService {
      */
     if (this.lastOperationIsBack && data.lastChild) {
       this.setLastStackRouteAsActiveRoute();
+
+      // !!! @Ref { stack_pop } - goBack logic
+      this._urlsStack.pop();
     } else {
       this.setActiveRoute(route.snapshot, data);
     }
