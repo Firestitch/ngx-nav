@@ -24,7 +24,7 @@ export class FsNavStackService {
   private _urlsStack: NavStackItem[] = [];
   private _stopBackToUrls: any[] = [];
 
-  private _activeRoute = new BehaviorSubject<NavStackItem>({});
+  private _activeRoute = new BehaviorSubject<NavStackItem>(null);
   private _lastOperationIsBack = false;
   private _browserBack = false;
   // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
@@ -124,7 +124,7 @@ export class FsNavStackService {
     const save = !data.lastChild;
     const path = save ? this.getFullRoutePath(route) : this.getRoutePath(route.parent);
 
-    if (!save && this.activeRoute.path === path) {
+    if (!save && this.activeRoute && this.activeRoute.path === path) {
       this.activeRoute.backCounts++;
       this.activeRoute.fullPath = this.getFullRoutePath(route);
     } else {
@@ -315,7 +315,8 @@ export class FsNavStackService {
       ? this.getFullRoutePath(route.snapshot)
       : this.getRoutePath(route.snapshot.parent);
 
-    if (!this.lastOperationIsBack && this.activeRoute.path !== routePath) {
+    debugger;
+    if (!this.lastOperationIsBack && this.activeRoute && this.activeRoute.path !== routePath) {
       this.addUrlToStack(this.activeRoute);
     }
 
