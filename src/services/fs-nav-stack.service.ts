@@ -217,10 +217,9 @@ export class FsNavStackService {
     delta *= -2;
 
     if (delta !== 0) {
+      this._lastOperationIsBack = true;
       window.history.go(delta);
     }
-
-    this._lastOperationIsBack = true;
   }
 
   /**
