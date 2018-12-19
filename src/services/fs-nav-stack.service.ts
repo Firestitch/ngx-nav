@@ -314,7 +314,6 @@ export class FsNavStackService {
       ? this.getFullRoutePath(route.snapshot)
       : this.getRoutePath(route.snapshot.parent);
 
-    debugger;
     if (!this.lastOperationIsBack && this.activeRoute && this.activeRoute.path !== routePath) {
       this.addUrlToStack(this.activeRoute);
     }
