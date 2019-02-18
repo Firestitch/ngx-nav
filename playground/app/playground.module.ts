@@ -10,6 +10,9 @@ import { FsScrollModule } from '@firestitch/scroll';
 import { FsNavModule, } from '@firestitch/nav';
 import { FsSelectionModule } from '@firestitch/selection';
 import { FsPromptModule } from '@firestitch/prompt';
+import { FsMessageModule } from '@firestitch/message';
+
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './material.module';
@@ -101,6 +104,8 @@ const appRoutes: Routes = [
     AppMaterialModule,
     FormsModule,
     FsExampleModule.forRoot(),
+    ToastrModule.forRoot({ preventDuplicates: true }),
+    FsMessageModule.forRoot(),
     RouterModule.forRoot(appRoutes),
   ],
   entryComponents: [],
