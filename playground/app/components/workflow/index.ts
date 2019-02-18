@@ -1,4 +1,3 @@
-export * from './tab-a/tab-a.component';
-export * from './tab-b/tab-b.component';
-export * from './tab-c/tab-c.component';
-export * from './tab-d/tab-d.component';
+export * from './workflow-1/workflow-1.component';
+export * from './workflow-2/workflow-2.component';
+export * from './workflow-3/workflow-3.component';

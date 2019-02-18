@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FsNavService } from '../../../../src';
+import { FsNavService } from '@firestitch/nav';
 import { clone } from 'lodash';
 
 @Component({

@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FsNavService } from '../../../../../src/services';
-import { NavActionType } from '../../../../../src/models';
+import { FsNavService } from '@firestitch/nav';
 
 @Component({
   selector: 'super-tab-a',

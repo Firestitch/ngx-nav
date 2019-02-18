@@ -3,7 +3,7 @@ import { FsListConfig } from '@firestitch/list';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { FsNavService } from '../../../../src/services';
+import { FsNavService } from '@firestitch/nav';
 
 
 @Component({

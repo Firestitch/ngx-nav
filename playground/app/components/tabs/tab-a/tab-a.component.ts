@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FsNavService } from '../../../../../src/services';
-import { NavActionType } from '../../../../../src/models';
+import { FsNavService, NavActionType } from '@firestitch/nav';
 
 @Component({
   selector: 'inputs-data',
@@ -25,7 +24,7 @@ export class TabAComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.nav.setAction('right', {
       label: 'Save',
-      class: 'md-primary',
+      className: 'md-primary',
       type: NavActionType.raised,
       click: () => {
         this.nav.showMenu('share');

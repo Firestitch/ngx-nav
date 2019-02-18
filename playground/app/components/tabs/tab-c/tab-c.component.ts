@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavActionType, FsNavService } from '../../../../../src';
+import { NavActionType, FsNavService } from '@firestitch/nav';
 
 @Component({
   selector: 'static-page',

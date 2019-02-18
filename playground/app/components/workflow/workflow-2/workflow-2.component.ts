@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FsNavService } from '../../../../../src/services';
+import { FsNavService } from '@firestitch/nav';
 
 @Component({
   templateUrl: 'workflow-2.component.html'
