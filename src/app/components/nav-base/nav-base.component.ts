@@ -10,6 +10,7 @@ import {
 
 import { FsNavStackService } from '../../services/fs-nav-stack.service';
 import { FsNavUpdatesService, FsNavUpdateType } from '../../services/fs-nav-updates.service';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -58,6 +59,9 @@ export class FsNavBaseComponent implements OnInit, OnDestroy {
 
   protected subscriptions() {
     this.navUpdates.componentUpdated$(this._name, this._destroy)
+      .pipe(
+        takeUntil(this._destroy),
+      )
       .subscribe((payload) => this.payloadUpdated(payload));
   }
 
