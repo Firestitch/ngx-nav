@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
@@ -14,6 +14,8 @@ import { FsNavActions } from '../classes/nav-actions';
 import { FsNavMenus } from '../classes/nav-menus';
 import { FsNavUpdatesService } from './fs-nav-updates.service';
 import { NavStackItem } from '../interfaces/nav-stack-item.interface';
+import { FS_NAV_DEFAULT_CONFIG } from '../fs-nav.providers';
+import { FsNavDefaultConfig } from '../interfaces/nav-default-config.interface';
 
 
 @Injectable()
@@ -35,9 +37,13 @@ export class FsNavStackService {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _navUpdates: FsNavUpdatesService,
+    @Inject(FS_NAV_DEFAULT_CONFIG) private _defaultConfig: FsNavDefaultConfig
   ) {
     this.subscribeToRouteChange();
-    this.subscribeToBrowserBack();
+
+    if (this._defaultConfig.watchBrowserBackButton) {
+      this.subscribeToBrowserBack();
+    }
   }
 
   get activeRoute(): NavStackItem {
@@ -303,6 +309,11 @@ export class FsNavStackService {
     this.components.clear();
     this.actions.clear();
     this.menus.clear();
+
+    // We don't need to do any manipulations with stack if back button logic disabled
+    if (!this._defaultConfig.watchBrowserBackButton) {
+      return;
+    }
 
     const data = Object.assign(
       { root: false, history: true, lastChild: false },

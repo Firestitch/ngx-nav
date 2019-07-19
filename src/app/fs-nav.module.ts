@@ -8,6 +8,8 @@ import {
   MatMenuModule
 } from '@angular/material';
 
+import { merge } from 'lodash-es';
+
 import { FsNavActionsComponent } from './components/nav-actions/nav-actions.component';
 import { FsNavBackComponent } from './components/nav-back/nav-back.component';
 import { FsNavBaseComponent } from './components/nav-base/nav-base.component';
@@ -20,6 +22,10 @@ import { FsNavTitleComponent } from './components/nav-title/nav-title.component'
 import { FsNavService } from './services/fs-nav.service';
 import { FsNavStackService } from './services/fs-nav-stack.service';
 import { FsNavUpdatesService } from './services/fs-nav-updates.service';
+import { FS_NAV_CONFIG, FS_NAV_DEFAULT_CONFIG } from './fs-nav.providers';
+
+import { FsNavDefaultConfig } from './interfaces/nav-default-config.interface';
+
 
 @NgModule({
   imports: [
@@ -54,14 +60,26 @@ import { FsNavUpdatesService } from './services/fs-nav-updates.service';
   ],
 })
 export class FsNavModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(config: FsNavDefaultConfig = {}): ModuleWithProviders {
     return {
       ngModule: FsNavModule,
       providers: [
+        { provide: FS_NAV_CONFIG, useValue: config },
+        {
+          provide: FS_NAV_DEFAULT_CONFIG,
+          useFactory: FsNavConfigFactory,
+          deps: [FS_NAV_CONFIG]
+        },
         FsNavService,
         FsNavStackService,
         FsNavUpdatesService,
       ]
     };
   }
+}
+
+export function FsNavConfigFactory(config: FsNavDefaultConfig) {
+  return merge({
+    watchBrowserBackButton: true
+  }, config);
 }
