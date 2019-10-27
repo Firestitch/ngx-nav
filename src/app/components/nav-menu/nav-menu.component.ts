@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostBinding,
@@ -12,13 +14,16 @@ import { FsNavStackService } from '../../services/fs-nav-stack.service';
 import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-updates.service';
 
 import { NavAction } from '../../models/nav-action.model';
-import { NavDropDownMenu } from '../../models/nav-drop-down-menu.model';;
+import { NavDropDownMenu } from '../../models/nav-drop-down-menu.model';
+
+;
 
 
 @Component({
   selector: '[fsNavMenu]',
   templateUrl: 'nav-menu.component.html',
-  styleUrls: [ 'nav-menu.component.scss' ]
+  styleUrls: [ 'nav-menu.component.scss' ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsNavMenuComponent extends FsNavBaseComponent {
 
@@ -39,9 +44,10 @@ export class FsNavMenuComponent extends FsNavBaseComponent {
     navUpdates: FsNavUpdatesService,
     navStack: FsNavStackService,
     protected _elementRef: ElementRef,
-    protected _renderer: Renderer2
+    protected _renderer: Renderer2,
+    cdRef: ChangeDetectorRef,
   ) {
-    super(navUpdates, navStack, _elementRef, _renderer);
+    super(navUpdates, navStack, _elementRef, _renderer, cdRef);
   }
 
   protected setSelfClass() {

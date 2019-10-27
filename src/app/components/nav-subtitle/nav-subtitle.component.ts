@@ -1,4 +1,12 @@
-import { Component, ElementRef, Renderer2, HostBinding, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  Renderer2
+} from '@angular/core';
 
 import { FsNavComponentComponent } from '../nav-component/nav-component.component';
 import { FsNavStackService } from '../../services/fs-nav-stack.service';
@@ -8,7 +16,8 @@ import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-up
 @Component({
   selector: '[fsNavSubtitle]',
   templateUrl: '../nav-component/nav-component.component.html',
-  styleUrls: ['../nav-base/nav-base.component.scss']
+  styleUrls: ['../nav-base/nav-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsNavSubtitleComponent extends FsNavComponentComponent {
 
@@ -25,10 +34,11 @@ export class FsNavSubtitleComponent extends FsNavComponentComponent {
     navUpdates: FsNavUpdatesService,
     navStack: FsNavStackService,
     elementRef: ElementRef,
-    renderer: Renderer2
+    renderer: Renderer2,
+    cdRef: ChangeDetectorRef,
   ) {
 
-    super(navUpdates, navStack, elementRef, renderer);
+    super(navUpdates, navStack, elementRef, renderer, cdRef);
 
     this._name = 'subtitle';
   }

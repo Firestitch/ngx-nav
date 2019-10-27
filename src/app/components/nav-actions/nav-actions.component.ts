@@ -1,17 +1,15 @@
-import {
-  Component,
-  HostBinding,
-  Input
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 import { FsNavBaseComponent } from '../nav-base/nav-base.component';
 import { FsNavUpdateTarget } from '../../services/fs-nav-updates.service';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
   selector: '[fsNavActions]',
   templateUrl: 'nav-actions.component.html',
-  styleUrls: [ 'nav-actions.component.scss' ]
+  styleUrls: [ 'nav-actions.component.scss' ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsNavActionsComponent extends FsNavBaseComponent {
 
@@ -26,6 +24,9 @@ export class FsNavActionsComponent extends FsNavBaseComponent {
 
   protected subscriptions() {
     this.navUpdates.actionUpdated$(this._name, this._destroy)
+      .pipe(
+        takeUntil(this._destroy),
+      )
       .subscribe((payload) => this.payloadUpdated(payload));
   }
 }

@@ -1,21 +1,25 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
   ElementRef,
   EventEmitter,
-  Renderer2,
-  Component,
   HostBinding,
   OnDestroy,
   OnInit,
+  Renderer2,
 } from '@angular/core';
+
+import { takeUntil } from 'rxjs/operators';
 
 import { FsNavStackService } from '../../services/fs-nav-stack.service';
 import { FsNavUpdatesService, FsNavUpdateType } from '../../services/fs-nav-updates.service';
-import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
   template: '',
-  styleUrls: ['nav-base.component.scss']
+  styleUrls: ['nav-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsNavBaseComponent implements OnInit, OnDestroy {
 
@@ -32,7 +36,8 @@ export class FsNavBaseComponent implements OnInit, OnDestroy {
     protected navUpdates: FsNavUpdatesService,
     protected navStack: FsNavStackService,
     protected elementRef: ElementRef,
-    protected renderer: Renderer2
+    protected renderer: Renderer2,
+    protected cdRef: ChangeDetectorRef,
   ) {}
 
   get name() {
@@ -92,6 +97,8 @@ export class FsNavBaseComponent implements OnInit, OnDestroy {
         this.updatedDefault(payload);
       }
     }
+
+    this.cdRef.markForCheck();
   }
 
   protected updatedShow() {

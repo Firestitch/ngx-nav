@@ -1,4 +1,12 @@
-import { HostBinding, HostListener, Component, ElementRef, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Renderer2
+} from '@angular/core';
 
 import { FsNavBaseComponent } from '../nav-base/nav-base.component';
 
@@ -9,7 +17,8 @@ import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-up
 @Component({
   selector: '[fsNavBack]',
   template: '<ng-content></ng-content>',
-  styles: ['']
+  styles: [''],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsNavBackComponent extends FsNavBaseComponent {
 
@@ -21,9 +30,10 @@ export class FsNavBackComponent extends FsNavBaseComponent {
     navUpdates: FsNavUpdatesService,
     navStack: FsNavStackService,
     elementRef: ElementRef,
-    renderer: Renderer2
+    renderer: Renderer2,
+    cdRef: ChangeDetectorRef,
   ) {
-    super(navUpdates, navStack, elementRef, renderer);
+    super(navUpdates, navStack, elementRef, renderer, cdRef);
     this._name = 'back';
   }
 

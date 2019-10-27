@@ -1,8 +1,10 @@
 import {
-  ElementRef,
-  Renderer2,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
+  Renderer2,
 } from '@angular/core';
 
 import { FsNavBaseComponent } from '../nav-base/nav-base.component';
@@ -14,7 +16,8 @@ import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-up
 @Component({
   selector: '[fsNavComponent]',
   templateUrl: './nav-component.component.html',
-  styleUrls: ['../nav-base/nav-base.component.scss']
+  styleUrls: ['../nav-base/nav-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsNavComponentComponent extends FsNavBaseComponent {
 
@@ -31,8 +34,9 @@ export class FsNavComponentComponent extends FsNavBaseComponent {
     navUpdates: FsNavUpdatesService,
     navStack: FsNavStackService,
     elementRef: ElementRef,
-    renderer: Renderer2
+    renderer: Renderer2,
+    cdRef: ChangeDetectorRef,
   ) {
-    super(navUpdates, navStack, elementRef, renderer);
+    super(navUpdates, navStack, elementRef, renderer, cdRef);
   }
 }
