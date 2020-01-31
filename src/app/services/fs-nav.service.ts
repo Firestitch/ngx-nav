@@ -22,16 +22,18 @@ export class FsNavService {
 
   /**
    * @param value
+   * @param permanent
    */
-  public setSupertitle(value: string) {
-    this.setComponent('supertitle', value);
+  public setSupertitle(value: string, permanent = true) {
+    this.setComponent('supertitle', value, permanent);
   }
 
   /**
    * @param value
+   * @param permanent
    */
-  public setSubtitle(value: string) {
-    this.setComponent('subtitle', value);
+  public setSubtitle(value: string, permanent = true) {
+    this.setComponent('subtitle', value, permanent);
   }
 
   /**
@@ -39,18 +41,19 @@ export class FsNavService {
    * @param title
    * @param supertitle
    * @param subtitle
+   * @param permanent
    */
-  public setTitle(title: string, supertitle?: string, subtitle?: string ) {
+  public setTitle(title: string, supertitle?: string, subtitle?: string, permanent = true) {
     if (title) {
-      this.setComponent('title', title);
+      this.setComponent('title', title, permanent);
     }
 
     if (supertitle) {
-      this.setSupertitle(supertitle);
+      this.setSupertitle(supertitle, permanent);
     }
 
     if (subtitle) {
-      this.setSubtitle(subtitle);
+      this.setSubtitle(subtitle, permanent);
     }
   }
 
