@@ -44,17 +44,9 @@ export class FsNavService {
    * @param permanent
    */
   public setTitle(title: string, supertitle?: string, subtitle?: string, permanent = true) {
-    if (title) {
-      this.setComponent('title', title, permanent);
-    }
-
-    if (supertitle) {
-      this.setSupertitle(supertitle, permanent);
-    }
-
-    if (subtitle) {
-      this.setSubtitle(subtitle, permanent);
-    }
+    this.setComponent('title', title, permanent);
+    this.setSupertitle(supertitle, permanent);
+    this.setSubtitle(subtitle, permanent);
   }
 
   /**
