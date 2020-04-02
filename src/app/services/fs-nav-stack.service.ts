@@ -39,11 +39,13 @@ export class FsNavStackService {
     private _navUpdates: FsNavUpdatesService,
     @Inject(FS_NAV_DEFAULT_CONFIG) private _defaultConfig: FsNavDefaultConfig
   ) {
-    this.subscribeToRouteChange();
 
-    if (this._defaultConfig.watchBrowserBackButton) {
-      this.subscribeToBrowserBack();
-    }
+    // Disabling for now. To many issues.
+    // this.subscribeToRouteChange();
+
+    // if (this._defaultConfig.watchBrowserBackButton) {
+    //   this.subscribeToBrowserBack();
+    // }
   }
 
   get activeRoute(): NavStackItem {
