@@ -307,14 +307,10 @@ export class FsNavStackService {
    * @param route
    */
   private setupActivatedRoute(route: ActivatedRoute) {
+
     this.components.clear();
     this.actions.clear();
     this.menus.clear();
-
-    // We don't need to do any manipulations with stack if back button logic disabled
-    if (!this._defaultConfig.watchBrowserBackButton) {
-      return;
-    }
 
     const data = Object.assign(
       { root: false, history: true, lastChild: false },
@@ -322,41 +318,47 @@ export class FsNavStackService {
       this.getRouteData(route.snapshot.parent, 'fsNav')
     );
 
-    const routePath = !data.lastChild
-      ? this.getFullRoutePath(route.snapshot)
-      : this.getRoutePath(route.snapshot.parent);
+    // We don't need to do any manipulations with stack if back button logic disabled
+    if (this._defaultConfig.watchBrowserBackButton) {
 
-    if (!this.lastOperationIsBack && this.activeRoute && this.activeRoute.path !== routePath) {
-      this.addUrlToStack(this.activeRoute);
-    }
+      const routePath = !data.lastChild
+        ? this.getFullRoutePath(route.snapshot)
+        : this.getRoutePath(route.snapshot.parent);
 
-    if (!this.lastOperationIsBack) {
-      // Hack to prevent native back button
-      history.pushState(null, null, location.href);
-    }
+      if (!this.lastOperationIsBack && this.activeRoute && this.activeRoute.path !== routePath) {
+        this.addUrlToStack(this.activeRoute);
+      }
 
-    /**
-     * Make a choice:
-     * 1) Restore route from stack if lastChild: true
-     * 2) Set from activated route
-     */
-    if (this.lastOperationIsBack && data.lastChild) {
-      this.setLastStackRouteAsActiveRoute();
+      if (!this.lastOperationIsBack) {
+        // Hack to prevent native back button
+        history.pushState(null, null, location.href);
+      }
 
-      // !!! @Ref { stack_pop } - goBack logic
-      this._urlsStack.pop();
+      /**
+       * Make a choice:
+       * 1) Restore route from stack if lastChild: true
+       * 2) Set from activated route
+       */
+      if (this.lastOperationIsBack && data.lastChild) {
+        this.setLastStackRouteAsActiveRoute();
+
+        // !!! @Ref { stack_pop } - goBack logic
+        this._urlsStack.pop();
+      } else {
+        this.setActiveRoute(route.snapshot, data);
+      }
+
+      this._navUpdates.updateRouteData(data);
+
+      if (data.root === true) {
+        this.resetStack();
+      }
+
+      if (data.history === false) {
+        this.setActiveUrlAsStop();
+      }
     } else {
-      this.setActiveRoute(route.snapshot, data);
-    }
-
-    this._navUpdates.updateRouteData(data);
-
-    if (data.root === true) {
-      this.resetStack();
-    }
-
-    if (data.history === false) {
-      this.setActiveUrlAsStop();
+      this._navUpdates.updateRouteData(data);
     }
   }
 
