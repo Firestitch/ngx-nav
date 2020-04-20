@@ -186,6 +186,12 @@ export class FsNavStackService {
    * @param steps
    */
   public goBack(steps = null) {
+    if (!this._defaultConfig.watchBrowserBackButton) {
+      window.history.back();
+
+      return;
+    }
+
     if (steps) {
       window.history.go(-steps);
 
