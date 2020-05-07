@@ -15,7 +15,7 @@ export class FsNavActions {
    * @param name { string }
    * @param action { UrlInfoAction }
    */
-  public setAction(name: string, action: UrlInfoAction) {
+  public addAction(name: string, action: UrlInfoAction) {
     if (!this._actions.has(name)) {
       this._actions.set(name, []);
     }
@@ -28,17 +28,27 @@ export class FsNavActions {
     this._navUpdates.updateAction(name, element);
   }
 
+  public setAction(name: string, action: UrlInfoAction) {
+    this._actions.set(name, []);
+    this.addAction(name, action);
+  }
+
   /**
-   * Set actions (buttons) for special component
+   * Add actions (buttons) for special component
    * @param name { string }
    * @param actions : { UrlInfoAction[] }
    */
-  public setActions(name: string, actions: UrlInfoAction[]) {
+  public addActions(name: string, actions: UrlInfoAction[]) {
     if (actions) {
       actions.forEach((action: UrlInfoAction) => {
-        this.setAction(name, action);
-      })
+        this.addAction(name, action);
+      });
     }
+  }
+
+  public setActions(name: string, actions: UrlInfoAction[]) {
+    this._actions.set(name, []);
+    this.addActions(name, actions);
   }
 
   /**
