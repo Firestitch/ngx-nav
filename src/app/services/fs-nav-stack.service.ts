@@ -321,7 +321,7 @@ export class FsNavStackService {
     const data = Object.assign(
       { root: false, history: true, lastChild: false },
       this.getRouteData(route.snapshot, 'fsNav'),
-      this.getRouteData(route.snapshot.parent, 'fsNav')
+      // this.getRouteData(route.snapshot.parent, 'fsNav')
     );
 
     // We don't need to do any manipulations with stack if back button logic disabled
