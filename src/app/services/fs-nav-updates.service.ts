@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
-import { NavStackItem } from '../interfaces/nav-stack-item.interface';
 import { NavUpdated } from '../interfaces/nav-updated.interface';
+import { FsNavRouteData } from '../interfaces/nav-route-data.interface';
 
 
 export enum FsNavUpdateType {
@@ -30,7 +30,7 @@ export class FsNavUpdatesService {
 
   constructor() {}
 
-  public updateRouteData(data: NavStackItem) {
+  public updateRouteData(data: FsNavRouteData) {
     this.update(FsNavUpdateTarget.all, FsNavUpdateType.data, '__all__', data);
   }
 

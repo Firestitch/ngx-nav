@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 import { FsNavComponents } from '../classes/nav-components';
 import { FsNavActions } from '../classes/nav-actions';
@@ -16,6 +16,7 @@ import { FsNavUpdatesService } from './fs-nav-updates.service';
 import { NavStackItem } from '../interfaces/nav-stack-item.interface';
 import { FS_NAV_DEFAULT_CONFIG } from '../fs-nav.providers';
 import { FsNavDefaultConfig } from '../interfaces/nav-default-config.interface';
+import { FsNavRouteData } from '../interfaces/nav-route-data.interface';
 
 
 @Injectable()
@@ -31,6 +32,7 @@ export class FsNavStackService {
   private _activeRoute = new BehaviorSubject<NavStackItem>(null);
   private _lastOperationIsBack = false;
   private _browserBack = false;
+  private _routeData: FsNavRouteData;
   // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
 
   constructor(
@@ -129,7 +131,7 @@ export class FsNavStackService {
    * @param route
    * @param data
    */
-  public setActiveRoute(route: ActivatedRouteSnapshot, data: any) {
+  public setActiveRoute(route: ActivatedRouteSnapshot, data: FsNavRouteData) {
     const save = !data.lastChild;
     const path = save ? this.getFullRoutePath(route) : this.getRoutePath(route.parent);
 
@@ -318,16 +320,10 @@ export class FsNavStackService {
     this.actions.clear();
     this.menus.clear();
 
-    const data = Object.assign(
-      { root: false, history: true, lastChild: false },
-      this.getRouteData(route.snapshot, 'fsNav'),
-      // this.getRouteData(route.snapshot.parent, 'fsNav')
-    );
-
     // We don't need to do any manipulations with stack if back button logic disabled
     if (this._defaultConfig.watchBrowserBackButton) {
 
-      const routePath = !data.lastChild
+      const routePath = !this._routeData.lastChild
         ? this.getFullRoutePath(route.snapshot)
         : this.getRoutePath(route.snapshot.parent);
 
@@ -345,26 +341,26 @@ export class FsNavStackService {
        * 1) Restore route from stack if lastChild: true
        * 2) Set from activated route
        */
-      if (this.lastOperationIsBack && data.lastChild) {
+      if (this.lastOperationIsBack && this._routeData.lastChild) {
         this.setLastStackRouteAsActiveRoute();
 
         // !!! @Ref { stack_pop } - goBack logic
         this._urlsStack.pop();
       } else {
-        this.setActiveRoute(route.snapshot, data);
+        this.setActiveRoute(route.snapshot, this._routeData);
       }
 
-      this._navUpdates.updateRouteData(data);
+      this._navUpdates.updateRouteData(this._routeData);
 
-      if (data.root === true) {
+      if (this._routeData.root === true) {
         this.resetStack();
       }
 
-      if (data.history === false) {
+      if (this._routeData.history === false) {
         this.setActiveUrlAsStop();
       }
     } else {
-      this._navUpdates.updateRouteData(data);
+      this._navUpdates.updateRouteData(this._routeData);
     }
   }
 
@@ -388,10 +384,29 @@ export class FsNavStackService {
     return this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        map(() => this._activatedRoute),
+        map(() => {
+          return this._activatedRoute;
+        }),
+        tap(() => {
+          this._routeData = { root: false, history: true, lastChild: false };
+        }),
         map((route) => {
-          while (route.firstChild) route = route.firstChild;
+          while (route.firstChild) {
+            route = route.firstChild
+
+            this._routeData = Object.assign(
+              {},
+              this._routeData,
+              this.getRouteData(route.snapshot, 'fsNav')
+            );
+          }
+
           return route;
+        }),
+        tap(() => {
+          if (this._routeData.rootChildren !== void 0) {
+            this._routeData.root = this._routeData.rootChildren;
+          }
         }),
         filter((route) => route.outlet === 'primary')
       );
