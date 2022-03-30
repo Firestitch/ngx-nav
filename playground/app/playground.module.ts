@@ -98,7 +98,7 @@ const appRoutes: Routes = [
     FsNavModule.forRoot(),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
-    FsSelectionModule.forRoot(),
+    FsSelectionModule,
     FsPromptModule.forRoot(),
     BrowserAnimationsModule,
     AppMaterialModule,
@@ -106,7 +106,7 @@ const appRoutes: Routes = [
     FsExampleModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
     FsMessageModule.forRoot(),
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
   ],
   entryComponents: [],
   declarations: [

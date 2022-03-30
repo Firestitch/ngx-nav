@@ -58,7 +58,7 @@ import { FsNavDefaultConfig } from './interfaces/nav-default-config.interface';
   ],
 })
 export class FsNavModule {
-  static forRoot(config: FsNavDefaultConfig = {}): ModuleWithProviders {
+  static forRoot(config: FsNavDefaultConfig = {}): ModuleWithProviders<FsNavModule> {
     return {
       ngModule: FsNavModule,
       providers: [
