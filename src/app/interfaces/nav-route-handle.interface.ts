@@ -5,7 +5,7 @@ export interface UrlInfoAction {
   label?: string;
   type?: NavActionType;
   className?: string;
-  click?: Function;
+  click?: (event: any) => void;
   url?: string;
   image?: string;
 }

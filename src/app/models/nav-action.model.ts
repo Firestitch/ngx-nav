@@ -1,4 +1,3 @@
-import { Alias, Model } from 'tsmodels';
 import { UrlInfoAction } from '../interfaces/nav-route-handle.interface';
 
 export enum NavActionType {
@@ -9,40 +8,38 @@ export enum NavActionType {
   miniFab = 'mini-fab',
 }
 
-export class NavAction extends Model {
+export class NavAction {
 
-  @Alias() public icon: string;
-  @Alias() public label: string;
-  @Alias() public click: (event: any) => void;
-  @Alias() public className: string;
-  @Alias() public type: NavActionType;
-  @Alias() public image: string;
-  @Alias() public url: string;
+  public icon: string;
+  public label: string;
+  public click: (event: any) => void;
+  public className: string;
+  public type: NavActionType;
+  public image: string;
+  public url: string;
 
   public classArray: string[] = [];
 
   constructor(config: UrlInfoAction = {}) {
-    super();
-
-    this._fromJSON(config);
+    this._init(config);
   }
 
-  public _fromJSON(value: any) {
-    super._fromJSON(value);
-
-    if (value.type === void 0) {
-      this.type = NavActionType.basic;
-    }
-
-    if (value.click === void 0) {
-      this.click = (event) => { };
-    }
+  public _init(value: UrlInfoAction = {}) {
+    this.icon     = value.icon;
+    this.label    = value.label;
+    this.click    = value.click ?? ((event) => { });
+    this.className = value.className;
+    this.type     = value.type ?? NavActionType.basic;
+    this.image    = value.image;
+    this.url      = value.url;
 
     if (this.className) {
-      this.classArray = this.className.split(' ').reduce((acc, elem) => {
-        acc.push(elem);
-        return acc;
-      }, []);
+      this.classArray = this.className
+        .split(' ')
+        .reduce((acc, elem) => {
+          acc.push(elem);
+          return acc;
+        }, []);
     }
 
     if (this.image) {
