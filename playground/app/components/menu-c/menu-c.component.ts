@@ -11,7 +11,7 @@ export class MenuCComponent implements OnInit {
     public nav: FsNavService) {}
 
   ngOnInit() {
-    this.nav.setTitle('Menu C');
+    this.nav.setTitle('Menu C','');
   }
 }
 

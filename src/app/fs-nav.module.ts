@@ -23,6 +23,7 @@ import { FsNavUpdatesService } from './services/fs-nav-updates.service';
 import { FS_NAV_CONFIG, FS_NAV_DEFAULT_CONFIG } from './fs-nav.providers';
 
 import { FsNavDefaultConfig } from './interfaces/nav-default-config.interface';
+import { FsNavTitleService } from './services';
 
 
 @NgModule({
@@ -71,8 +72,15 @@ export class FsNavModule {
         FsNavService,
         FsNavStackService,
         FsNavUpdatesService,
+        FsNavTitleService,
       ]
     };
+  }
+
+  public constructor(
+    private _titleService: FsNavTitleService
+  ) {
+    this._titleService.init();
   }
 }
 

@@ -1,22 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { FsNavStackService } from './fs-nav-stack.service';
 import { UrlInfoAction } from '../interfaces/nav-route-handle.interface';
 import { NavStackItem } from '../interfaces/nav-stack-item.interface';
 
-
+export type Title = {
+  title: { value: string, permanent: string },
+  supertitle: { value: string, permanent: string }
+  subtitle: { value: string, permanent: string }
+};
 
 @Injectable()
 export class FsNavService {
 
+  private _title$ = new BehaviorSubject<Title>({
+    title: { value: '', permanent: '' },
+    supertitle: { value: '', permanent: '' },
+    subtitle: { value: '', permanent: '' },
+  });
+
   constructor(private _stack: FsNavStackService) {}
 
-  get urlsStack(): NavStackItem[] {
+  public get urlsStack(): NavStackItem[] {
     return this._stack.urlsStack;
   }
 
-  get routeChange(): Observable<any> {
+  public get title(): Title {
+    return this._title$.getValue();
+  }
+
+  public get title$(): Observable<Title> {
+    return this._title$.asObservable();
+  }
+
+  public get routeChange(): Observable<any> {
     return this._stack.stackRouteChangeSubscription;
   }
 
@@ -26,6 +44,15 @@ export class FsNavService {
    */
   public setSupertitle(value: string, permanent = true) {
     this.setComponent('supertitle', value, permanent);
+    this._title$.next(   
+      { 
+        ...this.title,
+        supertitle: {
+          value,
+          permanent: permanent ? value : this.title.supertitle.permanent,
+        } 
+      }
+    );
   }
 
   /**
@@ -34,6 +61,15 @@ export class FsNavService {
    */
   public setSubtitle(value: string, permanent = true) {
     this.setComponent('subtitle', value, permanent);
+    this._title$.next(   
+      { 
+        ...this.title,
+        subtitle: {
+          value,
+          permanent: permanent ? value : this.title.subtitle.permanent,
+        } 
+      }
+    );
   }
 
   /**
@@ -45,8 +81,32 @@ export class FsNavService {
    */
   public setTitle(title: string, supertitle?: string, subtitle?: string, permanent = true) {
     this.setComponent('title', title, permanent);
-    this.setSupertitle(supertitle, permanent);
-    this.setSubtitle(subtitle, permanent);
+    this.setComponent('supertitle', supertitle, permanent);
+    this.setComponent('subtitle', subtitle, permanent);
+    
+    const data = { 
+      ...this.title,
+      title: {
+        value: title,
+        permanent: permanent ? title : this.title.title.value,
+      } 
+    };
+    
+    if(supertitle !== undefined) {
+      data.supertitle = {
+        value: supertitle,
+        permanent: permanent ? supertitle : this.title.supertitle.value,
+      }
+    }
+    
+    if(subtitle !== undefined) {
+      data.subtitle = {
+        value: subtitle,
+        permanent: permanent ? supertitle : this.title.subtitle.value,
+      }
+    }
+
+    this._title$.next(data);
   }
 
   /**

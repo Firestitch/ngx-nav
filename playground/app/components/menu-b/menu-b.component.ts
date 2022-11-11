@@ -10,7 +10,7 @@ export class MenuBComponent implements OnInit {
   constructor(public nav: FsNavService) {}
 
   ngOnInit() {
-    this.nav.setTitle('Menu B');
+    this.nav.setTitle('Menu B', 'Super Title');
   }
 }
 
