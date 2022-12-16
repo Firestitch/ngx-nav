@@ -3,11 +3,12 @@ import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
   NavigationEnd,
-  Router
+  Router,
+  RouterEvent,
 } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 
 import { FsNavComponents } from '../classes/nav-components';
 import { FsNavActions } from '../classes/nav-actions';
@@ -384,6 +385,12 @@ export class FsNavStackService {
     return this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        distinctUntilChanged((prev: RouterEvent, curr: RouterEvent) => {
+          const prevUrl = prev.url?.split('?')[0];
+          const currUrl = curr.url?.split('?')[0];
+
+          return prevUrl === currUrl;
+        }),
         map(() => {
           return this._activatedRoute;
         }),
