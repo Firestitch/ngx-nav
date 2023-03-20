@@ -33,6 +33,7 @@ export { NavDropDownMenu } from './app/models/nav-drop-down-menu.model';
 // Services
 export { FsNavService } from './app/services/fs-nav.service';
 export { FsNavStackService } from './app/services/fs-nav-stack.service';
+export { FsNavTitleService } from './app/services/fs-nav-title.service';
 export { FsNavUpdatesService, FsNavUpdateTarget, FsNavUpdateType } from './app/services/fs-nav-updates.service';
 
 

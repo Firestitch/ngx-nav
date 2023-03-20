@@ -6,9 +6,10 @@ import { filter } from 'rxjs/operators';
 import { FsNavService } from './fs-nav.service';
 
 
-
 @Injectable()
 export class FsNavTitleService {
+
+  private _title: string;
 
   constructor(
     private _browserTitle: Title,
@@ -31,6 +32,10 @@ export class FsNavTitleService {
       }); 
   }
 
+  public getTitle(): string {
+    return this._title;
+  }
+
   private _setTitle(title, supertitle) {
     const tile = [];
     if(title) {
@@ -41,7 +46,8 @@ export class FsNavTitleService {
       tile.push(supertitle);
     }
 
-    this._browserTitle.setTitle(tile.join(' · '));
+    this._title = tile.join(' · ');
+    this._browserTitle.setTitle(this._title);
   }
 
 }
