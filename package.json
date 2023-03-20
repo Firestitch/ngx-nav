@@ -2,7 +2,7 @@
   "name": "@firestitch/nav",
   "title": "Nav",
   "description": "@firestitch/nav",
-  "version": "12.2.9",
+  "version": "12.2.10",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-nav"
@@ -51,7 +51,7 @@
     "@firestitch/chip": "^12.0.0",
     "@firestitch/clear": "^12.0.0",
     "@firestitch/common": "^12.0.0",
-    "@firestitch/component-tools": "^12.0.10",
+    "@firestitch/component-tools": "^12.0.11",
     "@firestitch/date": "^12.0.0",
     "@firestitch/datepicker": "^12.4.0",
     "@firestitch/dialog": "^12.0.1",
