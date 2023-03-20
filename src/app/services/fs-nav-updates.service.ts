@@ -6,7 +6,6 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { NavUpdated } from '../interfaces/nav-updated.interface';
 import { FsNavRouteData } from '../interfaces/nav-route-data.interface';
 
-
 export enum FsNavUpdateType {
   data = 'data',
   update = 'update',
