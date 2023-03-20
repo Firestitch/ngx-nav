@@ -316,7 +316,6 @@ export class FsNavStackService {
    * @param route
    */
   private setupActivatedRoute(route: ActivatedRoute) {
-
     this.components.clear();
     this.actions.clear();
     this.menus.clear();

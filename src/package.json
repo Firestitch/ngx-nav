@@ -1,0 +1,26 @@
+{
+  "name": "@firestitch/nav",
+  "version": "12.2.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Firestitch/ngx-nav"
+  },
+  "author": {
+    "name": "Firestitch",
+    "email": "admin@firestitch.com"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Firestitch/ngx-nav/issues"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "sideEffects": false,
+  "esm2015": "esm2015/firestitch-nav.js",
+  "fesm2015": "fesm2015/firestitch-nav.js",
+  "typings": "firestitch-nav.d.ts"
+}
