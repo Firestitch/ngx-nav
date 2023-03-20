@@ -6,6 +6,7 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { NavUpdated } from '../interfaces/nav-updated.interface';
 import { FsNavRouteData } from '../interfaces/nav-route-data.interface';
 
+
 export enum FsNavUpdateType {
   data = 'data',
   update = 'update',
@@ -70,15 +71,15 @@ export class FsNavUpdatesService {
   }
 
   public componentUpdated$(name, destroy = null) {
-    return this._onUpdate(FsNavUpdateTarget.component, name, destroy);
+    return this.onUpdate(FsNavUpdateTarget.component, name, destroy);
   }
 
-  public acti_onUpdated$(name, destroy = null) {
-    return this._onUpdate(FsNavUpdateTarget.actions, name, destroy);
+  public actionUpdated$(name, destroy = null) {
+    return this.onUpdate(FsNavUpdateTarget.actions, name, destroy);
   }
 
   public menuUpdated$(name, destroy = null) {
-    return this._onUpdate(FsNavUpdateTarget.menu, name, destroy);
+    return this.onUpdate(FsNavUpdateTarget.menu, name, destroy);
   }
 
   private update(target: FsNavUpdateTarget, type: FsNavUpdateType, name: string, value: any = null) {
@@ -92,7 +93,7 @@ export class FsNavUpdatesService {
     })
   }
 
-  private _onUpdate(target: FsNavUpdateTarget, name: string, destroy: Observable<any>): Observable<NavUpdated> {
+  private onUpdate(target: FsNavUpdateTarget, name: string, destroy: Observable<any>): Observable<NavUpdated> {
     const updater = this._updated.pipe(
       filter(
         (event: any) => {

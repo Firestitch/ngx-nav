@@ -291,7 +291,6 @@ export class FsNavStackService {
     }
   }
 
-
   /**
    * Lookup for element which can be saved (lastChild: false)
    */
