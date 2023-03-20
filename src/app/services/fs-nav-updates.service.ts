@@ -70,15 +70,15 @@ export class FsNavUpdatesService {
   }
 
   public componentUpdated$(name, destroy = null) {
-    return this.onUpdate(FsNavUpdateTarget.component, name, destroy);
+    return this._onUpdate(FsNavUpdateTarget.component, name, destroy);
   }
 
-  public actionUpdated$(name, destroy = null) {
-    return this.onUpdate(FsNavUpdateTarget.actions, name, destroy);
+  public acti_onUpdated$(name, destroy = null) {
+    return this._onUpdate(FsNavUpdateTarget.actions, name, destroy);
   }
 
   public menuUpdated$(name, destroy = null) {
-    return this.onUpdate(FsNavUpdateTarget.menu, name, destroy);
+    return this._onUpdate(FsNavUpdateTarget.menu, name, destroy);
   }
 
   private update(target: FsNavUpdateTarget, type: FsNavUpdateType, name: string, value: any = null) {
@@ -92,7 +92,7 @@ export class FsNavUpdatesService {
     })
   }
 
-  private onUpdate(target: FsNavUpdateTarget, name: string, destroy: Observable<any>): Observable<NavUpdated> {
+  private _onUpdate(target: FsNavUpdateTarget, name: string, destroy: Observable<any>): Observable<NavUpdated> {
     const updater = this._updated.pipe(
       filter(
         (event: any) => {
