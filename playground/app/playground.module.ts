@@ -1,22 +1,19 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
 
 import { FsExampleModule } from '@firestitch/example';
 import { FsListModule } from '@firestitch/list';
-import { FsScrollModule } from '@firestitch/scroll';
-import { FsNavModule, } from '@firestitch/nav';
-import { FsSelectionModule } from '@firestitch/selection';
-import { FsPromptModule } from '@firestitch/prompt';
 import { FsMessageModule } from '@firestitch/message';
+import { FsNavModule, } from '@firestitch/nav';
+import { FsPromptModule } from '@firestitch/prompt';
+import { FsScrollModule } from '@firestitch/scroll';
+import { FsSelectionModule } from '@firestitch/selection';
 
-import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
-import { AppMaterialModule } from './material.module';
-import { MainComponent } from './components/main/main.component';
 import {
   EditComponent,
   ListComponent,
@@ -40,7 +37,9 @@ import {
   Workflow3Component
 } from './components';
 import { HeaderComponent } from './components/header/header.component';
+import { MainComponent } from './components/main/main.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { AppMaterialModule } from './material.module';
 
 
 const appRoutes: Routes = [
@@ -92,7 +91,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     FsNavModule.forRoot(),
@@ -104,7 +103,6 @@ const appRoutes: Routes = [
     AppMaterialModule,
     FormsModule,
     FsExampleModule.forRoot(),
-    ToastrModule.forRoot({ preventDuplicates: true }),
     FsMessageModule.forRoot(),
     RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
   ],
