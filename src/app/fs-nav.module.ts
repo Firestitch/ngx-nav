@@ -27,36 +27,34 @@ import { FsNavTitleService } from './services';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatDividerModule,
-  ],
-  exports: [
-    FsNavTitleComponent,
-    FsNavSubtitleComponent,
-    FsNavSupertitleComponent,
-    FsNavActionsComponent,
-    FsNavComponentComponent,
-    FsNavBackComponent,
-    FsNavMenuComponent,
-  ],
-  entryComponents: [
-  ],
-  declarations: [
-    FsNavBaseComponent,
-    FsNavTitleComponent,
-    FsNavSupertitleComponent,
-    FsNavSubtitleComponent,
-    FsNavActionsComponent,
-    FsNavComponentComponent,
-    FsNavMenuComponent,
-    FsNavBackComponent,
-    FsNavBaseComponent,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatDividerModule,
+    ],
+    exports: [
+        FsNavTitleComponent,
+        FsNavSubtitleComponent,
+        FsNavSupertitleComponent,
+        FsNavActionsComponent,
+        FsNavComponentComponent,
+        FsNavBackComponent,
+        FsNavMenuComponent,
+    ],
+    declarations: [
+        FsNavBaseComponent,
+        FsNavTitleComponent,
+        FsNavSupertitleComponent,
+        FsNavSubtitleComponent,
+        FsNavActionsComponent,
+        FsNavComponentComponent,
+        FsNavMenuComponent,
+        FsNavBackComponent,
+        FsNavBaseComponent,
+    ]
 })
 export class FsNavModule {
   static forRoot(config: FsNavDefaultConfig = {}): ModuleWithProviders<FsNavModule> {
