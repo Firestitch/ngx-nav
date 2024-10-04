@@ -104,7 +104,7 @@ const appRoutes: Routes = [
         FormsModule,
         FsExampleModule.forRoot(),
         FsMessageModule.forRoot(),
-        RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
+        RouterModule.forRoot(appRoutes, {}),
     ],
     declarations: [
         AppComponent,
