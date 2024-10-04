@@ -3,21 +3,20 @@ import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
   NavigationEnd,
-  Router,
-  RouterEvent,
+  Router
 } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 
-import { FsNavComponents } from '../classes/nav-components';
 import { FsNavActions } from '../classes/nav-actions';
+import { FsNavComponents } from '../classes/nav-components';
 import { FsNavMenus } from '../classes/nav-menus';
-import { FsNavUpdatesService } from './fs-nav-updates.service';
-import { NavStackItem } from '../interfaces/nav-stack-item.interface';
 import { FS_NAV_DEFAULT_CONFIG } from '../fs-nav.providers';
 import { FsNavDefaultConfig } from '../interfaces/nav-default-config.interface';
 import { FsNavRouteData } from '../interfaces/nav-route-data.interface';
+import { NavStackItem } from '../interfaces/nav-stack-item.interface';
+import { FsNavUpdatesService } from './fs-nav-updates.service';
 
 
 @Injectable()
@@ -384,7 +383,7 @@ export class FsNavStackService {
     return this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        distinctUntilChanged((prev: RouterEvent, curr: RouterEvent) => {
+        distinctUntilChanged((prev: any, curr: any) => {
           const prevUrl = prev.url?.split('?')[0];
           const currUrl = curr.url?.split('?')[0];
 
