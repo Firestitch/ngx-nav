@@ -1,26 +1,32 @@
 import { Injectable } from '@angular/core';
+
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { FsNavStackService } from './fs-nav-stack.service';
 import { UrlInfoAction } from '../interfaces/nav-route-handle.interface';
 import { NavStackItem } from '../interfaces/nav-stack-item.interface';
 
-export type Title = {
+import { FsNavStackService } from './fs-nav-stack.service';
+
+export interface Title {
   title: { value: string, permanent: string },
   supertitle: { value: string, permanent: string }
   subtitle: { value: string, permanent: string }
-};
+}
 
 @Injectable()
 export class FsNavService {
 
-  private _title$ = new BehaviorSubject<Title>({
-    title: { value: '', permanent: '' },
-    supertitle: { value: '', permanent: '' },
-    subtitle: { value: '', permanent: '' },
-  });
+  private _title$: BehaviorSubject<Title>;
 
-  constructor(private _stack: FsNavStackService) {}
+  constructor(
+    private _stack: FsNavStackService,
+  ) {
+    this._title$ = new BehaviorSubject<Title>({
+      title: { value: '', permanent: '' },
+      supertitle: { value: '', permanent: '' },
+      subtitle: { value: '', permanent: '' },
+    });
+  }
 
   public get urlsStack(): NavStackItem[] {
     return this._stack.urlsStack;
@@ -50,8 +56,8 @@ export class FsNavService {
         supertitle: {
           value,
           permanent: permanent ? value : this.title.supertitle.permanent,
-        } 
-      }
+        }, 
+      },
     );
   }
 
@@ -67,8 +73,8 @@ export class FsNavService {
         subtitle: {
           value,
           permanent: permanent ? value : this.title.subtitle.permanent,
-        } 
-      }
+        }, 
+      },
     );
   }
 
@@ -89,21 +95,21 @@ export class FsNavService {
       title: {
         value: title,
         permanent: permanent ? title : this.title.title.value,
-      } 
+      }, 
     };
     
     if(supertitle !== undefined) {
       data.supertitle = {
         value: supertitle,
         permanent: permanent ? supertitle : this.title.supertitle.value,
-      }
+      };
     }
     
     if(subtitle !== undefined) {
       data.subtitle = {
         value: subtitle,
         permanent: permanent ? supertitle : this.title.subtitle.value,
-      }
+      };
     }
 
     this._title$.next(data);

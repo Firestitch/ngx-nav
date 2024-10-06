@@ -3,7 +3,7 @@ import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
   NavigationEnd,
-  Router
+  Router,
 } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -16,32 +16,33 @@ import { FS_NAV_DEFAULT_CONFIG } from '../fs-nav.providers';
 import { FsNavDefaultConfig } from '../interfaces/nav-default-config.interface';
 import { FsNavRouteData } from '../interfaces/nav-route-data.interface';
 import { NavStackItem } from '../interfaces/nav-stack-item.interface';
+
 import { FsNavUpdatesService } from './fs-nav-updates.service';
 
 
 @Injectable()
 export class FsNavStackService {
 
-  public components = new FsNavComponents(this._navUpdates);
-  public actions = new FsNavActions(this._navUpdates);
-  public menus = new FsNavMenus(this._navUpdates);
+  public components:FsNavComponents;
+  public actions: FsNavActions;
+  public menus: FsNavMenus;
 
   private _urlsStack: NavStackItem[] = [];
   private _stopBackToUrls: any[] = [];
 
   private _activeRoute = new BehaviorSubject<NavStackItem>(null);
   private _lastOperationIsBack = false;
-  private _browserBack = false;
   private _routeData: FsNavRouteData;
-  // private _handlers: {[key: string]: DetachedRouteHandle} = {}; // Do not remove!
 
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _navUpdates: FsNavUpdatesService,
-    @Inject(FS_NAV_DEFAULT_CONFIG) private _defaultConfig: FsNavDefaultConfig
+    @Inject(FS_NAV_DEFAULT_CONFIG) private _defaultConfig: FsNavDefaultConfig,
   ) {
-
+    this.components = new FsNavComponents(this._navUpdates);
+    this.actions = new FsNavActions(this._navUpdates);
+    this.menus = new FsNavMenus(this._navUpdates);
     this.subscribeToRouteChange();
 
     if (this._defaultConfig.watchBrowserBackButton) {
@@ -79,7 +80,6 @@ export class FsNavStackService {
   public subscribeToBrowserBack() {
     window.addEventListener('popstate', () => {
       if (!this._lastOperationIsBack) {
-        this._browserBack = true;
 
         // Hack to prevent native back button
         history.go(1);
@@ -144,12 +144,11 @@ export class FsNavStackService {
         fullPath: this.getFullRoutePath(route),
         data: data,
         save: save,
-        backCounts: 1
+        backCounts: 1,
       });
     }
 
     this._lastOperationIsBack = false;
-    this._browserBack = false;
   }
 
   /**
@@ -161,7 +160,6 @@ export class FsNavStackService {
     this._activeRoute.next(prevItem);
 
     this._lastOperationIsBack = false;
-    this._browserBack = false;
   }
 
   /**
@@ -178,9 +176,10 @@ export class FsNavStackService {
   public getFullRoutePath(route: ActivatedRouteSnapshot) {
     if (route.firstChild) {
       return this.getTailPath(route);
-    } else {
-      return this.getHeadPath(route);
     }
+ 
+    return this.getHeadPath(route);
+    
   }
 
   /**
@@ -259,7 +258,7 @@ export class FsNavStackService {
 
     return {
       delta,
-      depth
+      depth,
     };
 
   }
@@ -271,10 +270,11 @@ export class FsNavStackService {
    */
   private getHeadPath(route: ActivatedRouteSnapshot, path = '') {
     if (route.parent !== null) {
-      return this.getHeadPath(route.parent, path) + '/' + route.url.join('/');
-    } else {
-      return route.url.join('/');
+      return `${this.getHeadPath(route.parent, path)  }/${  route.url.join('/')}`;
     }
+ 
+    return route.url.join('/');
+    
   }
 
   /**
@@ -285,9 +285,10 @@ export class FsNavStackService {
   private getTailPath(route: ActivatedRouteSnapshot, path = '') {
     if (route.firstChild) {
       return `/${route.url.join('/')}/${this.getTailPath(route.firstChild, path)}`;
-    } else {
-      return `${route.url.join('/')}`;
     }
+ 
+    return `${route.url.join('/')}`;
+    
   }
 
 
@@ -351,11 +352,11 @@ export class FsNavStackService {
 
       this._navUpdates.updateRouteData(this._routeData);
 
-      if (this._routeData.root === true) {
+      if (this._routeData.root) {
         this.resetStack();
       }
 
-      if (this._routeData.history === false) {
+      if (!this._routeData.history) {
         this.setActiveUrlAsStop();
       }
     } else {
@@ -371,9 +372,10 @@ export class FsNavStackService {
   private getRouteData(route: ActivatedRouteSnapshot, key: string = null) {
     if (key) {
       return route && route.data && route.data[key] || null;
-    } else {
-      return route && route.data || null;
     }
+ 
+    return route && route.data || null;
+    
   }
 
   /**
@@ -397,13 +399,13 @@ export class FsNavStackService {
         }),
         map((route) => {
           while (route.firstChild) {
-            route = route.firstChild
+            route = route.firstChild;
 
-            this._routeData = Object.assign(
-              {},
-              this._routeData,
-              this.getRouteData(route.snapshot, 'fsNav')
-            );
+            this._routeData = {
+              
+              ...this._routeData,
+              ...this.getRouteData(route.snapshot, 'fsNav'),
+            };
           }
 
           return route;
@@ -413,7 +415,7 @@ export class FsNavStackService {
             this._routeData.root = this._routeData.rootChildren;
           }
         }),
-        filter((route) => route.outlet === 'primary')
+        filter((route) => route.outlet === 'primary'),
       );
   }
 
