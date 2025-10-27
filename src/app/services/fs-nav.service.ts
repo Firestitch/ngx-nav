@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -15,12 +15,12 @@ export interface Title {
 
 @Injectable()
 export class FsNavService {
+  private _stack = inject(FsNavStackService);
+
 
   private _title$: BehaviorSubject<Title>;
 
-  constructor(
-    private _stack: FsNavStackService,
-  ) {
+  constructor() {
     this._title$ = new BehaviorSubject<Title>({
       title: { value: '', permanent: '' },
       supertitle: { value: '', permanent: '' },

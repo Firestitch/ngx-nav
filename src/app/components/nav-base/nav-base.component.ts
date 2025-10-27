@@ -1,28 +1,19 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostBinding,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
 
 import { takeUntil } from 'rxjs/operators';
 
 import { FsNavStackService } from '../../services/fs-nav-stack.service';
-import { FsNavUpdatesService, FsNavUpdateType } from '../../services/fs-nav-updates.service';
+import { FsNavUpdateType, FsNavUpdatesService } from '../../services/fs-nav-updates.service';
 
 
 @Component({
-    template: '',
-    styleUrls: ['nav-base.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  template: '',
+  styleUrls: ['./nav-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class FsNavBaseComponent implements OnInit, OnDestroy {
+
 
   @HostBinding('class.hidden') public hidden = false;
   @HostBinding('class.empty') public empty = true;
@@ -32,16 +23,14 @@ export class FsNavBaseComponent implements OnInit, OnDestroy {
   protected _destroy = new EventEmitter();
   protected _name;
   protected _type;
+  
+  protected navUpdates = inject(FsNavUpdatesService);
+  protected navStack = inject(FsNavStackService);
+  protected elementRef = inject(ElementRef);
+  protected renderer = inject(Renderer2);
+  protected cdRef = inject(ChangeDetectorRef);
 
-  constructor (
-    protected navUpdates: FsNavUpdatesService,
-    protected navStack: FsNavStackService,
-    protected elementRef: ElementRef,
-    protected renderer: Renderer2,
-    protected cdRef: ChangeDetectorRef,
-  ) {}
-
-  get name() {
+  public get name() {
     return this._name;
   }
 
@@ -59,7 +48,7 @@ export class FsNavBaseComponent implements OnInit, OnDestroy {
   protected setSelfClass() {
     this.renderer.addClass(
       this.elementRef.nativeElement,
-      'fs-nav-component-' + this._name
+      `fs-nav-component-${  this._name}`,
     );
   }
 
@@ -118,11 +107,7 @@ export class FsNavBaseComponent implements OnInit, OnDestroy {
   protected updated(payload) {
     this.value = payload.value;
 
-    if (this.value instanceof Array) {
-      this.empty = !this.value.length;
-    } else {
-      this.empty = !payload.value;
-    }
+    this.empty = this.value instanceof Array ? !this.value.length : !payload.value;
   }
 
   protected updatedData(payload) {

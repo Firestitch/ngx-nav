@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NavActionType, FsNavService } from '@firestitch/nav';
 
 @Component({
@@ -8,10 +8,8 @@ import { NavActionType, FsNavService } from '@firestitch/nav';
     standalone: true
 })
 export class TabCComponent implements OnInit, OnDestroy {
+  nav = inject(FsNavService);
 
-  constructor(public nav: FsNavService) {
-
-  }
 
   public ngOnInit() {
     this.nav.setActions('right', [

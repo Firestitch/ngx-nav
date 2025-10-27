@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FsNavService } from '@firestitch/nav';
 import { clone } from 'lodash';
 import { HeaderComponent } from '../header/header.component';
@@ -15,11 +15,11 @@ import { JsonPipe } from '@angular/common';
     imports: [HeaderComponent, MatButton, RouterLink, RouterOutlet, MatList, MatListItem, JsonPipe]
 })
 export class NavigationComponent {
+  stack = inject(FsNavService);
+
 
   public navRoutes = [];
-  constructor(
-    public stack: FsNavService
-  ) {
+  constructor() {
 
     this.stack.routeChange.subscribe(() => {
       this.navRoutes = this.stack.urlsStack.reverse();

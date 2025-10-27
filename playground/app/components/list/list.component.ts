@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FsListConfig, FsListModule } from '@firestitch/list';
 import { Observable } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
@@ -13,10 +13,11 @@ import { MatButton } from '@angular/material/button';
     imports: [FsListModule, MatButton, RouterLink]
 })
 export class ListComponent implements OnInit {
+  private router = inject(Router);
+  private nav = inject(FsNavService);
+
 
   public config: FsListConfig;
-
-  constructor(private router: Router, private nav: FsNavService) {}
 
   public ngOnInit() {
     this.nav.setTitle('List');

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
@@ -8,14 +8,12 @@ import { FsNavService } from './fs-nav.service';
 
 @Injectable()
 export class FsNavTitleService {
+  private _browserTitle = inject(Title);
+  private _navService = inject(FsNavService);
+  private _router = inject(Router);
+
 
   private _title: string;
-
-  constructor(
-    private _browserTitle: Title,
-    private _navService: FsNavService,
-    private _router: Router,
-  ) {}
   
   public init(): void{
     this._navService.title$

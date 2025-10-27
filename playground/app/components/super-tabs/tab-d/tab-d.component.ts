@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FsNavService } from '@firestitch/nav';
 
 
@@ -7,8 +7,8 @@ import { FsNavService } from '@firestitch/nav';
     standalone: true,
 })
 export class SuperTabDComponent implements OnInit, OnDestroy {
+  nav = inject(FsNavService);
 
-  constructor(public nav: FsNavService) {}
 
   public ngOnInit() {}
 

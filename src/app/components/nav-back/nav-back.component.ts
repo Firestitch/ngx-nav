@@ -1,25 +1,15 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  HostBinding,
-  HostListener,
-  Renderer2
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener } from '@angular/core';
 
+import { FsNavUpdateTarget } from '../../services/fs-nav-updates.service';
 import { FsNavBaseComponent } from '../nav-base/nav-base.component';
-
-import { FsNavStackService } from '../../services/fs-nav-stack.service';
-import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-updates.service';
 
 
 @Component({
-    selector: '[fsNavBack]',
-    template: '<ng-content></ng-content>',
-    styles: [''],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: '[fsNavBack]',
+  template: '<ng-content></ng-content>',
+  styles: [''],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class FsNavBackComponent extends FsNavBaseComponent {
 
@@ -27,14 +17,8 @@ export class FsNavBackComponent extends FsNavBaseComponent {
 
   protected _type = FsNavUpdateTarget.component;
 
-  constructor (
-    navUpdates: FsNavUpdatesService,
-    navStack: FsNavStackService,
-    elementRef: ElementRef,
-    renderer: Renderer2,
-    cdRef: ChangeDetectorRef,
-  ) {
-    super(navUpdates, navStack, elementRef, renderer, cdRef);
+  constructor () {
+    super();
     this._name = 'back';
   }
 

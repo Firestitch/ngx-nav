@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FsNavService } from '@firestitch/nav';
 
 
@@ -7,8 +7,8 @@ import { FsNavService } from '@firestitch/nav';
     standalone: true
 })
 export class RootComponent implements OnInit {
+  nav = inject(FsNavService);
 
-  constructor(public nav: FsNavService) {}
 
   ngOnInit() {
     this.nav.setTitle('Root');

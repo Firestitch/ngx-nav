@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,10 +15,10 @@ import { RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
     imports: [MatTabNav, MatTabLink, RouterLinkActive, RouterLink, RouterOutlet]
 })
 export class TabsComponent implements OnInit, OnDestroy{
+  private nav = inject(FsNavService);
+
 
   private _destroy$ = new Subject();
-
-  constructor(private nav: FsNavService) {}
 
   public tabs = [
     { path: '/tabs/a', label: 'Tab A' },

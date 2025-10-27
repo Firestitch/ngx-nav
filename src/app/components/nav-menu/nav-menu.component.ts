@@ -1,53 +1,41 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  HostBinding,
-  Input,
-  Renderer2,
-} from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
-import { FsNavBaseComponent } from '../nav-base/nav-base.component'
-
-import { FsNavStackService } from '../../services/fs-nav-stack.service';
-import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-updates.service';
+import { MatIconButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 import { NavAction } from '../../models/nav-action.model';
 import { NavDropDownMenu } from '../../models/nav-drop-down-menu.model';
-import { MatIconButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatIcon } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
-import { NgClass } from '@angular/common';
-import { MatDivider } from '@angular/material/divider';
-
-;
+import { FsNavUpdateTarget } from '../../services/fs-nav-updates.service';
+import { FsNavBaseComponent } from '../nav-base/nav-base.component';
 
 
 @Component({
-    selector: '[fsNavMenu]',
-    templateUrl: 'nav-menu.component.html',
-    styleUrls: ['nav-menu.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        MatIconButton,
-        MatMenuTrigger,
-        MatIcon,
-        MatMenu,
-        MatMenuItem,
-        RouterLink,
-        NgClass,
-        MatDivider,
-    ],
+  selector: '[fsNavMenu]',
+  templateUrl: 'nav-menu.component.html',
+  styleUrls: ['nav-menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    MatIconButton,
+    MatMenuTrigger,
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
+    RouterLink,
+    NgClass,
+    MatDivider,
+  ],
 })
 export class FsNavMenuComponent extends FsNavBaseComponent {
 
   @Input('fsNavMenu')
-  set menuName(value) {
+  public set menuName(value) {
     this._name = value;
-  };
+  }
 
   @HostBinding('class.fs-nav-menu') public selfClass = true;
 
@@ -57,20 +45,10 @@ export class FsNavMenuComponent extends FsNavBaseComponent {
 
   protected _type = FsNavUpdateTarget.menu;
 
-  constructor(
-    navUpdates: FsNavUpdatesService,
-    navStack: FsNavStackService,
-    protected _elementRef: ElementRef,
-    protected _renderer: Renderer2,
-    cdRef: ChangeDetectorRef,
-  ) {
-    super(navUpdates, navStack, _elementRef, _renderer, cdRef);
-  }
-
   protected setSelfClass() {
     this.renderer.addClass(
       this.elementRef.nativeElement,
-      'fs-nav-menu-' + this._name
+      `fs-nav-menu-${  this._name}`,
     );
   }
 

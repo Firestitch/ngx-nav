@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
@@ -22,6 +22,11 @@ import { FsNavUpdatesService } from './fs-nav-updates.service';
 
 @Injectable()
 export class FsNavStackService {
+  private _activatedRoute = inject(ActivatedRoute);
+  private _router = inject(Router);
+  private _navUpdates = inject(FsNavUpdatesService);
+  private _defaultConfig = inject<FsNavDefaultConfig>(FS_NAV_DEFAULT_CONFIG);
+
 
   public components:FsNavComponents;
   public actions: FsNavActions;
@@ -34,12 +39,7 @@ export class FsNavStackService {
   private _lastOperationIsBack = false;
   private _routeData: FsNavRouteData;
 
-  constructor(
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router,
-    private _navUpdates: FsNavUpdatesService,
-    @Inject(FS_NAV_DEFAULT_CONFIG) private _defaultConfig: FsNavDefaultConfig,
-  ) {
+  constructor() {
     this.components = new FsNavComponents(this._navUpdates);
     this.actions = new FsNavActions(this._navUpdates);
     this.menus = new FsNavMenus(this._navUpdates);

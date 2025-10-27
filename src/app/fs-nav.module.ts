@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -55,6 +55,8 @@ import { FsNavTitleService } from './services';
     ]
 })
 export class FsNavModule {
+  private _titleService = inject(FsNavTitleService);
+
   static forRoot(config: FsNavDefaultConfig = {}): ModuleWithProviders<FsNavModule> {
     return {
       ngModule: FsNavModule,
@@ -73,9 +75,7 @@ export class FsNavModule {
     };
   }
 
-  public constructor(
-    private _titleService: FsNavTitleService
-  ) {
+  public constructor() {
     this._titleService.init();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FsNavService } from '@firestitch/nav';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -11,8 +11,8 @@ import { RouterLink } from '@angular/router';
     imports: [MatButton, RouterLink]
 })
 export class TabDComponent implements OnInit, OnDestroy {
+  nav = inject(FsNavService);
 
-  constructor(public nav: FsNavService) {}
 
   public ngOnInit() {}
 
