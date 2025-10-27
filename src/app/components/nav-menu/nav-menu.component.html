@@ -1,36 +1,46 @@
-<button mat-icon-button [matMenuTriggerFor]="menuActionsRef" *ngIf="menu">
-  <mat-icon>{{ menu?.icon || 'more_vert' }}</mat-icon>
-</button>
+@if (menu) {
+  <button mat-icon-button [matMenuTriggerFor]="menuActionsRef">
+    <mat-icon>{{ menu?.icon || 'more_vert' }}</mat-icon>
+  </button>
+}
 <mat-menu #menuActionsRef>
-  <ng-container *ngFor="let group of groups; let groupIndex = index">
+  @for (group of groups; track group; let groupIndex = $index) {
     <!-- Group name -->
-    <ng-template [ngIf]="group !== 'default'">
+    @if (group !== 'default') {
       <button mat-menu-item class="group-header" [disabled]="true">{{group}}</button>
-    </ng-template>
-
+    }
     <!-- actions -->
-    <ng-container *ngFor="let action of actions.get(group)">
-      <button mat-menu-item *ngIf="!action.url" (click)="action.click($event)">
-        <mat-icon *ngIf="action.icon && !action.image">{{action.icon}}</mat-icon>
-        <img *ngIf="action.image" [src]="action.image">
-        {{action.label}}
-      </button>
-
-      <a mat-menu-item
-         *ngIf="action.url"
-         [routerLink]="[action.url]"
-         (click)="action.click($event)"
-         [ngClass]="action.classArray"
-      >
-        <mat-icon *ngIf="action.icon && !action.image">{{action.icon}}</mat-icon>
-        <img *ngIf="action.image" [src]="action.image">
-        {{action.label}}
-      </a>
-    </ng-container>
-
+    @for (action of actions.get(group); track action) {
+      @if (!action.url) {
+        <button mat-menu-item (click)="action.click($event)">
+          @if (action.icon && !action.image) {
+            <mat-icon>{{action.icon}}</mat-icon>
+          }
+          @if (action.image) {
+            <img [src]="action.image">
+          }
+          {{action.label}}
+        </button>
+      }
+      @if (action.url) {
+        <a mat-menu-item
+          [routerLink]="[action.url]"
+          (click)="action.click($event)"
+          [ngClass]="action.classArray"
+          >
+          @if (action.icon && !action.image) {
+            <mat-icon>{{action.icon}}</mat-icon>
+          }
+          @if (action.image) {
+            <img [src]="action.image">
+          }
+          {{action.label}}
+        </a>
+      }
+    }
     <!-- divider -->
-    <ng-template [ngIf]="actions.get(group).length > 0 && groups.length - 1 > groupIndex">
+    @if (actions.get(group).length > 0 && groups.length - 1 > groupIndex) {
       <mat-divider></mat-divider>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </mat-menu>

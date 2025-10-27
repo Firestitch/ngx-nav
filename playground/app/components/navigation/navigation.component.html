@@ -15,18 +15,18 @@
     <div>
       <mat-list class="page-stack">
         <h3 mat-header>Route Stack (Recent to Oldest)</h3>
-        <ng-container *ngFor="let navRoute of navRoutes; let index = index">
+        @for (navRoute of navRoutes; track navRoute; let index = $index) {
           <mat-list-item>
             <span class="index">{{ navRoutes.length - 1 - index }}</span>
             <a [routerLink]="navRoute.path">{{navRoute.path}}</a>
-            <ng-template [ngIf]="!navRoute.save">
+            @if (!navRoute.save) {
               <b>></b>&nbsp;
               <span class="last-url">{{ navRoute.fullPath }}</span>&nbsp;
               <span class="counts">[ {{ navRoute.backCounts }} ]</span>
-            </ng-template>
+            }
             <div class="route-data"> {{ navRoute.data | json }} </div>
           </mat-list-item>
-        </ng-container>
+        }
       </mat-list>
     </div>
 
