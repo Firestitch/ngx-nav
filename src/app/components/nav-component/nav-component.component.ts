@@ -14,10 +14,11 @@ import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-up
 
 
 @Component({
-  selector: '[fsNavComponent]',
-  templateUrl: './nav-component.component.html',
-  styleUrls: ['../nav-base/nav-base.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: '[fsNavComponent]',
+    templateUrl: './nav-component.component.html',
+    styleUrls: ['../nav-base/nav-base.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class FsNavComponentComponent extends FsNavBaseComponent {
 

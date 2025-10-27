@@ -15,15 +15,32 @@ import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-up
 
 import { NavAction } from '../../models/nav-action.model';
 import { NavDropDownMenu } from '../../models/nav-drop-down-menu.model';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { NgClass } from '@angular/common';
+import { MatDivider } from '@angular/material/divider';
 
 ;
 
 
 @Component({
-  selector: '[fsNavMenu]',
-  templateUrl: 'nav-menu.component.html',
-  styleUrls: [ 'nav-menu.component.scss' ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: '[fsNavMenu]',
+    templateUrl: 'nav-menu.component.html',
+    styleUrls: ['nav-menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatIconButton,
+        MatMenuTrigger,
+        MatIcon,
+        MatMenu,
+        MatMenuItem,
+        RouterLink,
+        NgClass,
+        MatDivider,
+    ],
 })
 export class FsNavMenuComponent extends FsNavBaseComponent {
 

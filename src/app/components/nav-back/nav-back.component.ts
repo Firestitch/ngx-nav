@@ -15,10 +15,11 @@ import { FsNavUpdatesService, FsNavUpdateTarget } from '../../services/fs-nav-up
 
 
 @Component({
-  selector: '[fsNavBack]',
-  template: '<ng-content></ng-content>',
-  styles: [''],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: '[fsNavBack]',
+    template: '<ng-content></ng-content>',
+    styles: [''],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class FsNavBackComponent extends FsNavBaseComponent {
 

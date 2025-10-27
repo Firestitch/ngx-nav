@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavActionType, FsNavService } from '@firestitch/nav';
 
 @Component({
-  selector: 'static-page',
-  templateUrl: 'tab-c.component.html',
-  styleUrls: [ 'tab-c.component.scss' ]
+    selector: 'static-page',
+    templateUrl: 'tab-c.component.html',
+    styleUrls: ['tab-c.component.scss'],
+    standalone: true
 })
 export class TabCComponent implements OnInit, OnDestroy {
 

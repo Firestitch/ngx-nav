@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FsNavService, NavActionType } from '@firestitch/nav';
+import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'inputs-data',
-  templateUrl: 'tab-a.component.html',
-  styles: [`
+    selector: 'inputs-data',
+    templateUrl: 'tab-a.component.html',
+    styles: [`
     .example-radio-group {
       display: inline-flex;
       flex-direction: column;
@@ -13,7 +15,9 @@ import { FsNavService, NavActionType } from '@firestitch/nav';
     .example-radio-button {
       margin: 5px;
     }
-  `]
+  `],
+    standalone: true,
+    imports: [MatButton, RouterLink]
 })
 export class TabAComponent implements OnInit, OnDestroy {
 

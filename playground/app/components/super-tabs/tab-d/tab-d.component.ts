@@ -3,7 +3,8 @@ import { FsNavService } from '@firestitch/nav';
 
 
 @Component({
-  templateUrl: 'tab-d.component.html',
+    templateUrl: 'tab-d.component.html',
+    standalone: true,
 })
 export class SuperTabDComponent implements OnInit, OnDestroy {
 

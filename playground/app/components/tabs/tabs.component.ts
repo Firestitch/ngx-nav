@@ -4,11 +4,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { FsNavService } from '@firestitch/nav';
+import { MatTabNav, MatTabLink } from '@angular/material/tabs';
+import { RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 
 
 @Component({
-  selector: 'tabs',
-  templateUrl: 'tabs.component.html'
+    selector: 'tabs',
+    templateUrl: 'tabs.component.html',
+    standalone: true,
+    imports: [MatTabNav, MatTabLink, RouterLinkActive, RouterLink, RouterOutlet]
 })
 export class TabsComponent implements OnInit, OnDestroy{
 

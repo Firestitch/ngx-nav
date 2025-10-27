@@ -34,6 +34,15 @@ import { FsNavTitleService } from './services';
         MatIconModule,
         MatMenuModule,
         MatDividerModule,
+        FsNavBaseComponent,
+        FsNavTitleComponent,
+        FsNavSupertitleComponent,
+        FsNavSubtitleComponent,
+        FsNavActionsComponent,
+        FsNavComponentComponent,
+        FsNavMenuComponent,
+        FsNavBackComponent,
+        FsNavBaseComponent,
     ],
     exports: [
         FsNavTitleComponent,
@@ -43,17 +52,6 @@ import { FsNavTitleService } from './services';
         FsNavComponentComponent,
         FsNavBackComponent,
         FsNavMenuComponent,
-    ],
-    declarations: [
-        FsNavBaseComponent,
-        FsNavTitleComponent,
-        FsNavSupertitleComponent,
-        FsNavSubtitleComponent,
-        FsNavActionsComponent,
-        FsNavComponentComponent,
-        FsNavMenuComponent,
-        FsNavBackComponent,
-        FsNavBaseComponent,
     ]
 })
 export class FsNavModule {

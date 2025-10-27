@@ -17,9 +17,10 @@ import { FsNavUpdatesService, FsNavUpdateType } from '../../services/fs-nav-upda
 
 
 @Component({
-  template: '',
-  styleUrls: ['nav-base.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    template: '',
+    styleUrls: ['nav-base.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class FsNavBaseComponent implements OnInit, OnDestroy {
 

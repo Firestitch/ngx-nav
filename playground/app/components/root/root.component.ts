@@ -3,7 +3,8 @@ import { FsNavService } from '@firestitch/nav';
 
 
 @Component({
-  templateUrl: 'root.component.html'
+    templateUrl: 'root.component.html',
+    standalone: true
 })
 export class RootComponent implements OnInit {
 

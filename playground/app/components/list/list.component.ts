@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FsListConfig } from '@firestitch/list';
+import { FsListConfig, FsListModule } from '@firestitch/list';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { FsNavService } from '@firestitch/nav';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  templateUrl: 'list.component.html'
+    templateUrl: 'list.component.html',
+    standalone: true,
+    imports: [FsListModule, MatButton, RouterLink]
 })
 export class ListComponent implements OnInit {
 
