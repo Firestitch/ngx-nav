@@ -1,124 +1,135 @@
-<ng-container *ngFor="let action of value"
-              [ngSwitch]="action.type">
+<ng-container
+    *ngFor="let action of value"
+    [ngSwitch]="action.type">
   <!-- Basic button -->
-  <ng-container *ngSwitchCase="'basic'">
+  <ng-container *ngSwitchCase="NavActionType.basic">
     <!-- Button case -->
     <button
-      mat-button
-      *ngIf="!action.url"
-      (click)="action.click($event)"
-      [ngClass]="action.classArray"
-    >
+        mat-button
+        *ngIf="!action.url"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </button>
-
     <!-- URL case -->
-    <a mat-button
-       *ngIf="action.url"
-       [routerLink]="[action.url]"
-       (click)="action.click($event)"
-       [ngClass]="action.classArray"
-    >
+    <a
+        mat-button
+        *ngIf="action.url"
+        [routerLink]="[action.url]"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </a>
   </ng-container>
-
   <!-- Raised button -->
-  <ng-container *ngSwitchCase="'raised'">
+  <ng-container *ngSwitchCase="NavActionType.raised">
     <!-- Button case -->
     <button
-      mat-raised-button
-      *ngIf="!action.url"
-      (click)="action.click($event)"
-      [ngClass]="action.classArray"
-    >
+        mat-raised-button
+        *ngIf="!action.url"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </button>
-
     <!-- URL case -->
-    <a mat-raised-button
-       *ngIf="action.url"
-       [routerLink]="[action.url]"
-       (click)="action.click($event)"
-       [ngClass]="action.classArray"
-    >
+    <a
+        mat-raised-button
+        *ngIf="action.url"
+        [routerLink]="[action.url]"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </a>
   </ng-container>
-
+  <!-- Stroked button -->
+  <ng-container *ngSwitchCase="NavActionType.stroked">
+    <!-- Button case -->
+    <button
+        mat-stroked-button
+        *ngIf="!action.url"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
+      <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
+    </button>
+    <!-- URL case -->
+    <a
+        mat-stroked-button
+        *ngIf="action.url"
+        [routerLink]="[action.url]"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
+      <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
+    </a>
+  </ng-container>
   <!-- Icon button -->
-  <ng-container *ngSwitchCase="'icon'">
+  <ng-container *ngSwitchCase="NavActionType.icon">
     <!-- Button case -->
     <button
-      mat-icon-button
-      *ngIf="!action.url"
-      (click)="action.click($event)"
-      [ngClass]="action.classArray"
-    >
+        mat-icon-button
+        *ngIf="!action.url"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </button>
-
     <!-- URL case -->
-    <a mat-icon-button
-       *ngIf="action.url"
-       [routerLink]="[action.url]"
-       (click)="action.click($event)"
-       [ngClass]="action.classArray"
-    >
+    <a
+        mat-icon-button
+        *ngIf="action.url"
+        [routerLink]="[action.url]"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </a>
   </ng-container>
-
   <!-- Fab button -->
-  <ng-container *ngSwitchCase="'fab'">
+  <ng-container *ngSwitchCase="NavActionType.fab">
     <!-- Button case -->
     <button
-      mat-fab
-      *ngIf="!action.url"
-      (click)="action.click($event)"
-      [ngClass]="action.classArray"
-    >
+        mat-fab
+        *ngIf="!action.url"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </button>
-
     <!-- URL case -->
-    <a mat-fab
-       *ngIf="action.url"
-       [routerLink]="[action.url]"
-       (click)="action.click($event)"
-       [ngClass]="action.classArray"
-    >
+    <a
+        mat-fab
+        *ngIf="action.url"
+        [routerLink]="[action.url]"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </a>
   </ng-container>
-
   <!-- Mini Fab button -->
-  <ng-container *ngSwitchCase="'mini-fab'">
+  <ng-container *ngSwitchCase="NavActionType.miniFab">
     <!-- Button case -->
     <button
-      mat-mini-fab
-      *ngIf="!action.url"
-      (click)="action.click($event)"
-      [ngClass]="action.classArray"
-    >
+        mat-mini-fab
+        *ngIf="!action.url"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </button>
-
     <!-- URL case -->
-    <a mat-mini-fab
-       *ngIf="action.url"
-       [routerLink]="[action.url]"
-       (click)="action.click($event)"
-       [ngClass]="action.classArray"
-    >
+    <a
+        mat-mini-fab
+        *ngIf="action.url"
+        [routerLink]="[action.url]"
+        (click)="action.click($event)"
+        [ngClass]="action.classArray">
       <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
     </a>
   </ng-container>
-
-  <ng-template #buttonContent let-value="value">
-    <mat-icon *ngIf="action.icon && !action.image">{{action.icon}}</mat-icon>
-    <img *ngIf="action.image" [src]="action.image">
-
-    {{action.label}}
+  <ng-template
+      #buttonContent
+      let-value="value">
+    <mat-icon *ngIf="action.icon && !action.image">
+      {{ action.icon }}
+    </mat-icon>
+    <img
+      *ngIf="action.image"
+      [src]="action.image">
+    {{ action.label }}
   </ng-template>
 </ng-container>

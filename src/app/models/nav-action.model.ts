@@ -6,6 +6,7 @@ export enum NavActionType {
   icon = 'icon',
   fab = 'fab',
   miniFab = 'mini-fab',
+  stroked = 'stroked',
 }
 
 export class NavAction {
@@ -38,6 +39,7 @@ export class NavAction {
         .split(' ')
         .reduce((acc, elem) => {
           acc.push(elem);
+
           return acc;
         }, []);
     }
